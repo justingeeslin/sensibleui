@@ -18,8 +18,9 @@ gulp.task('scripts', function () {
 	return gulp.src([
 		'sensibleExpandCollapse.js',
 		'sensibleJumpToTop.js',
+		
 	])
-	.pipe(rename('sensible.js'))
+	.pipe(concat('sensible.js'))
 	.pipe(gulp.dest(''))
 
 	.pipe(rename('sensible.min.js'))
