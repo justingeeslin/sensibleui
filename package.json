@@ -1,0 +1,24 @@
+{
+  "name": "sensibleui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sensible.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://justingeeslin@github.com/justingeeslin/sensibleui.git"
+  },
+  "author": "Justin Geeslin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/justingeeslin/sensibleui/issues"
+  },
+  "homepage": "https://github.com/justingeeslin/sensibleui",
+  "devDependencies": {
+    "karma": "^0.13.19",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-safari-launcher": "^0.1.1"
+  }
+}
