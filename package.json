@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/justingeeslin/sensibleui",
   "devDependencies": {
+    "jasmine": "^2.4.1",
     "karma": "^0.13.19",
     "karma-chrome-launcher": "^0.2.2",
     "karma-safari-launcher": "^0.1.1"
