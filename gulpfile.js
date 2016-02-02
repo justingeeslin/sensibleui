@@ -16,6 +16,7 @@ var del = require('del');
 // Concatenate & Minify JS
 gulp.task('scripts', function () {
 	return gulp.src([
+		'sensibleExpandCollapse.js',
 		'sensibleJumpToTop.js',
 	])
 	.pipe(rename('sensible.js'))
@@ -78,6 +79,7 @@ gulp.task('servers', function () {
 // Watch Files For Changes
 gulp.task('watch', function () {
 	gulp.watch('sensibleJumpToTop.js', ['scripts']);
+	gulp.watch('sensibleExpandCollapse.js', ['scripts']);
 //	gulp.watch('css/*.scss', ['sass']);
 
 });
