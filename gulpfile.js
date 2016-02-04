@@ -18,7 +18,7 @@ gulp.task('scripts', function () {
 	return gulp.src([
 		'sensibleExpandCollapse.js',
 		'sensibleJumpToTop.js',
-		
+		'sensibleInputDelete.js',
 	])
 	.pipe(concat('sensible.js'))
 	.pipe(gulp.dest(''))
@@ -30,11 +30,19 @@ gulp.task('scripts', function () {
 });
 
 // Compile Our Sass
-//gulp.task('sass', function () {
-//	return gulp.src('css/help.scss')
-//		.pipe(sass())
-//		.pipe(gulp.dest('html/api/css'));
-//});
+gulp.task('sass', function () {
+	return gulp.src('css/base.scss')
+		.pipe(sass())
+		.pipe(rename('style.css'))
+		.pipe(gulp.dest('css'));
+});
+
+gulp.task('sass-InputDelete', function () {
+	return gulp.src('css/_InputDelete.scss')
+		.pipe(sass())
+		.pipe(rename('style-InputDelete.css'))
+		.pipe(gulp.dest('css'));
+});
 
 function run_cmd(cmd, cb, param) {
 	var exec = require('child_process').exec;
@@ -73,7 +81,7 @@ function run_cmd(cmd, cb, param) {
 
 gulp.task('servers', function () {
 	console.log('Starting web server for local site...');
-	run_cmd('php -S 0.0.0.0:8081 -t ~/Documents/sensibleui/html');
+	run_cmd('php -S 0.0.0.0:8081 -t ~/Documents/sensibleui/');
 
 });
 
@@ -81,13 +89,15 @@ gulp.task('servers', function () {
 gulp.task('watch', function () {
 	gulp.watch('sensibleJumpToTop.js', ['scripts']);
 	gulp.watch('sensibleExpandCollapse.js', ['scripts']);
-//	gulp.watch('css/*.scss', ['sass']);
+	gulp.watch('sensibleInputDelete.js', ['scripts','sass-InputDelete']);
+	gulp.watch('css/*.scss', ['sass']);
 
 });
 
 // Default Task
 gulp.task('default', [
 	'scripts', 
-//	'sass', 
+	'sass', 
+	'sass-InputDelete',
 	'watch'
 ]);
