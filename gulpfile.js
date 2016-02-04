@@ -85,6 +85,12 @@ gulp.task('servers', function () {
 
 });
 
+gulp.task('karma', function () {
+	console.log('Karma Testing Start');
+	run_cmd('./node_modules/karma/bin/karma start');
+
+});
+
 // Watch Files For Changes
 gulp.task('watch', function () {
 	gulp.watch('sensibleJumpToTop.js', ['scripts']);
