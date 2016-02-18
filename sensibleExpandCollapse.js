@@ -4,29 +4,31 @@ sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 sensible.classes.ExpandCollapse = function (opts) {
 	var self = this;
 	
-	//Argument Handling
-	var title = opts && opts.title ? opts.title : 'Untitled Question?';
-	var content = opts && opts.content ? opts.content : 'Untitled Answer.';
-	this.slug = opts && opts.slug ? opts.slug : 'untitled-question';
+	this.title = "Untitled"
+	this.content = "Untitled Body."
+	this.slug = "untitled"
+	
+	$.extend(this, opts);
 	
 	//Capture the element's state
 	this.isOpen = false;
 
-	console.log("Creating an Expand/Collapse: " + title);
+	console.log("Creating an Expand/Collapse: " + this.title);
 
 	this.el = $('<span>');
-	$(this.el).append('<a href="#!' + this.slug + '">' + title + '</a>');
-	$(this.el).append('<div style="display:none;">' + content + '</div>');
+	$(this.el).append('<a href="#' + this.slug + '">' + this.title + '</a>');
+	$(this.el).append('<div style="display:none;">' + this.content + '</div>');
 
 	//Handles expanding and collapsing
 	this.activate = function(e) {
-		e.preventDefault();
-		this.isOpen = !this.isOpen;
-
-		var answer = self.el.find('a[href="#!' + self.slug + '"]').next();
+		self.isOpen = !self.isOpen;
 		
-		if (this.isOpen) {
+		console.log('Expanding ' + self.slug);
+		var answer = $(this).next();
+		
+		if (self.isOpen) {
 			console.log('Opened');
+			console.log(answer);
 			answer.show()
 		}
 		else {
@@ -35,7 +37,7 @@ sensible.classes.ExpandCollapse = function (opts) {
 		}
 		
 		//If the question is opened..
-		if (this.isOpen) {
+		if (self.isOpen) {
 			//.. close all the other questions
 			self.el.trigger('expandCollapseClose', this);
 		}		
@@ -59,7 +61,7 @@ sensible.classes.ExpandCollapse = function (opts) {
 				//Force close	
 				console.log('Forcing Close: ' + self.slug);
 				self.el.find(' a[href="#!' + self.slug + '"]').next().toggle(false);
-				this.isOpen = false;
+				self.isOpen = false;
 			}
 		}
 
@@ -67,12 +69,12 @@ sensible.classes.ExpandCollapse = function (opts) {
 
 	$(this.el).on('click', ' > a', this.activate);
 
-	$(this.el).on('expandCollapseClose', this.forceCloseAll);
+//	$(this.el).on('expandCollapseClose', this.forceCloseAll);
 
 	//Expose an event to toggle the activation. Maybe called when a screen un-slides to close it.
 	$(this.el).on('toggleActivate', this.activate);
 	
-	var target = opts && opts.target ? opts.target : $(document.body);
+	var target = this.target ? this.target : $(document.body);
 	target.append(this.el);
 	
 	return this;
