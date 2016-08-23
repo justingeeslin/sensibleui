@@ -1,60 +1,68 @@
-var sensible = sensible !== undefined ? sensible : {};
-sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
+var sensible = typeof sensible !== "undefined" ? sensible : {};
+sensible.classes = typeof sensible.classes !== "undefined" ? sensible.classes : {};
 
-sensible.classes.ExpandCollapse = function (title, content, slug) {
+sensible.classes.ExpandCollapse = function (opts) {
 	var self = this;
-			
-	//Argument Handling
-	var title = typeof title != "undefined" ? title : 'Untitled Question?';
-	var content = typeof content != "undefined" ? content : 'Untitled Answer.';
-	this.slug = typeof slug != "undefined" ? slug : 'untitled-question';
+	
+	this.title = "Untitled"
+	this.content = "Untitled Body."
+	this.slug = "untitled"
+	this.url = this.slug
+	
+	$.extend(this, opts);
 
-	//Capture the element's state
-	this.isOpen = false;
-
-	console.log("Creating an Expand/Collapse: " + title);
+	console.log("Creating an Expand/Collapse: " + this.title);
 
 	this.el = $('<span>');
-	$(this.el).append('<a href="#!' + this.slug + '">' + title + '</a>');
-	$(this.el).append('<div style="display:none;">' + content + '</div>');
+	$(this.el).append('<a href="#' + this.url + '">' + this.title + '</a>');
+	$(this.el).append('<div style="display:none;">' + this.content + '</div>');
 
 	//Handles expanding and collapsing
 	this.activate = function(e) {
-		e.preventDefault();
-		this.isOpen = !this.isOpen;
-
-		if (this.isOpen) {
+		e.preventDefault()
+		history.replaceState(null, null, $(this).attr('href') )
+		
+		console.log('Original Expanding ' + self.slug);
+		var answer = $(this).next();
+		
+		if (!self.isOpen()) {
 			console.log('Opened');
+			console.log(answer);
+			answer.show()
+			
+			//.. close all the other questions
+			self.el.trigger('expandCollapseClose', this);
 		}
 		else {
 			console.log('Closed');
+			answer.hide()
 		}
-		
-		self.el.find('a[href="#!' + self.slug + '"]').next().toggle();
-		//If the question is opened..
-		if (this.isOpen) {
-			//.. close all the other questions
-			self.el.trigger('expandCollapseClose', this);
-		}		
 
+	}
+	
+	this.isOpen = function() {
+		return self.el.find(' a[href="#' + self.url + '"]').next().is(':visible');
 	}
 
 	this.forceCloseAll = function(e, clicked) {
-		if (clicked !== undefined) {
-			var questionClicked = $(clicked).attr('href')
-			
-			if (questionClicked) {
-				questionClicked.replace('#!','');	
-			}
-			
-			//If the question clicked is myself..
-			if (questionClicked == self.slug) {
-				//..Do not force close
-			}
-			else {
-				//Force close	
-				self.el.find(' a[href="#!' + self.slug + '"]').next().toggle(false);
-				this.isOpen = false;
+		console.log('Forcing Close: ' + self.url + ' because I am ' + self.isOpen());
+		if (self.isOpen()) {
+			if (clicked !== undefined) {
+				var questionClicked = $(clicked).attr('href');
+
+				if (questionClicked) {
+					questionClicked = questionClicked.replace('#','');	
+				}
+
+				//If the question clicked is myself..
+				if (questionClicked == self.url) {
+					//..Do not force close
+				}
+				else {
+						//Force close	
+						console.log('Forcing Close: ' + self.url);
+						self.el.find(' a[href="#' + self.url + '"]').next().toggle(false);
+				}
 			}
 		}
 
@@ -62,10 +70,11 @@ sensible.classes.ExpandCollapse = function (title, content, slug) {
 
 	$(this.el).on('click', ' > a', this.activate);
 
-	$(this.el).on('expandCollapseClose', this.forceCloseAll);
-
 	//Expose an event to toggle the activation. Maybe called when a screen un-slides to close it.
 	$(this.el).on('toggleActivate', this.activate);
+	
+	var target = this.target ? this.target : $(document.body);
+	target.append(this.el);
 	
 	return this;
 }
@@ -145,5 +154,113 @@ sensible.classes.JumpToTop = function (target) {
 
 	target.append(this.el);	
 	
+	return this;
+}
+var sensible = sensible !== undefined ? sensible : {};
+sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
+
+sensible.classes.InputDelete = function (opts, $contentTarget) {
+	var self = this;
+
+	var options = {
+		"target" : $(document.body)
+	}
+	
+	$.extend(options, opts)
+
+	console.log('Creating an Input with Delete button.');
+	
+	if (typeof $contentTarget !== 'undefined') {
+		//Operate on the existing version
+		this.el = $contentTarget;
+	}
+	else {
+		this.el = $('<div class="deletable"><input type="text"></input><div>x</div></div>');
+	}
+	
+	var inputBox = this.el.find('input');
+	var deleteButton = this.el.find('div');
+	
+	//When the user types..
+	inputBox.on('input', function() {
+		console.log('Should I show the delete button?');
+//		var deleteButton = $(this).siblings('div');
+		
+		if ($(this).val().length > 0) {
+			console.log('Showing delete button');
+			deleteButton.css('visibility', 'visible')
+		}
+		else {
+			console.log('hiding delete button');
+			deleteButton.css('visibility', 'hidden')
+		}
+	});
+	
+	deleteButton.on('click', function(e) {
+		console.log('Clicked delete button')
+//		var inputBox = $(this).siblings('input');
+		//Clear the input box
+		inputBox.val('');
+		//Hide the x if neccessary.
+		inputBox.trigger('input');
+	});
+	
+//	options.target.append(this.el);	
+	
+	return this;
+}
+var sensible = sensible !== undefined ? sensible : {};
+sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
+
+sensible.classes.InputFilter = function (opts, parent) {
+	var self = this;
+	
+	this.toFilter = undefined;
+	this.itemSelector = "li";
+	this.placeholderText = undefined;
+	
+	//Build on the parent if there is one
+	$.extend(this, parent);
+	
+	$.extend(this, opts);
+
+	var searchBox = this.el.find("input");
+
+	searchBox.on('input', function(e) {
+		console.log('Searchbox input/ Keyup event. Value is '+ $(this).val());
+		//jQuery contains case insenstive
+		$.extend($.expr[":"], {
+			"containsIN": function(elem, i, match, array) {
+			return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+			}
+		});
+
+		//If tofilter is undefined
+		if (self.toFilter === undefined) {
+			console.log('Filter on siblings');
+			//Filter nodes adjacent to the element
+			self.toFilter = self.el.parent();
+		}
+
+		console.log('Looking for elements of type ' + self.itemSelector);
+		var items = self.toFilter.find(self.itemSelector);
+
+		//Show by default
+		items.show();
+
+		//Hide question items that do not contain the search term
+		items.not(self.itemSelector + ":containsIN(" + $(this).val() + ")").hide();
+	});
+
+	return this;
+}
+var sensible = sensible !== undefined ? sensible : {};
+sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
+
+sensible.classes.InputDeleteFilter = function (opts) {
+
+	$.extend(this, new sensible.classes.InputDelete(opts, this));
+	$.extend(this, new sensible.classes.InputFilter(opts, this));
+
 	return this;
 }

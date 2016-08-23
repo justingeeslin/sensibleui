@@ -19,6 +19,8 @@ gulp.task('scripts', function () {
 		'sensibleExpandCollapse.js',
 		'sensibleJumpToTop.js',
 		'sensibleInputDelete.js',
+		'sensibleInputFilter.js',
+		'sensibleInputDeleteFilter.js',
 	])
 	.pipe(concat('sensible.js'))
 	.pipe(gulp.dest(''))
@@ -96,6 +98,8 @@ gulp.task('watch', function () {
 	gulp.watch('sensibleJumpToTop.js', ['scripts']);
 	gulp.watch('sensibleExpandCollapse.js', ['scripts']);
 	gulp.watch('sensibleInputDelete.js', ['scripts','sass-InputDelete']);
+	gulp.watch('sensibleInputDeleteFilter.js', ['scripts']);
+	gulp.watch('sensibleInputFilter.js', ['scripts']);
 	gulp.watch('css/*.scss', ['sass']);
 
 });

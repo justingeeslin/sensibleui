@@ -6,7 +6,7 @@ div.deletable {
   /* Firefox/Gecko */
   width: -webkit-max-content;
   /* Chrome */ }
-  div.deletable input ~ div {
+  div.deletable > div {
     /* Hide the div at first */
     visibility: hidden;
     float: right;

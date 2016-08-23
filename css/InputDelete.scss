@@ -6,10 +6,9 @@ div.deletable {
 	input {
 		
 	}
-	input ~ div {
+	& > div {
 		/* Hide the div at first */
 		visibility: hidden;
-		
 		float: right;
     right: 1em;
     position: relative;
