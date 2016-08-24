@@ -16,8 +16,10 @@ var del = require('del');
 // Concatenate & Minify JS
 gulp.task('scripts', function () {
 	return gulp.src([
+		'sensibleComponent.js',
 		'sensibleExpandCollapse.js',
 		'sensibleJumpToTop.js',
+		'sensibleInput.js',
 		'sensibleInputDelete.js',
 		'sensibleInputFilter.js',
 		'sensibleInputDeleteFilter.js',
@@ -27,7 +29,7 @@ gulp.task('scripts', function () {
 
 	.pipe(rename('sensible.min.js'))
 	.pipe(uglify())
-	.pipe(stripDebug())	
+	.pipe(stripDebug())
 	.pipe(gulp.dest(''))
 });
 
@@ -95,19 +97,15 @@ gulp.task('karma', function () {
 
 // Watch Files For Changes
 gulp.task('watch', function () {
-	gulp.watch('sensibleJumpToTop.js', ['scripts']);
-	gulp.watch('sensibleExpandCollapse.js', ['scripts']);
-	gulp.watch('sensibleInputDelete.js', ['scripts','sass-InputDelete']);
-	gulp.watch('sensibleInputDeleteFilter.js', ['scripts']);
-	gulp.watch('sensibleInputFilter.js', ['scripts']);
+	gulp.watch('*.js', ['scripts']);
 	gulp.watch('css/*.scss', ['sass']);
 
 });
 
 // Default Task
 gulp.task('default', [
-	'scripts', 
-	'sass', 
+	'scripts',
+	'sass',
 	'sass-InputDelete',
 	'watch'
 ]);

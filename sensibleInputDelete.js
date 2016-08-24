@@ -1,33 +1,33 @@
 var sensible = sensible !== undefined ? sensible : {};
 sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
-sensible.classes.InputDelete = function (opts, $contentTarget) {
+sensible.classes.InputDelete = function (opts) {
 	var self = this;
 
-	var options = {
-		"target" : $(document.body)
-	}
-	
-	$.extend(options, opts)
+	var defaults = {};
 
 	console.log('Creating an Input with Delete button.');
-	
-	if (typeof $contentTarget !== 'undefined') {
-		//Operate on the existing version
-		this.el = $contentTarget;
+	$.extend(this, defaults, opts)
+	$.extend(this, new sensible.classes.Input(this));
+
+	//Wrap in a Div if not already wrapped
+	var classToAdd = "deletable";
+	var deleteButton = $('<div>x</div>');
+	if (this.el.filter('div').length > 0) {
+		this.el.addClass(classToAdd);
 	}
 	else {
-		this.el = $('<div class="deletable"><input type="text"></input><div>x</div></div>');
+		// Wrap with a deletable class. Add a X button.
+		this.el = $('<div class="' + classToAdd + '"></div>').append(this.el);
 	}
-	
+	this.el.append(deleteButton);
+
 	var inputBox = this.el.find('input');
-	var deleteButton = this.el.find('div');
-	
+
 	//When the user types..
 	inputBox.on('input', function() {
 		console.log('Should I show the delete button?');
-//		var deleteButton = $(this).siblings('div');
-		
+
 		if ($(this).val().length > 0) {
 			console.log('Showing delete button');
 			deleteButton.css('visibility', 'visible')
@@ -37,17 +37,20 @@ sensible.classes.InputDelete = function (opts, $contentTarget) {
 			deleteButton.css('visibility', 'hidden')
 		}
 	});
-	
+
 	deleteButton.on('click', function(e) {
 		console.log('Clicked delete button')
-//		var inputBox = $(this).siblings('input');
 		//Clear the input box
 		inputBox.val('');
 		//Hide the x if neccessary.
 		inputBox.trigger('input');
 	});
-	
-//	options.target.append(this.el);	
-	
+
+	//If a target was supplied..
+	if (typeof this.target !== undefined) {
+		//... append to it.
+		self.el.appendTo(self.target);
+	}
+
 	return this;
 }
