@@ -10,8 +10,8 @@ sensible.classes.Accordion = function (opts) {
 	$.extend(this, new sensible.classes.ExpandCollapse(this));
 
 	$(this.el).on('click', ' > a', function() {
-		//Trigger a close on everyone but me
-		$('.' + self.classes).not($('[href="#' + self.url + '"]').parent()).trigger('close');
+		//Trigger a close on everyone who is open but not me
+		$('.' + self.classes + '.open').not($('[href="#' + self.url + '"]').parent()).trigger('close');
 	});
 
 	//Append to the Document or whatever
