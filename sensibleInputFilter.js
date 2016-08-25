@@ -8,13 +8,12 @@ sensible.classes.InputFilter = function (opts) {
 		//The toFilter selection has this element as children. Selector. li, ul, a, etc.
 		itemSelector: " > ul > li",
 	};
+  //A DOM selection (jQuery) of elements to filter
+	defaults.toFilter = function() { return self.el.parent() }
 
 	$.extend(this, defaults, opts);
 	//Create a Input Component with our options.
 	$.extend(this, new sensible.classes.Input(this));
-
-	//A DOM selection (jQuery) of elements to filter
-	this.toFilter = function() { return self.el.parent() }
 
 	//Find the input, Search box.
 	var searchBox = this.el.find('input').add(this.el.filter('input'));
