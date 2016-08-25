@@ -18,6 +18,7 @@ gulp.task('scripts', function () {
 	return gulp.src([
 		'sensibleComponent.js',
 		'sensibleExpandCollapse.js',
+		'sensibleAccordion.js',
 		'sensibleJumpToTop.js',
 		'sensibleInput.js',
 		'sensibleInputDelete.js',

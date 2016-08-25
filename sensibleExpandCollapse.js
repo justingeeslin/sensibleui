@@ -8,7 +8,8 @@ sensible.classes.ExpandCollapse = function (opts) {
 		title : "Untitled",
 		content : "Untitled Body.",
 		slug : "untitled",
-		target : $(document.body)
+		url : 'untitled',
+		classes : 'expand-collapse'
 	};
 
 	$.extend(this, defaults, opts);
@@ -16,12 +17,9 @@ sensible.classes.ExpandCollapse = function (opts) {
 	console.log("Creating an Expand/Collapse: " + this.title);
 	console.log(this);
 
-	this.url = function() {
-		return self.slug;
-	}
-
 	this.el = $('<span></span>');
-	this.el.append('<a href="#' + this.url() + '">' + this.title + '</a>');
+	this.el.addClass(this.classes);
+	this.el.append('<a href="#' + this.url + '">' + this.title + '</a>');
 	var answer = $('<div style="display:none;">' + this.content + '</div>');
 	this.el.append(answer);
 
@@ -33,7 +31,7 @@ sensible.classes.ExpandCollapse = function (opts) {
 		//Update the URL incase the windows is refreshed
 		history.replaceState(null, null, $(this).attr('href') )
 
-		console.log('Toggling: ' + self.slug);
+		console.log('Toggling... ' + self.slug);
 
 		if (!self.isOpen()) {
 			self.open();
@@ -71,7 +69,11 @@ sensible.classes.ExpandCollapse = function (opts) {
 	$(this.el).on('open', this.open);
 
 	//Append to the Document or whatever
-	this.el.appendTo(this.target);
+	//If a target was supplied..
+	if (typeof this.target !== undefined) {
+		//... append to it.
+		self.el.appendTo(self.target);
+	}
 
 	return this;
 }
