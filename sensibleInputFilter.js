@@ -40,12 +40,46 @@ sensible.classes.InputFilter = function (opts) {
 		items.show();
 
 		//Hide question items that do not contain the search term
-		items = items.not(":containsIN(" + $(this).val() + ")")
+		itemsToHide = items.not(":containsIN(" + $(this).val() + ")")
 
-		items.hide();
+		itemsToHide.hide();
 
 		console.log('Found these: ')
-		console.log(items);
+		console.log(itemsToHide);
+
+    //If all the list items of a list are hidden, hide the list
+    console.log('Looking for lists...')
+    var lists = self.toFilter().children('ul');
+    console.log(lists);
+
+    lists.show();
+		lists.parent().show();
+    lists.each(function() {
+      // If all of the list's children are hidden...
+      if ($(this).children(':visible').length <= 0) {
+        console.log('Hiding ' + $(this)[0])
+        //Hide yourself
+        $(this).hide();
+
+				//Hide your container
+				$(this).parent().hide();
+      }
+    });
+
+		//This list's heading
+		var selectorHeadings = 'h1,h2,h3,h4,h5,h6';
+		var headings = self.toFilter().children(selectorHeadings);
+		headings.show();
+		headings.each(function() {
+      // If all of the list's children are hidden...
+      if ($(this).nextUntil(selectorHeadings).find(':visible').length <= 0) {
+        console.log('Hiding ' + $(this)[0])
+        //Hide yourself
+        $(this).hide();
+
+      }
+    });
+
 	});
 
 	//If a target was supplied..
