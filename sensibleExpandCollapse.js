@@ -14,12 +14,11 @@ sensible.classes.ExpandCollapse = function (opts) {
 
 	$.extend(this, defaults, opts);
 
-	console.log("Creating an Expand/Collapse: " + this.title);
-	console.log(this);
+	this.id = this.url.split('/').join('-');
 
 	this.el = $('<span></span>');
 	this.el.addClass(this.classes);
-	this.el.append('<a href="#' + this.url + '">' + this.title + '</a>');
+	this.el.append('<a href="#' + this.url + '" id="' + this.id + '">' + this.title + '</a>');
 	var answer = $('<div style="display:none;">' + this.content + '</div>');
 	this.el.append(answer);
 
@@ -69,6 +68,7 @@ sensible.classes.ExpandCollapse = function (opts) {
 	$(this.el).on('close', this.close);
 	// ...to open
 	$(this.el).on('open', this.open);
+	$(this.el).on('activate', this.open);
 
 	//Append to the Document or whatever
 	//If a target was supplied..
