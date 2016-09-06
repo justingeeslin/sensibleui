@@ -44,7 +44,7 @@ sensible.classes.ExpandCollapse = function (opts) {
 	this.isOpen = function() {
 		console.log('This is my element:')
 		console.log(self.el);
-		self.el.addClass('open');
+
 		return self.el.find('div').is(':visible');
 	}
 
@@ -56,6 +56,7 @@ sensible.classes.ExpandCollapse = function (opts) {
 
 	this.open = function() {
 		console.log('Opening: ' + self.slug);
+		self.el.addClass('open');
 		answer.show()
 	}
 
