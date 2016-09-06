@@ -12,7 +12,7 @@ sensible.classes.Accordion = function (opts) {
 	var closeOthers = function() {
 		console.log('Accordion: Closing others...');
 		//Trigger a close on everyone who is open but not me
-		$('.' + self.classes + '.open').not($(this).parent()).trigger('close');
+		$('.' + self.classes + '.open').not(self.el).trigger('close');
 	}
 
 	$(this.el).on('open', closeOthers);
