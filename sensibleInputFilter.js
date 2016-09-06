@@ -8,15 +8,22 @@ sensible.classes.InputFilter = function (opts) {
 		//The toFilter selection has this element as children. Selector. li, ul, a, etc.
 		itemSelector: " > ul > li",
 	};
+
+	function getSearchBox() {
+		//Select the Input if it is a child and if it is the root element
+		return self.el.find('input').add(self.el.filter('input'));
+	}
+
   //A DOM selection (jQuery) of elements to filter
-	defaults.toFilter = function() { return self.el.parent() }
+	defaults.toFilter = function() { return getSearchBox().parent() }
 
 	$.extend(this, defaults, opts);
 	//Create a Input Component with our options.
 	$.extend(this, new sensible.classes.Input(this));
 
 	//Find the input, Search box.
-	var searchBox = this.el.find('input').add(this.el.filter('input'));
+
+	var searchBox = getSearchBox()
 
 	this.el.addClass('filterable');
 
@@ -41,42 +48,68 @@ sensible.classes.InputFilter = function (opts) {
 		//Hide question items that do not contain the search term
 		itemsToHide = items.not(":containsIN(" + $(this).val() + ")")
 
-		itemsToHide.hide();
-
 		console.log('Found these: ')
 		console.log(itemsToHide);
 
-    //If all the list items of a list are hidden, hide the list
-    console.log('Looking for lists...')
-    var lists = self.toFilter().children('ul');
-    console.log(lists);
+		itemsToHide.hide();
 
-    lists.show();
-		lists.parent().show();
-    lists.each(function() {
-      // If all of the list's children are hidden...
-      if ($(this).children(':visible').length <= 0) {
-        console.log('Hiding ' + $(this)[0])
-        //Hide yourself
-        $(this).hide();
+    // //If all the list items of a list are hidden, hide the list
+    // console.log('Looking for lists...')
+    // var lists = self.toFilter().children('ul');
+    // console.log(lists);
+		//
+    // lists.show();
+    // lists.each(function() {
+    //   // If all of the list's children are hidden...
+    //   if ($(this).children(':visible').length <= 0) {
+    //     console.log('Hiding ' + $(this)[0])
+    //     //Hide yourself
+    //     $(this).hide();
+		//
+		//
+    //   }
+    // });
 
-				//Hide your container
-				$(this).parent().hide();
-      }
-    });
+		function hideParentWhenAllChildrenAreHidden(parentType) {
+			//If all the list items of a list are hidden, hide the list
+	    console.log('Looking for ' + parentType + 's...')
+	    var parents = self.toFilter().children(parentType);
+	    console.log(parents);
 
-		//This list's heading
+	    parents.show();
+	    parents.each(function() {
+	      // If all of the list's children are hidden...
+	      if ($(this).children(':visible').length <= 0) {
+	        console.log('Hiding: ')
+					console.log($(this))
+	        //Hide yourself
+	        $(this).hide();
+	      }
+	    });
+		}
+
+		hideParentWhenAllChildrenAreHidden('ul');
+
+		// //This list's heading
 		var selectorHeadings = 'h1,h2,h3,h4,h5,h6';
 		var headings = self.toFilter().children(selectorHeadings);
+		console.log('Show all the headings..')
+		console.log(headings);
 		headings.show();
 		headings.each(function() {
-      // If all of the list's children are hidden...
-      if ($(this).nextUntil(selectorHeadings).find(':visible').length <= 0) {
-        console.log('Hiding ' + $(this)[0])
+      // If all of the heading's next siblings are hidden... (not including the input box with the filter)
+			var visibleNextSiblings = $(this).nextUntil(selectorHeadings).filter(':visible').not(self.el);
+      if (visibleNextSiblings.length <= 0) {
+        console.log('Hiding Heading:')
+				console.log($(this))
         //Hide yourself
         $(this).hide();
 
       }
+			else {
+				console.log('I have ' + visibleNextSiblings.length + ' visbile next siblings');
+				console.log(visibleNextSiblings);
+			}
     });
 
 	});
