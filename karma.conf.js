@@ -16,7 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
 			'jquery-2.2.0.js',
-			'sensible.js',
+			'dist/sensible.js',
 			'tests/*.js',
     ],
 
@@ -74,7 +74,7 @@ module.exports = function(config) {
     // how many browser should be started simultaneous
     concurrency: Infinity
   })
-	
+
 	if(process.env.TRAVIS){
 		config.browsers = ['Chrome_travis_ci'];
 	}
