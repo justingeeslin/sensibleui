@@ -1,17 +1,23 @@
 describe('InputFilter', function() {
+    container = $('<div id="input-filter"></div>')
+
+    //create a list to filter.
+    container.append('<h4>Category 1</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3 <ul><li>Nested Item a</li><li>Nested Item b</li></ul></li></ul>');
+    container.append('<h4>Category 2</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
+    container.append('<h4>Category 3</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul><h5>SubCat 3.1</h5><ul><li><h6>Nested Heading</h6>Item 4</li><li>Item 5</li><li>Item 3</li></ul>');
+    container.append('<h4>Category DIV</h4><div><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul></div>');
+
+    $(document.body).append(container);
+
     var options = {
-      target: $(document.body),
+      target: container,
       placeholderText : "Search for Items..",
+      // itemSelector : '> div > ul > li'
     };
 
     var theInputFilter = new sensible.classes.InputFilter(options);
 
     var inputBox = $('input.filterable');
-
-    //create a list to filter.
-    $(document.body).append('<h4>Category 1</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3 <ul><li>Nested Item a</li><li>Nested Item b</li></ul></li></ul>');
-    $(document.body).append('<h4>Category 2</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
-    $(document.body).append('<h4>Category 3</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul><h5>SubCat 3.1</h5><ul><li><h6>Nested Heading</h6>Item 4</li><li>Item 5</li><li>Item 3</li></ul>');
 
     it('Should exist', function() {
         expect(inputBox.length > 0).toBe(true);
@@ -23,8 +29,8 @@ describe('InputFilter', function() {
 			inputBox.trigger('input');
 
 			//Should hide 2 & 3
-			expect($('li:contains("Item 2")').css('display')).toBe('none');
-			expect($('li:contains("Item 3")').css('display')).toBe('none');
+			expect(container.find('li:contains("Item 2")').css('display')).toBe('none');
+			expect(container.find('li:contains("Item 3")').css('display')).toBe('none');
 
     });
 
@@ -33,7 +39,7 @@ describe('InputFilter', function() {
 			inputBox.val('ITEM');
 			inputBox.trigger('input');
 
-			expect($('li:contains("Item")').css('display')).toBe('list-item');
+			expect(container.find('li:contains("Item")').css('display')).toBe('list-item');
 
 
     });

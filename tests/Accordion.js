@@ -18,6 +18,8 @@ describe('Accordion', function() {
       theQuestion.click();
       theQuestion2.click();
 
-      expect(theAnswer2.filter(':visible').length <= 0).toBe(true)
+      var visibleAnswers = $('.expand-collapse > div:visible')
+
+      expect(visibleAnswers.length == 1).toBe(true)
     });
 });

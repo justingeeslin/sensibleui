@@ -1,13 +1,21 @@
 describe('InputDelete', function() {
-    var theInputFilter = new sensible.classes.InputDelete({target: $(document.body)});
+    var container = $('<div id="input-delete"></div>')
+
+    //create a list to filter.
+    container.append('<h4>Category 1</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3 <ul><li>Nested Item 1</li><li>Nested Item 2</li></ul></li></ul>');
+    container.append('<h4>Category 2</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
+    container.append('<h4>Category 3</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
+
+    $(document.body).append(container);
+    var theInputFilter = new sensible.classes.InputDelete({target: container});
 
     inputBox = $('.deletable > input');
     closeX = $('.deletable > div');
 
-    //create a list to filter.
-    $(document.body).append('<h4>Category 1</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3 <ul><li>Nested Item 1</li><li>Nested Item 2</li></ul></li></ul>');
-    $(document.body).append('<h4>Category 2</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
-    $(document.body).append('<h4>Category 3</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
+
+    afterAll(function() {
+      // container.empty()
+    })
 
     it('Should exist', function() {
         expect(inputBox.length > 0).toBe(true);

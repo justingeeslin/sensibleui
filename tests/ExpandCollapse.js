@@ -2,6 +2,9 @@ describe('ExpandCollapse', function() {
     var myExpandCollapse = new sensible.classes.ExpandCollapse();
     var myExpandCollapse2 = new sensible.classes.ExpandCollapse({slug: 'untitled2'});
 
+    $(document.body).append(myExpandCollapse.el);
+    $(document.body).append(myExpandCollapse2.el);
+
 		var theQuestion = myExpandCollapse.el.find('a');
     var theAnswer = myExpandCollapse.el.find('div');
 
@@ -23,12 +26,12 @@ describe('ExpandCollapse', function() {
 			expect(isOpen()).toBe(false);
 		});
 
-    it('should close when triggering the toggle event', function() {
+    it('should close when triggering the close event', function() {
       myExpandCollapse.el.trigger('close');
 			expect(isOpen()).toBe(false);
 		});
 
-    it('should open when triggering the toggle event', function() {
+    it('should open when triggering the open event', function() {
       myExpandCollapse.el.trigger('open');
 			expect(isOpen()).toBe(true);
 		});
@@ -39,4 +42,10 @@ describe('ExpandCollapse', function() {
       var afterState = isOpen();
       expect(beforeState).toBe(!afterState);
     });
+
+    it('should open when triggering the activate event', function() {
+      myExpandCollapse.el.trigger('activate');
+			expect(isOpen()).toBe(true);
+		});
+
 });
