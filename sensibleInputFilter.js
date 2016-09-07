@@ -70,10 +70,9 @@ sensible.classes.InputFilter = function (opts) {
     //   }
     // });
 
-		function hideParentWhenAllChildrenAreHidden(parentType) {
-			//If all the list items of a list are hidden, hide the list
-	    console.log('Looking for ' + parentType + 's...')
-	    var parents = self.toFilter().children(parentType);
+		function hideParentWhenAllChildrenAreHidden() {
+
+	    var parents = items.parent();
 	    console.log(parents);
 
 	    parents.show();
@@ -88,7 +87,7 @@ sensible.classes.InputFilter = function (opts) {
 	    });
 		}
 
-		hideParentWhenAllChildrenAreHidden('ul');
+		hideParentWhenAllChildrenAreHidden();
 
 		// //This list's heading
 		var selectorHeadings = 'h1,h2,h3,h4,h5,h6';
@@ -97,8 +96,8 @@ sensible.classes.InputFilter = function (opts) {
 		console.log(headings);
 		headings.show();
 		headings.each(function() {
-      // If all of the heading's next siblings are hidden... (not including the input box with the filter)
-			var visibleNextSiblings = $(this).nextUntil(selectorHeadings).filter(':visible').not(self.el);
+      // If all of the heading's next filterable items are hidden... (not including the input box with the filter)
+			var visibleNextSiblings = $(this).nextUntil(selectorHeadings).find('*').filter(items).filter(':visible').not(self.el);
       if (visibleNextSiblings.length <= 0) {
         console.log('Hiding Heading:')
 				console.log($(this))
