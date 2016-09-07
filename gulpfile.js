@@ -26,12 +26,12 @@ gulp.task('scripts', function () {
 		'sensibleInputDeleteFilter.js',
 	])
 	.pipe(concat('sensible.js'))
-	.pipe(gulp.dest(''))
+	.pipe(gulp.dest('dist/'))
 
 	.pipe(rename('sensible.min.js'))
 	.pipe(uglify())
 	.pipe(stripDebug())
-	.pipe(gulp.dest(''))
+	.pipe(gulp.dest('dist/'))
 });
 
 // Compile Our Sass
