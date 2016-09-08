@@ -4,7 +4,7 @@
   "description": "",
   "main": "sensible.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "istanbul cover --include-all-sources jasmine-node tests"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,12 @@
     "jasmine": "^2.4.1",
     "karma": "^0.13.19",
     "karma-chrome-launcher": "^0.2.2",
+    "karma-coverage": "^1.1.1",
     "karma-jasmine": "^0.3.7",
     "karma-safari-launcher": "^0.1.1"
+  },
+  "dependencies": {
+    "istanbul": "^0.4.5",
+    "jasmine-node": "^1.14.5"
   }
 }
