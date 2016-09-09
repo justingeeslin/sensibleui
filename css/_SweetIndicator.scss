@@ -1,0 +1,12 @@
+.sensible.indicator {
+  position: absolute;
+  left:0;
+
+  .bar {
+    left:0;
+    top:0;
+    background-color: black;
+    width:4px;
+    position: absolute;
+  }
+}

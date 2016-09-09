@@ -16,6 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
 			'jquery-2.2.0.js',
+      'css/style.css',
 			'dist/sensible.js',
 			'tests/*.js',
     ],

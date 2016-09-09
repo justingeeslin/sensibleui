@@ -23,7 +23,8 @@ gulp.task('scripts', function () {
 		'sensibleInput.js',
 		'sensibleInputDelete.js',
 		'sensibleInputFilter.js',
-		'sensibleInputDeleteFilter.js'
+		'sensibleInputDeleteFilter.js',
+		'sensibleSweetIndicator.js'
 	])
 	.pipe(concat('sensible.js'))
 	.pipe(gulp.dest('dist/'))
