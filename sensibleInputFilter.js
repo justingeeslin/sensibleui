@@ -6,7 +6,7 @@ sensible.classes.InputFilter = function (opts) {
 
 	var defaults = {
 		//The toFilter selection has this element as children. Selector. li, ul, a, etc.
-		itemSelector: " > ul > li",
+		itemSelector: " > ul > li"
 	};
 
 	function getSearchBox() {
