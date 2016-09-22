@@ -37,7 +37,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'coverage', 'html'],
 
     coverageReporter : {
       reporters: [
@@ -47,6 +47,16 @@ module.exports = function(config) {
 
     },
 
+    htmlReporter: {
+      outputFile: 'tests/units.html',
+
+      // Optional
+      pageTitle: 'Sensible Unit Tests',
+      // subPageTitle: '',
+      groupSuites: true,
+      useCompactStyle: true
+      // useLegacyStyle: true
+    },
 
     // web server port
     port: 9876,
