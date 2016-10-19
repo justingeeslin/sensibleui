@@ -16,7 +16,7 @@ sensible.classes.Accordion = function (opts) {
 	}
 
 	$(this.el).on('open', closeOthers);
-	$(this.el).on('activate', closeOthers);
+	$(this.el).on('go', closeOthers);
 
 	$(this.el).on('click', ' > a', closeOthers);
 

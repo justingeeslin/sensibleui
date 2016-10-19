@@ -27,7 +27,7 @@ sensible.classes.ExpandCollapse = function (opts) {
 		//No need for this to bubble
 		e.preventDefault()
 
-		//Update the URL incase the windows is refreshed
+		//Update the URL incase the windows is refreshed. Prevent default and use this because a normal click is a push and not a replace
 		history.replaceState(null, null, $(this).attr('href') )
 
 		console.log('Toggling... ' + self.slug);
@@ -69,7 +69,13 @@ sensible.classes.ExpandCollapse = function (opts) {
 	$(this.el).on('close', this.close);
 	// ...to open
 	$(this.el).on('open', this.open);
-	$(this.el).on('activate', this.open);
+
+	$(this.el).on('go', function(e) {
+		console.log('Go: ' + self.slug + ' by ');
+		console.log(e.target);
+	});
+
+	$(this.el).on('go', this.open);
 
 	//Append to the Document or whatever
 	//If a target was supplied..
