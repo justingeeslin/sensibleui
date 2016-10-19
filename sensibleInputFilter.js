@@ -15,7 +15,7 @@ sensible.classes.InputFilter = function (opts) {
 	}
 
   //A DOM selection (jQuery) of elements to filter
-	defaults.toFilter = function() { return getSearchBox().parent() }
+	defaults.toFilter = function() { return this.el.parent() }
 
 	$.extend(this, defaults, opts);
 	//Create a Input Component with our options.
