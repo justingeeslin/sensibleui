@@ -21,7 +21,7 @@ sensible.classes.SweetIndicator = function (opts) {
 	indicator.css('background-color', this.color);
 	container.append(indicator);
 
-	items.on('click activate', function(e) {
+	items.on('click go', function(e) {
 		e.stopPropagation();
 		console.log('Clicked the item');
 
@@ -47,7 +47,7 @@ sensible.classes.SweetIndicator = function (opts) {
 	container.insertBefore(this.target.filter(':first'));
 
 	//Activate the first item
-	items.filter(':first').trigger('activate');
+	// items.filter(':first').trigger('activate');
 	//Set the height according to the first element
 	// indicator.css('height', items.filter(this.itemSelector + ':first').height() + 'px');
 
