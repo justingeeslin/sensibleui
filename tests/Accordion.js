@@ -1,7 +1,7 @@
 describe('Accordion', function() {
-    var my = new sensible.classes.Accordion();
+    var my = new sensible.classes.Accordion({slug: 'accordion', url: 'accordion'});
     my.el.appendTo($(document.body));
-    var my2 = new sensible.classes.Accordion({slug: 'untitled2', url: 'unititled2'});
+    var my2 = new sensible.classes.Accordion({slug: 'accordion2', url: 'accordion2'});
     my2.el.appendTo($(document.body));
 
 		var theQuestion = my.el.find('a');

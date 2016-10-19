@@ -13,7 +13,7 @@ describe('ExpandCollapse', function() {
     }
 
     it('Should exist and be named Untitled', function() {
-        expect(theQuestion.attr('href')).toBe('#untitled');
+        expect(theQuestion.attr('href')).toBe('#untitled')
     });
 
 		it('should show content on click.', function() {
@@ -43,8 +43,8 @@ describe('ExpandCollapse', function() {
       expect(beforeState).toBe(!afterState);
     });
 
-    it('should open when triggering the activate event', function() {
-      myExpandCollapse.el.trigger('activate');
+    it('should open when triggering the go event', function() {
+      myExpandCollapse.el.trigger('go');
 			expect(isOpen()).toBe(true);
 		});
 
