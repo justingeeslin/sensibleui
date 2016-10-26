@@ -24,7 +24,8 @@ gulp.task('scripts', function () {
 		'sensibleInputDelete.js',
 		'sensibleInputFilter.js',
 		'sensibleInputDeleteFilter.js',
-		'sensibleSweetIndicator.js'
+		'sensibleSweetIndicator.js',
+		'sensibleScrollSpy.js'
 	])
 	.pipe(concat('sensible.js'))
 	.pipe(gulp.dest('dist/'))
@@ -87,7 +88,9 @@ function run_cmd(cmd, cb, param) {
 
 gulp.task('servers', function () {
 	console.log('Starting web server for local site...');
-	run_cmd('php -S 0.0.0.0:8081 -t ~/Documents/sensibleui/');
+	run_cmd('php -S 0.0.0.0:7000 -t ~/Documents/sensibleui/');
+	console.log('Starting web server for local site...');
+	run_cmd('php -S 0.0.0.0:7001 -t ~/Documents/sensibleui/tests/');
 
 });
 
