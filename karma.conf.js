@@ -48,7 +48,7 @@ module.exports = function(config) {
     },
 
     htmlReporter: {
-      outputFile: 'tests/units.html',
+      outputFile: 'tests/index.html',
 
       // Optional
       pageTitle: 'Sensible Unit Tests',
@@ -61,6 +61,7 @@ module.exports = function(config) {
     // web server port
     port: 9876,
 
+    hostname: '192.168.2.27',
 
     // enable / disable colors in the output (reporters and logs)
     colors: true,
@@ -68,7 +69,9 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_ERROR,
+
+    browserConsoleLogOptions: {level: "error", format: "%b %T: %m", terminal: false},
 
 
     // enable / disable watching file and executing tests whenever any file changes
@@ -78,16 +81,30 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: [
-      // 'Firefox',
       'Chrome',
-      // 'Safari'
+      'Safari',
+      'Firefox',
+      'IE11'
     ],
 
 		customLaunchers: {
 				Chrome_travis_ci: {
 						base: 'Chrome',
 						flags: ['--no-sandbox']
-				}
+				},
+        'IE11': {
+          base: 'WebDriver',
+          config: {
+            hostname: '192.168.2.25',
+            port: 4444
+          },
+          browserName: 'internet explorer',
+          platform: 'Windows 8',
+          version: '10',
+          // 'x-ua-compatible': 'IE=EmulateIE7',
+          name: 'Karma',
+          pseudoActivityInterval: 30000
+        },
 		},
 
     // Continuous Integration mode
