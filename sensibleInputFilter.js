@@ -53,23 +53,6 @@ sensible.classes.InputFilter = function (opts) {
 
 		itemsToHide.hide();
 
-    // //If all the list items of a list are hidden, hide the list
-    // console.log('Looking for lists...')
-    // var lists = self.toFilter().children('ul');
-    // console.log(lists);
-		//
-    // lists.show();
-    // lists.each(function() {
-    //   // If all of the list's children are hidden...
-    //   if ($(this).children(':visible').length <= 0) {
-    //     console.log('Hiding ' + $(this)[0])
-    //     //Hide yourself
-    //     $(this).hide();
-		//
-		//
-    //   }
-    // });
-
 		function hideParentWhenAllChildrenAreHidden() {
 
 	    var parents = items.parent();
