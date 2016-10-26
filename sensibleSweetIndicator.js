@@ -22,8 +22,7 @@ sensible.classes.SweetIndicator = function (opts) {
 	container.append(indicator);
 
 	items.on('click go', function(e) {
-		e.stopPropagation();
-		console.log('Clicked the item');
+		console.log('Clicked/Activated the item. Indicating: ' + $(this).text()  + ' with a height of ' + $(this).height());
 
 		//The height (from the window) of the container
 		var containerTop = container.position().top
@@ -47,9 +46,8 @@ sensible.classes.SweetIndicator = function (opts) {
 	container.insertBefore(this.target.filter(':first'));
 
 	//Activate the first item
-	// items.filter(':first').trigger('activate');
-	//Set the height according to the first element
-	// indicator.css('height', items.filter(this.itemSelector + ':first').height() + 'px');
+	console.log('Indicating the first item' + items.filter(':first').text() + ' from the following items');
+	items.filter(':first').trigger('go');
 
 	return this;
 }
