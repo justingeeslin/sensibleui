@@ -20,6 +20,7 @@ gulp.task('scripts', function () {
 		'sensibleExpandCollapse.js',
 		'sensibleAccordion.js',
 		'sensibleJumpToTop.js',
+		'sensibleHighlight.js',
 		'sensibleInput.js',
 		'sensibleInputDelete.js',
 		'sensibleInputFilter.js',
