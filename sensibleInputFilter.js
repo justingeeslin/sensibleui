@@ -6,9 +6,13 @@ sensible.classes.InputFilter = function (opts) {
 
 	var defaults = {
 		//The toFilter selection has this element as children. Selector. li, ul, a, etc.
-		itemSelector: " > ul > li"
+		itemSelector: " > ul > li",
+    highlight: false,
+    start : function() {},
+    complete : function() {},
 	};
 
+  //Find the input, Search box.
 	function getSearchBox() {
 		//Select the Input if it is a child and if it is the root element
 		return self.el.find('input').add(self.el.filter('input'));
@@ -21,13 +25,13 @@ sensible.classes.InputFilter = function (opts) {
 	//Create a Input Component with our options.
 	$.extend(this, new sensible.classes.Input(this));
 
-	//Find the input, Search box.
-
 	var searchBox = getSearchBox()
 
 	this.el.addClass('filterable');
 
 	searchBox.on('input', function(e) {
+
+    // this.el.trigger('start.inputfilter.sensible')
 
 		console.log('Searchbox input/ Keyup event. Value is '+ searchBox.val());
 		console.log($(this));
@@ -94,7 +98,34 @@ sensible.classes.InputFilter = function (opts) {
 			}
     });
 
+    var completeTO;
+    clearTimeout(completeTO);
+    completeTO = setTimeout(function() {
+      self.el.trigger('complete.inputfilter.sensible')
+    }, 333)
+
 	});
+
+  if (this.highlight) {
+    var typingTO;
+    var timeAfterLastKeyPress = 333;
+    var theHighlighter;
+
+    var highlightFx = function() {
+      console.log('Time to highlight..');
+      theHighlighter = new sensible.classes.Highlight({
+        target: self.toFilter(),
+        textToHighlight: searchBox.val()
+      });
+    }
+    searchBox.on('input', function() {
+      clearTimeout(typingTO);
+      typingTO = setTimeout(function() {
+        highlightFx()
+      }, timeAfterLastKeyPress)
+    });
+    console.log('Binding to key presses for highlighting.')
+  }
 
 	//If a target was supplied..
 	if (typeof this.target !== undefined) {
