@@ -1,11 +1,7 @@
 describe('Accordion', function() {
-    var my = new sensible.classes.Accordion({slug: 'accordion', url: 'accordion'});
-    my.el.appendTo($(document.body));
+
     var my2 = new sensible.classes.Accordion({slug: 'accordion2', url: 'accordion2'});
     my2.el.appendTo($(document.body));
-
-		var theQuestion = my.el.find('a');
-    var theAnswer = my.el.find('div');
 
     var theQuestion2 = my2.el.find('a');
     theAnswer2 = my2.el.find('div');
@@ -13,6 +9,17 @@ describe('Accordion', function() {
     var isOpen = function() {
       return theAnswer.filter(':visible').length > 0
     }
+
+    it('should construct', function() {
+      my = new sensible.classes.Accordion({slug: 'accordion', url: 'accordion'});
+
+      theQuestion = my.el.find('a');
+      theAnswer = my.el.find('div');
+    });
+
+    it('should append to the DOM', function() {
+      my.el.appendTo($(document.body));
+    });
 
     it('should have only one open at a time', function() {
       theQuestion.click();

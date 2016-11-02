@@ -10,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'telemetry'],
 
 
     // list of files / patterns to load in the browser
@@ -37,7 +37,13 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage', 'html'],
+    reporters: ['progress', 'coverage', 'html', 'junit'],
+
+    junitReporter: {
+      outputDir : 'perf/',
+      outputFile: 'test-results/test-results.xml',
+      suite: ''
+    },
 
     coverageReporter : {
       reporters: [
@@ -45,6 +51,10 @@ module.exports = function(config) {
         { type : 'lcovonly', subdir : '.', file: 'lcov.info' }
       ]
 
+    },
+
+    client: {
+      useIframe: true
     },
 
     htmlReporter: {
@@ -81,7 +91,7 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: [
-      'Chrome',
+      'chrome_perf',
       'Safari',
       'Firefox',
       'IE11'
@@ -92,6 +102,10 @@ module.exports = function(config) {
 						base: 'Chrome',
 						flags: ['--no-sandbox']
 				},
+        chrome_perf: {
+            base: 'Chrome',
+            flags: ['--disable-popup-blocking', '--enable-gpu-benchmarking', '--enable-threaded-compositing']
+        },
         'IE11': {
           base: 'WebDriver',
           config: {
