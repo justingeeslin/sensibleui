@@ -16,7 +16,7 @@ sensible.classes.ExpandCollapse = function (opts) {
 
 	this.id = this.url.split('/').join('-');
 
-	this.el = $('<span></span>');
+	this.el = $('<div></div>');
 	this.el.addClass(this.classes);
 	this.el.append('<a href="#' + this.url + '" id="' + this.id + '">' + this.title + '</a>');
 	var answer = $('<div style="display:none;">' + this.content + '</div>');
