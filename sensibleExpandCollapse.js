@@ -70,12 +70,12 @@ sensible.classes.ExpandCollapse = function (opts) {
 	// ...to open
 	$(this.el).on('open', this.open);
 
+	$(this.el).on('go', this.toggle);
+
 	$(this.el).on('go', function(e) {
 		console.log('Go: ' + self.slug + ' by ');
 		console.log(e.target);
 	});
-
-	$(this.el).on('go', this.open);
 
 	//Append to the Document or whatever
 	//If a target was supplied..
