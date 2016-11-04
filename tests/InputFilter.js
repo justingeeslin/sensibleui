@@ -17,13 +17,16 @@ describe('InputFilter', function() {
 
     it('Should exist', function() {
       options = {
-        target: container,
+        // target: container,
         placeholderText : "Search for Items..",
         // itemSelector : '> div > ul > li',
         highlight: true
       };
 
       theInputFilter = new sensible.classes.InputFilter(options);
+
+      container.append(theInputFilter.el)
+
       inputBox = $('input.filterable');
       expect(inputBox.length > 0).toBe(true);
     });
@@ -62,4 +65,20 @@ describe('InputFilter', function() {
     it('should fire event when filter is complete', function() {
       expect(firedCompleteEvent).toBe(true);
     });
+
+    it('should create a blank slate message', function() {
+      expect(container.children('.blank-slate').length == 1).toBe(true)
+    });
+
+    it('should show a blank slate message when no results are displayed', function() {
+      inputBox.val('Koch');
+			inputBox.trigger('input');
+
+      expect(container.children('.blank-slate:visible').length == 1).toBe(true)
+    });
+
+    it('should show a blank slate message with correct text', function() {
+      var msg = theInputFilter.blankSlateMessage.replace('<term>', inputBox.val())
+      expect(container.children('.blank-slate').text()).toBe(msg);
+    })
 });

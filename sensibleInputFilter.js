@@ -8,6 +8,7 @@ sensible.classes.InputFilter = function (opts) {
 		//The toFilter selection has this element as children. Selector. li, ul, a, etc.
 		itemSelector: " > ul > li",
     highlight: false,
+		blankSlateMessage: "No Results Found with \"<term>\"",
     start : function() {},
     complete : function() {},
 	};
@@ -98,6 +99,14 @@ sensible.classes.InputFilter = function (opts) {
 			}
     });
 
+		//Are all the items hidden? If so trigger the blank slate message
+		if (items.length == itemsToHide.length) {
+			self.blankSlate.show();
+		}
+		else {
+			self.blankSlate.hide();
+		}
+
     var completeTO;
     clearTimeout(completeTO);
     completeTO = setTimeout(function() {
@@ -105,6 +114,33 @@ sensible.classes.InputFilter = function (opts) {
     }, 333)
 
 	});
+
+	this.blankSlate = {
+		isCreated: false,
+		el: $('<div class="blank-slate">' + self.blankSlateMessage + '</div>'),
+		show: function() {
+			console.log('Showing Blank slate')
+			if (!this.isCreated) {
+				console.log('Showing but it is not created..')
+				this.create();
+			}
+			var message = self.blankSlateMessage.replace('<term>', searchBox.val());
+			this.el.html(message);
+			this.el.show();
+		},
+		hide: function() {
+			this.el.hide();
+		},
+		create: function() {
+			console.log('Creating a blank slate for InputFilter as a child of ')
+			console.log(self.toFilter())
+			//Hide and then append
+			this.hide();
+			self.toFilter().append(this.el)
+			this.isCreated = true;
+		}
+	}
+
 
   if (this.highlight) {
     var typingTO;
@@ -128,9 +164,13 @@ sensible.classes.InputFilter = function (opts) {
   }
 
 	//If a target was supplied..
-	if (typeof this.target !== undefined) {
+	if (typeof this.target !== 'undefined') {
 		//... append to it.
 		self.el.appendTo(self.target);
+		//Create a blank slate message. Hidden.
+		console.log('Target supplied.')
+		console.log(this.target);
+		self.blankSlate.create();
 	}
 
 	return this;
