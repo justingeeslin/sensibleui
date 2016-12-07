@@ -11,10 +11,6 @@ describe('Accordion', function() {
     //Also make the body large so that the bottom of the window doesn't push us back up
     $('<style>html,body { height:500vh; }</style>').appendTo(document.head);
 
-    var isOpen = function() {
-      return theAnswer.filter(':visible').length > 0
-    }
-
     it('should construct', function() {
       my = new sensible.classes.Accordion({slug: 'accordion', url: 'accordion'});
 
@@ -26,14 +22,38 @@ describe('Accordion', function() {
       my.el.appendTo($(document.body));
     });
 
-    it('should have only one open at a time', function() {
+    testOneOpen = function() {
       theQuestion.click();
       theQuestion2.click();
 
       var visibleAnswers = $('.expand-collapse > div:visible')
 
       expect(visibleAnswers.length == 1).toBe(true)
+    }
+    it('should have only one open at a time', testOneOpen);
+
+    it('can open more than one open at a time except if autoclose is disabled.', function() {
+      $('.expand-collapse').trigger('disableAutoClose');
+
+      // Click it until it opens.
+      do {
+        theQuestion.click();
+      } while (!theAnswer.is(':visible'));
+
+      do {
+        theQuestion2.click();
+      } while (!theAnswer2.is(':visible'));
+
+
+      var visibleAnswers = $('.expand-collapse > div:visible')
+
+      expect(visibleAnswers.length > 1).toBe(true)
+
+      $('.expand-collapse').trigger('enableAutoClose');
+
     });
+
+    it('should have only one open at a time after enabling autoclose', testOneOpen);
 
     it('should keep the newly expanded question in view despite closing questions', function(done) {
       $('.expand-collapse:nth(0)').trigger('open');

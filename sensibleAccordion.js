@@ -7,12 +7,19 @@ sensible.classes.Accordion = function (opts) {
 	var defaults = {
 		//When large items collaps sometimes the activated item falls out of view. This option stops that from hapening.
 		scrollCompensate: true,
+		// Characteristic of the according. Others should close when the selected one opens. You might want to disable this temporarily, say for Quick Find.
+		shouldCloseOthers: true
 	};
 
 	$.extend(this, defaults, opts);
 	$.extend(this, new sensible.classes.ExpandCollapse(this));
 
 	var closeOthers = function() {
+		console.log('should close others is:' + self.shouldCloseOthers);
+		if (!self.shouldCloseOthers) {
+			console.log('shouldCloseOthers is disabled. I won\'t close others that might be open');
+			return;
+		}
 		console.log('Accordion: Closing others...');
 
 		if (self.scrollCompensate) {
@@ -45,6 +52,15 @@ sensible.classes.Accordion = function (opts) {
 	$(this.el).on('go', closeOthers);
 
 	$(this.el).on('click', ' > a', closeOthers);
+
+	//Create an event by which an accordion can be disabled and enabled
+	$(this.el).on('enableAutoClose', function() {
+		self.shouldCloseOthers = true;
+	});
+	$(this.el).on('disableAutoClose', function() {
+		console.log('Disabling Auto Close. Now, this accordion won\'t close others. ');
+		self.shouldCloseOthers = false;
+	});
 
 	//Append to the Document or whatever
 	//If a target was supplied..
