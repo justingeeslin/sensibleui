@@ -13,6 +13,8 @@ var stripDebug = require('gulp-strip-debug');
 var debug = require('gulp-debug');
 var del = require('del');
 
+var karmaServer = require('karma').Server;
+
 // Concatenate & Minify JS
 gulp.task('scripts', function () {
 	return gulp.src([
@@ -95,10 +97,11 @@ gulp.task('servers', function () {
 
 });
 
-gulp.task('karma', function () {
-	console.log('Karma Testing Start');
-	run_cmd('./node_modules/karma/bin/karma start');
-
+gulp.task('karma', function(done) {
+	new karmaServer({
+			configFile: __dirname + '/karma.conf.js',
+			singleRun: true
+	}, done).start();
 });
 
 // Watch Files For Changes
