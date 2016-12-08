@@ -26,7 +26,7 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 			return;
 		}
 
-		console.log('Highlighting: ' + re);
+		// console.log('Highlighting: ' + re);
 
     if (node.nodeType === 3) {
 			var lowercaseData = node.data.toLowerCase();
@@ -45,7 +45,7 @@ sensible.classes.Highlight = function (opts, contentTarget) {
     } else if ((node.nodeType === 1 && node.childNodes) && // only element nodes that have children
             !/(script|style)/i.test(node.tagName) && // ignore script and style nodes
             !(node.tagName === nodeName.toUpperCase() && node.className === className)) { // skip if already highlighted
-				console.log('Lets get highlighting..');
+				// console.log('Lets get highlighting..');
 				for (var i = 0; i < node.childNodes.length; i++) {
             i += this.highlight(node.childNodes[i]);
         }
