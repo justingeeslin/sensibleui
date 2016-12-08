@@ -23,12 +23,6 @@ sensible.classes.ScrollSpy = function (opts) {
 
 	console.log('Creating ScrollSpy')
 
-	// A collection of headers
-	var headers = [];
-	console.log('Finding all the headers matching this selector: ' + this.headerSelector);
-	//Find all the headers and subheaders in the target
-	headers = self.target.find(self.headerSelector)
-
 	outline.create = function() {
 		console.log('Creating Outline..')
 
@@ -49,22 +43,27 @@ sensible.classes.ScrollSpy = function (opts) {
 	var currentHeadingId = "";
 	var activateOutlineItems = function() {
 
+		//Find the most visible heading ie the one closest to the top without going past the window's height
+		//Collect the id of the heading
+		var id = "";
+
+		// A collection of headers
+		var headers = [];
+		console.log('Finding all the headers matching this selector: ' + this.headerSelector);
+		//Find all the headers and subheaders in the target. Make sure they are visible.
+		headers = self.target.find(self.headerSelector).filter(':visible');
+
 		//If the window is at the top select the first element. (Sometimes headings aren't positioned to trigger the first and last element because the page isn't tall enought to take the heading to middle of the screen.)
 		var windowScrollTop = $(window).scrollTop();
 		var windowScrollBottom = windowScrollTop + $(window).height();
 		if (windowScrollTop <= 0) {
-			console.log('Activating the first outline item');
-			self.outlineTarget.find('li:first').trigger('go');
-			return;
+			console.log('Activating the first outline item for the first (visible) header');
+			id = headers.filter(':first').attr('id')
 		}
-		if (windowScrollBottom >= $(document).height()) {
-			self.outlineTarget.find('li:last').trigger('go');
-			return;
+		else if (windowScrollBottom >= $(document).height()) {
+			id = headers.filter(':last').attr('id')
 		}
 
-		//Find the most visible heading ie the one closest to the top without going past the window's height
-		//Collect the id of the heading
-		var id = "";
 		var largestY = Number.NEGATIVE_INFINITY;
 		headers.each(function() {
 			headerRect = $(this)[0].getBoundingClientRect();
