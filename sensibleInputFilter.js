@@ -9,7 +9,9 @@ sensible.classes.InputFilter = function (opts) {
 		itemSelector: " > ul > li",
     highlight: false,
 		blankSlateMessage: "No Results Found with \"<term>\"",
-    start : function() {},
+		// Runs with a search and filter is about to begin; before any elements are hidden or selected.
+		start : function() {},
+		// Runs with a search and filter is complete
     complete : function() {},
 	};
 
@@ -30,6 +32,7 @@ sensible.classes.InputFilter = function (opts) {
 
 	this.el.addClass('filterable');
 
+	var completeTO;
 	searchBox.on('input', function(e) {
 
     // this.el.trigger('start.inputfilter.sensible')
@@ -80,22 +83,22 @@ sensible.classes.InputFilter = function (opts) {
 		// //This list's heading
 		var selectorHeadings = 'h1,h2,h3,h4,h5,h6';
 		var headings = self.toFilter().children(selectorHeadings);
-		console.log('Show all the headings..')
-		console.log(headings);
+		// console.log('Show all the headings..')
+		// console.log(headings);
 		headings.show();
 		headings.each(function() {
       // If all of the heading's next filterable items are hidden... (not including the input box with the filter)
 			var visibleNextSiblings = $(this).nextUntil(selectorHeadings).find('*').filter(items).filter(':visible').not(self.el);
       if (visibleNextSiblings.length <= 0) {
-        console.log('Hiding Heading:')
-				console.log($(this))
+        // console.log('Hiding Heading:')
+				// console.log($(this))
         //Hide yourself
         $(this).hide();
 
       }
 			else {
-				console.log('I have ' + visibleNextSiblings.length + ' visbile next siblings');
-				console.log(visibleNextSiblings);
+				// console.log('I have ' + visibleNextSiblings.length + ' visbile next siblings');
+				// console.log(visibleNextSiblings);
 			}
     });
 
@@ -107,10 +110,19 @@ sensible.classes.InputFilter = function (opts) {
 			self.blankSlate.hide();
 		}
 
-    var completeTO;
+
     clearTimeout(completeTO);
     completeTO = setTimeout(function() {
       self.el.trigger('complete.inputfilter.sensible')
+
+			// Information to return to the callback
+			var data = {}
+			// Return the items searched upon.
+			data.items = items;
+			// Return the items shown.
+			data.resultSet = items.not(itemsToHide);
+
+			self.complete(data);
     }, 333)
 
 	});

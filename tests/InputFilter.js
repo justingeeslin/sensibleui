@@ -9,8 +9,17 @@ describe('InputFilter', function() {
 
     $(document.body).append(container);
 
+    // Does the 'complete' event fire and the end of a search and filter
+    firedCompleteEvent = false;
+    // Does the 'complete' event fire and the end of a search and filter
+    calledCompleteCallback = false;
+
     container.on('complete.inputfilter.sensible', function() {
       firedCompleteEvent = true;
+    })
+
+    afterAll(function() {
+      container.remove();
     })
 
     $('<style>.highlight { background-color:yellow; }</style>').appendTo(document.head);
@@ -20,7 +29,10 @@ describe('InputFilter', function() {
         // target: container,
         placeholderText : "Search for Items..",
         // itemSelector : '> div > ul > li',
-        highlight: true
+        highlight: true,
+        complete: function() {
+          calledCompleteCallback = true;
+        }
       };
 
       theInputFilter = new sensible.classes.InputFilter(options);
@@ -66,8 +78,8 @@ describe('InputFilter', function() {
       expect(firedCompleteEvent).toBe(true);
     });
 
-    it('should create a blank slate message', function() {
-      expect(container.children('.blank-slate').length == 1).toBe(true)
+    it('should call a "complete" callback when filter is complete', function() {
+      expect(calledCompleteCallback).toBe(true);
     });
 
     it('should show a blank slate message when no results are displayed', function() {
