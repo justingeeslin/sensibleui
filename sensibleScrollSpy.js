@@ -97,6 +97,9 @@ sensible.classes.ScrollSpy = function (opts) {
 	activateOutlineItems();
 	//Activate various items on scroll
 	$(window).on('scroll', activateOutlineItems)
+	
+	// When the target is filtered, change the outline / the indicator
+	$(this.target).on('filter', activateOutlineItems)
 
 	return this;
 }

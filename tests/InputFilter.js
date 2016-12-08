@@ -9,13 +9,20 @@ describe('InputFilter', function() {
 
     $(document.body).append(container);
 
-    // Does the 'complete' event fire and the end of a search and filter
+    // Does the 'complete' event fire at the end of a search and filter
     firedCompleteEvent = false;
-    // Does the 'complete' event fire and the end of a search and filter
+    // Does the 'complete' callback at the end of a search and filter
     calledCompleteCallback = false;
+    // A filter event is important for informing other components like scrollspy.
+    firedFilterEvent = false;
 
     container.on('complete.inputfilter.sensible', function() {
       firedCompleteEvent = true;
+    })
+
+
+    container.on('filter', function() {
+      firedFilterEvent = true;
     })
 
     afterAll(function() {
@@ -80,6 +87,10 @@ describe('InputFilter', function() {
 
     it('should call a "complete" callback when filter is complete', function() {
       expect(calledCompleteCallback).toBe(true);
+    });
+
+    it('should call a "filter" event when filter is complete', function() {
+      expect(firedFilterEvent).toBe(true);
     });
 
     it('should show a blank slate message when no results are displayed', function() {

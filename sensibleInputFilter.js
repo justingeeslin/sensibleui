@@ -115,6 +115,9 @@ sensible.classes.InputFilter = function (opts) {
     completeTO = setTimeout(function() {
       self.el.trigger('complete.inputfilter.sensible')
 
+			// Trigger a filtered event on the target. Other objects like the ScrollSpy / Indicator might like to know.
+			self.toFilter().trigger('filter');
+
 			// Information to return to the callback
 			var data = {}
 			// Return the items searched upon.
