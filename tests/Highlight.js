@@ -8,7 +8,7 @@ describe('Highlight', function() {
       container.append('<p>Wall Street, Big Banks, Charles Koch</p>');
       container.append('<p>Kochakola, Bank Roll</p>');
 
-      //Add some style so we can tell
+      //Add some style to the highlight class so we can tell
       $('<style>.highlight { background-color:yellow; }</style>').appendTo(document.head);
 
     });

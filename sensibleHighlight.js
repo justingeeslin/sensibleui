@@ -13,47 +13,58 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 
 	$.extend(this, defaults, opts);
 
-  this.highlight = function (node) {
-		var node = node ? node : this.target[0];
-		var nodeName = this.nodeName
-		var re = this.textToHighlight
-		var className = this.className
+	console.log('Highlighting upon:')
+	console.log(this.target[0])
 
-		//Case insenstive
-		re = re.toLowerCase()
+  this.highlight = function() {
 
-		if (re.length <= 0) {
-			return;
+		var highlightNodes = function(node) {
+			// var node = node ? node : this.target[0];
+			var nodeName = self.nodeName
+			var re = self.textToHighlight
+			var className = self.className
+
+			//Case insenstive
+			re = re.toLowerCase()
+
+			if (re.length <= 0) {
+				return;
+			}
+
+	    if (node.nodeType === 3) {
+				var lowercaseData = node.data.toLowerCase();
+
+	      var match = lowercaseData.match(re);
+	      if (match) {
+					console.log('Yes, found a match.')
+		      var highlight = document.createElement(nodeName);
+		      highlight.className = className;
+		      var wordNode = node.splitText(match.index);
+		      wordNode.splitText(match[0].length);
+		      var wordClone = wordNode.cloneNode(true);
+		      highlight.appendChild(wordClone);
+		      wordNode.parentNode.replaceChild(highlight, wordNode);
+		      return 1; //skip added node in parent
+	      }
+	    } else if ((node.nodeType === 1 && node.childNodes) && // only element nodes that have children
+	            !/(script|style)/i.test(node.tagName) && // ignore script and style nodes
+	            !(node.tagName === nodeName.toUpperCase() && node.className === className)) { // skip if already highlighted
+
+					for (var i = 0; i < node.childNodes.length; i++) {
+	            i += highlightNodes(node.childNodes[i]);
+	        }
+	    }
+			else {
+				console.log('These aren\'t the nodes I\'m use to');
+			}
+	    return 0;
 		}
 
-		// console.log('Highlighting: ' + re);
 
-    if (node.nodeType === 3) {
-			var lowercaseData = node.data.toLowerCase();
-      var match = lowercaseData.match(re);
-      if (match) {
-				console.log('Found a match.')
-	      var highlight = document.createElement(nodeName);
-	      highlight.className = className;
-	      var wordNode = node.splitText(match.index);
-	      wordNode.splitText(match[0].length);
-	      var wordClone = wordNode.cloneNode(true);
-	      highlight.appendChild(wordClone);
-	      wordNode.parentNode.replaceChild(highlight, wordNode);
-	      return 1; //skip added node in parent
-      }
-    } else if ((node.nodeType === 1 && node.childNodes) && // only element nodes that have children
-            !/(script|style)/i.test(node.tagName) && // ignore script and style nodes
-            !(node.tagName === nodeName.toUpperCase() && node.className === className)) { // skip if already highlighted
-				// console.log('Lets get highlighting..');
-				for (var i = 0; i < node.childNodes.length; i++) {
-            i += this.highlight(node.childNodes[i]);
-        }
-    }
-		else {
-			console.log('These aren\'t the nodes I\'m use to');
-		}
-    return 0;
+		self.target.each(function() {
+			highlightNodes(this);
+		})
+
   }
 
 	this.remove = function() {
