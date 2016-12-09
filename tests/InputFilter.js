@@ -2,7 +2,7 @@ describe('InputFilter', function() {
     container = $('<div id="input-filter"></div>')
 
     //create a list to filter.
-    container.append('<h4>Category 1</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3 <ul><li>Nested Item a</li><li>Nested Item b</li></ul></li></ul>');
+    container.append('<h4>Category 1</h4><ul><li>Item 1</li><li>Item 2</li><li>Alert Module Colors</li><li>Item 3 <ul><li>Nested Item a</li><li>Nested Item b</li></ul></li></ul>');
     container.append('<h4>Category 2</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
     container.append('<h4>Category 3</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul><h5>SubCat 3.1</h5><ul><li><h6>Nested Heading</h6>Item 4</li><li>Item 5</li><li>Item 3</li></ul>');
     // container.append('<h4>Category DIV</h4><div><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul></div>');
@@ -26,7 +26,7 @@ describe('InputFilter', function() {
     })
 
     afterAll(function() {
-      container.remove();
+      // container.remove();
     })
 
     $('<style>.highlight { background-color:yellow; }</style>').appendTo(document.head);
@@ -61,7 +61,21 @@ describe('InputFilter', function() {
 
     });
 
+    it('should show an item if it contains the terms and not the exact phrase', function() {
+			//Enter 1
+			inputBox.val('alert colors');
+			inputBox.trigger('input');
+
+			//
+			expect(container.find('li:contains("alert module colors")').css('display') != 'none').toBe(true);
+
+    });
+
     it('should highlight', function(cb) {
+      //Enter 1
+			inputBox.val('1');
+			inputBox.trigger('input');
+      
       setTimeout(function() {
         expect($('.highlight').length > 0).toBe(true);
         cb();

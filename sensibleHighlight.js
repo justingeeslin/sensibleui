@@ -18,23 +18,22 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 
   this.highlight = function() {
 
-		var highlightNodes = function(node) {
+		var highlightNodes = function(node, text) {
 			// var node = node ? node : this.target[0];
 			var nodeName = self.nodeName
-			var re = self.textToHighlight
 			var className = self.className
 
 			//Case insenstive
-			re = re.toLowerCase()
+			text = text.toLowerCase()
 
-			if (re.length <= 0) {
+			if (text.length <= 0) {
 				return;
 			}
 
 	    if (node.nodeType === 3) {
 				var lowercaseData = node.data.toLowerCase();
 
-	      var match = lowercaseData.match(re);
+	      var match = lowercaseData.match(text);
 	      if (match) {
 					console.log('Yes, found a match.')
 		      var highlight = document.createElement(nodeName);
@@ -51,7 +50,7 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 	            !(node.tagName === nodeName.toUpperCase() && node.className === className)) { // skip if already highlighted
 
 					for (var i = 0; i < node.childNodes.length; i++) {
-	            i += highlightNodes(node.childNodes[i]);
+	            i += highlightNodes(node.childNodes[i], text);
 	        }
 	    }
 			else {
@@ -60,9 +59,17 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 	    return 0;
 		}
 
-
 		self.target.each(function() {
-			highlightNodes(this);
+			//There could be multiple terms in the text to highlight
+			var terms = self.textToHighlight.split(' ');
+
+			console.log('These are the terms:')
+
+			for (var i in terms) {
+				console.log(terms[i]);
+				highlightNodes(this, terms[i]);
+			}
+
 		})
 
   }

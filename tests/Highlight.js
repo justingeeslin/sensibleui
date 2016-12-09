@@ -52,6 +52,53 @@ describe('Highlight', function() {
       expect(highlightedCorrectWords).toBe(true);
     });
 
+    it('Should highlight words specified when there is more than one term and without finding the exact phrase.', function() {
+      var options = {
+        target : container,
+        textToHighlight : 'Wall Koch',
+      }
+      var bankHL = new sensible.classes.Highlight(options);
+
+      var toHighlight = options.textToHighlight.split(' ');
+      var highlightedText = [];
+
+      var highlightedCorrectWords = true;
+
+      //Look for exceptions
+      $('.highlight').each(function() {
+        var highlight = $(this).text().split(' ');
+
+        for (var i in highlight) {
+          if (highlightedText.indexOf(highlight[i]) == -1) {
+            highlightedText.push(highlight[i]);
+          }
+        }
+
+      });
+
+      console.log('These are the words to highlight:')
+      console.log(toHighlight)
+      console.log('These are the words that are highlighted:')
+      console.log(highlightedText)
+
+      // Make sure the set of words to highlight match the words highlighted.
+      if (highlightedText.length != toHighlight.length) {
+        console.log('There is a word missing.')
+        highlightedCorrectWords = false;
+        expect(highlightedCorrectWords).toBe(true);
+      }
+
+      for(var i in highlightedText ) {
+        // should the word highlighted be highlighted?
+        if (toHighlight.indexOf(highlightedText[i]) == -1) {
+          console.log('The word ' + highlightedText[i] + ' seems to be highlighted and should not be.')
+          highlightedCorrectWords = false
+          expect(highlightedCorrectWords).toBe(true);
+        }
+      }
+
+    });
+
     it('Should highlight words specified testing for automatic highlight removal', function() {
       var options = {
         target : container,

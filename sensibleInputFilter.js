@@ -32,32 +32,54 @@ sensible.classes.InputFilter = function (opts) {
 
 	this.el.addClass('filterable');
 
+	//jQuery contains case insenstive
+	$.extend($.expr[":"], {
+		"containsIN": function(elem, i, match, array) {
+		return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+		}
+	});
+
 	var completeTO;
 	searchBox.on('input', function(e) {
 
     // this.el.trigger('start.inputfilter.sensible')
 
-		console.log('Searchbox input/ Keyup event. Value is '+ searchBox.val());
-		console.log($(this));
-		//jQuery contains case insenstive
-		$.extend($.expr[":"], {
-			"containsIN": function(elem, i, match, array) {
-			return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
-			}
-		});
+		var searchTerms = searchBox.val().split(' ');
 
-		console.log('Looking for elements of type ' + self.itemSelector + ' with the text ' + searchBox.val() + ' among the following elements ');
+
+		console.log('Searchbox input/ Keyup event. Value is: ');
+		console.log(searchTerms);
+
+		console.log('Looking for elements of type ' + self.itemSelector + ' with the text ' + searchTerms + ' among the following elements ');
 		console.log(self.toFilter().children());
 		var items = self.toFilter().find(self.itemSelector);
-
 		//Show by default
 		items.show();
 
-		//Hide question items that do not contain the search term
-		itemsToHide = items.not(":containsIN(" + $(this).val() + ")")
+		//For each term, add to the selection of things to hide.
+		var itemsToHide = {};
 
-		console.log('Found these: ')
+		for (var i in searchTerms) {
+			console.log('This is a term: ' + searchTerms[i])
+			//Hide question items that do not contain the search term
+			var withoutTerm = items.not(":containsIN(" + searchTerms[i] + ")")
+
+			if (itemsToHide !== undefined) {
+				itemsToHide = withoutTerm
+			}
+			else {
+				itemsToHide.add(withoutTerm)
+			}
+
+		}
+
+
+		console.log('Found these to hide: ')
 		console.log(itemsToHide);
+
+		if (items.length == itemsToHide.length) {
+			console.log('Hiding them all.')
+		}
 
 		itemsToHide.hide();
 
@@ -175,7 +197,6 @@ sensible.classes.InputFilter = function (opts) {
         highlightFx()
       }, timeAfterLastKeyPress)
     });
-    console.log('Binding to key presses for highlighting.')
   }
 
 	//If a target was supplied..
