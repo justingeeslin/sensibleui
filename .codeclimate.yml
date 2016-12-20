@@ -13,8 +13,8 @@ engines:
     enabled: true
 ratings:
   paths:
-  - "**.css"
-  - "**.js"
+  - "style.css"
+  - "js/*"
 exclude_paths:
 - dist/
 - node_modules/

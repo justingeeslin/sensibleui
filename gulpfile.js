@@ -18,17 +18,17 @@ var karmaServer = require('karma').Server;
 // Concatenate & Minify JS
 gulp.task('scripts', function () {
 	return gulp.src([
-		'sensibleComponent.js',
-		'sensibleExpandCollapse.js',
-		'sensibleAccordion.js',
-		'sensibleJumpToTop.js',
-		'sensibleHighlight.js',
-		'sensibleInput.js',
-		'sensibleInputDelete.js',
-		'sensibleInputFilter.js',
-		'sensibleInputDeleteFilter.js',
-		'sensibleSweetIndicator.js',
-		'sensibleScrollSpy.js'
+		'js/sensibleComponent.js',
+		'js/sensibleExpandCollapse.js',
+		'js/sensibleAccordion.js',
+		'js/sensibleJumpToTop.js',
+		'js/sensibleHighlight.js',
+		'js/sensibleInput.js',
+		'js/sensibleInputDelete.js',
+		'js/sensibleInputFilter.js',
+		'js/sensibleInputDeleteFilter.js',
+		'js/sensibleSweetIndicator.js',
+		'js/sensibleScrollSpy.js'
 	])
 	.pipe(concat('sensible.js'))
 	.pipe(gulp.dest('dist/'))
@@ -97,7 +97,7 @@ gulp.task('servers', function () {
 
 });
 
-gulp.task('karma', function(done) {
+gulp.task('test', function(done) {
 	new karmaServer({
 			configFile: __dirname + '/karma.conf.js',
 			singleRun: true
@@ -106,8 +106,10 @@ gulp.task('karma', function(done) {
 
 // Watch Files For Changes
 gulp.task('watch', function () {
-	gulp.watch('*.js', ['scripts']);
+	gulp.watch('js/*.js', ['scripts', 'test']);
 	gulp.watch('css/*.scss', ['sass']);
+
+	gulp.watch('tests/*.*', ['test']);
 
 });
 
