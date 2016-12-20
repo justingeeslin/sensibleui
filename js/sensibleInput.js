@@ -16,7 +16,7 @@ sensible.classes.Input = function (opts) {
 	this.el.attr('placeholder', this.placeholderText);
 
 	//Add to DOM
-	if (typeof this.target != "undefined") {
+	if (typeof this.target !== "undefined") {
 		this.el.appendTo(this.target);
 	}
 

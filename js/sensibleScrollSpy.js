@@ -79,7 +79,7 @@ sensible.classes.ScrollSpy = function (opts) {
 
 		})
 
-		if (id != currentHeadingId) {
+		if (id !== currentHeadingId) {
 			//Select the outline's link for this heading and trigger the 'go' event.
 			$('[href="#' + id + '"]:first').trigger('go');
 			console.log('Current Heading is now ' + id);
@@ -97,7 +97,7 @@ sensible.classes.ScrollSpy = function (opts) {
 	activateOutlineItems();
 	//Activate various items on scroll
 	$(window).on('scroll', activateOutlineItems)
-	
+
 	// When the target is filtered, change the outline / the indicator
 	$(this.target).on('filter', activateOutlineItems)
 

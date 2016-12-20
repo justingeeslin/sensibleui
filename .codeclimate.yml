@@ -1,16 +1,16 @@
 ---
 engines:
   csslint:
-    enabled: true
+    enabled: false
   duplication:
-    enabled: true
+    enabled: false
     config:
       languages:
       - javascript
   eslint:
     enabled: true
   fixme:
-    enabled: true
+    enabled: false
 ratings:
   paths:
   - "style.css"
@@ -21,3 +21,6 @@ exclude_paths:
 - tests/
 - examples/
 - coverage/
+- vendor/**
+- gulpfile.js
+- karma.conf.js

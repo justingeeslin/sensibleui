@@ -66,8 +66,10 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 			console.log('These are the terms:')
 
 			for (var i in terms) {
-				console.log(terms[i]);
-				highlightNodes(this, terms[i]);
+				if (terms.hasOwnProperty(i)) {
+					console.log(terms[i]);
+					highlightNodes(this, terms[i]);
+				}
 			}
 
 		})

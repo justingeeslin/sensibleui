@@ -1,9 +1,9 @@
 var sensible = sensible !== undefined ? sensible : {};
 sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
-sensible.classes.JumpToTop = function (target) {
+sensible.classes.JumpToTop = function (options) {
 	var self = this;
-	
+
 	var windowHeight = $(window).height();
 
 	var callScrollTO;
@@ -13,12 +13,16 @@ sensible.classes.JumpToTop = function (target) {
 		//Call the scroll handler once
 		window.clearTimeout(callScrollTO);
 		callScrollTO = window.setTimeout(function() {
-			$(window).trigger('scroll');	
+			$(window).trigger('scroll');
 		}, 250);
 
 	});
 
-	var target = target !== undefined ? target : $(document.body);
+	var defaults = {
+		target: $(document.body)
+	}
+
+	$.extend(self, defaults, options);
 
 	console.log('Creating a Jump to Top');
 
@@ -38,7 +42,7 @@ sensible.classes.JumpToTop = function (target) {
 		var scroll = distanceFromTop / (50.933 * ($(document).height() / document.body.offsetHeight));
 
 		if (scroll > 1) {
-			scroll = 1;	
+			scroll = 1;
 		}
 
 		self.el.css('opacity', scroll);
@@ -47,16 +51,16 @@ sensible.classes.JumpToTop = function (target) {
 
 		var scrollPoint = $(window).scrollTop() + document.body.offsetHeight;
 
-		var myPosition = parseInt(self.el.find('span').offset().top);
+		var myPosition = parseInt(self.el.find('span').offset().top, 10);
 		var myHeight = self.el.find('span')[0].offsetHeight;
-		
-		var containerHeight = target[0].offsetHeight;
+
+		var containerHeight = self.target[0].offsetHeight;
 		//How far the window has scrolled
-		var containerDistanceFromTop = target.offset().top;
+		var containerDistanceFromTop = self.target.offset().top;
 
-		var stickyPoint = parseInt(containerHeight + containerDistanceFromTop);
+		var stickyPoint = parseInt(containerHeight + containerDistanceFromTop, 10);
 
-		if (stickyPoint > 0 && scrollPoint >= stickyPoint) { 
+		if (stickyPoint > 0 && scrollPoint >= stickyPoint) {
 			//Sticky stops at a point
 			self.el.find('span').css('position', 'absolute');
 			self.el.find('span').css('top', stickyPoint - myHeight + 'px');
@@ -66,13 +70,13 @@ sensible.classes.JumpToTop = function (target) {
 			//Sticky
 			self.el.find('span').css('position', 'fixed');
 			self.el.find('span').css('top', 'auto');
-			self.el.find('span').css('bottom', '1em');	
+			self.el.find('span').css('bottom', '1em');
 		}
 
 
 	});
 
-	target.append(this.el);	
-	
+	self.target.append(this.el);
+
 	return this;
 }

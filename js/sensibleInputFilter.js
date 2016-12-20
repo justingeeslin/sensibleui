@@ -42,16 +42,8 @@ sensible.classes.InputFilter = function (opts) {
 	var completeTO;
 	searchBox.on('input', function(e) {
 
-    // this.el.trigger('start.inputfilter.sensible')
-
 		var searchTerms = searchBox.val().split(' ');
 
-
-		console.log('Searchbox input/ Keyup event. Value is: ');
-		console.log(searchTerms);
-
-		console.log('Looking for elements of type ' + self.itemSelector + ' with the text ' + searchTerms + ' among the following elements ');
-		console.log(self.toFilter().children());
 		var items = self.toFilter().find(self.itemSelector);
 		//Show by default
 		items.show();
@@ -60,25 +52,18 @@ sensible.classes.InputFilter = function (opts) {
 		var itemsToHide = {};
 
 		for (var i in searchTerms) {
-			console.log('This is a term: ' + searchTerms[i])
-			//Hide question items that do not contain the search term
-			var withoutTerm = items.not(":containsIN(" + searchTerms[i] + ")")
+			if (searchTerms.hasOwnProperty(i)) {
+				//Hide question items that do not contain the search term
+				var withoutTerm = items.not(":containsIN(" + searchTerms[i] + ")")
 
-			if (itemsToHide !== undefined) {
-				itemsToHide = withoutTerm
+				if (itemsToHide !== undefined) {
+					itemsToHide = withoutTerm
+				}
+				else {
+					itemsToHide.add(withoutTerm)
+				}
 			}
-			else {
-				itemsToHide.add(withoutTerm)
-			}
 
-		}
-
-
-		console.log('Found these to hide: ')
-		console.log(itemsToHide);
-
-		if (items.length == itemsToHide.length) {
-			console.log('Hiding them all.')
 		}
 
 		itemsToHide.hide();
@@ -92,8 +77,6 @@ sensible.classes.InputFilter = function (opts) {
 	    parents.each(function() {
 	      // If all of the list's children are hidden...
 	      if ($(this).children(':visible').length <= 0) {
-	        console.log('Hiding: ')
-					console.log($(this))
 	        //Hide yourself
 	        $(this).hide();
 	      }
@@ -125,7 +108,7 @@ sensible.classes.InputFilter = function (opts) {
     });
 
 		//Are all the items hidden? If so trigger the blank slate message
-		if (items.length == itemsToHide.length) {
+		if (items.length === itemsToHide.length) {
 			self.blankSlate.show();
 		}
 		else {
