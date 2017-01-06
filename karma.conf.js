@@ -15,9 +15,10 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-			'jquery-2.2.0.js',
+			'vendor/jquery-2.2.0.js',
       'css/style.css',
 			'dist/sensible.js',
+      // 'tests/InputFilter.js',
 			'tests/*.js',
     ],
 
@@ -92,9 +93,9 @@ module.exports = function(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: [
       'chrome_perf',
-      'Safari',
-      'Firefox',
-      'IE11'
+      // 'Safari',
+      // 'Firefox',
+      // 'IE11'
     ],
 
 		customLaunchers: {
