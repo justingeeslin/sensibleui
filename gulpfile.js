@@ -105,6 +105,13 @@ gulp.task('test', function(done) {
 	}, done).start();
 });
 
+gulp.task('test-debug', function(done) {
+	new karmaServer({
+			configFile: __dirname + '/karma.conf.js',
+			singleRun: false
+	}, done).start();
+});
+
 // Watch Files For Changes
 gulp.task('watch', function () {
 	gulp.watch('js/*.js', ['scripts', 'test']);
