@@ -8,6 +8,7 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 		target : $(document.body),
 		className : 'highlight',
 		nodeName : 'span',
+		omitClass: 'blank-slate',
 		textToHighlight : '',
 	};
 
@@ -22,6 +23,12 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 			// var node = node ? node : this.target[0];
 			var nodeName = self.nodeName
 			var className = self.className
+
+			console.log('Should this element be highlighted? ', node, $(node).hasClass(self.omitClass))
+			if ($(node).hasClass(self.omitClass)) {
+				console.log('Not highlighting:', node)
+				return true; // continue
+			}
 
 			//Case insenstive
 			text = text.toLowerCase()
@@ -68,6 +75,7 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 			for (var i in terms) {
 				if (terms.hasOwnProperty(i)) {
 					console.log(terms[i]);
+
 					highlightNodes(this, terms[i]);
 				}
 			}

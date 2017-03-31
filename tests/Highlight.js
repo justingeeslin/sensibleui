@@ -7,6 +7,7 @@ describe('Highlight', function() {
 
       container.append('<p>Wall Street, Big Banks, Charles Koch</p>');
       container.append('<p>Kochakola, Bank Roll</p>');
+      container.append('<p class="never-highlight">Never highlight Koch.</p>');
 
       //Add some style to the highlight class so we can tell
       $('<style>.highlight { background-color:yellow; }</style>').appendTo(document.head);
@@ -119,6 +120,17 @@ describe('Highlight', function() {
       });
 
       expect(highlightedCorrectWords).toBe(true);
+    });
+
+    it('Should never highlight within elements marked with omit class', function() {
+      var options = {
+        target : container,
+        omitClass: 'never-highlight',
+        textToHighlight : 'Koch',
+      }
+      var bankHL = new sensible.classes.Highlight(options);
+
+      expect($('.never-highlight .highlight').length <= 0).toBe(true);
     });
 
 });
