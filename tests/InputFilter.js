@@ -118,4 +118,11 @@ describe('InputFilter', function() {
       var msg = theInputFilter.blankSlateMessage.replace('<term>', inputBox.val())
       expect(container.children('.blank-slate').text()).toBe(msg);
     })
+
+    it('should not highlight terms in the blank slate message', function(cb) {
+      setTimeout(function() {
+        expect($('.blank-slate').find('.highlight').length > 0).toBe(false);
+        cb();
+      }, 666);
+    })
 });
