@@ -114,10 +114,10 @@ gulp.task('test-debug', function(done) {
 
 // Watch Files For Changes
 gulp.task('watch', function () {
-	gulp.watch('js/*.js', ['scripts', 'test']);
+	gulp.watch('js/*.js', ['scripts']);
 	gulp.watch('css/*.scss', ['sass']);
-
-	gulp.watch('tests/*.*', ['test']);
+	
+	// gulp.watch('tests/*.*', ['test']);
 
 });
 
