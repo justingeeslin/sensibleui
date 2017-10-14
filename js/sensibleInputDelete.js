@@ -1,5 +1,3 @@
-window.sensible = window.sensible !== undefined ? window.sensible : {};
-sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 var Input = require('./sensibleInput.js')
 
 InputDelete = function (opts) {

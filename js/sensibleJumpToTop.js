@@ -1,6 +1,3 @@
-window.sensible = window.sensible !== undefined ? window.sensible : {};
-sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
-
 JumpToTop = function (options) {
 	var self = this;
 
