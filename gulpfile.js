@@ -53,25 +53,12 @@ b.on('log', gutil.log); // output build logs to terminal
 
 gulp.task('scripts', function () {
 	return gulp.src([
-		'js/sensibleComponent.js',
-		'js/sensibleExpandCollapse.js',
-		'js/sensibleAccordion.js',
-		'js/sensibleJumpToTop.js',
-		'js/sensibleHighlight.js',
-		'js/sensibleInput.js',
-		'js/sensibleInputDelete.js',
-		'js/sensibleInputFilter.js',
-		'js/sensibleInputDeleteFilter.js',
-		'js/sensibleSweetIndicator.js',
-		'js/sensibleScrollSpy.js',
-		'js/MarkupInit.js'
+		'dist/sensible.js',
 	])
-	.pipe(concat('sensible.js'))
-	.pipe(gulp.dest('dist/'))
 
 	.pipe(rename('sensible.min.js'))
-	.pipe(uglify())
-	.pipe(stripDebug())
+	.pipe(stripDebug().on('error', gutil.log))
+	.pipe(uglify().on('error', gutil.log))
 	.pipe(gulp.dest('dist/'))
 });
 
@@ -151,7 +138,9 @@ gulp.task('test-debug', function(done) {
 gulp.task('watch', function () {
 	gulp.watch('js/*.js', ['js']);
 	gulp.watch('css/*.scss', ['sass']);
-	
+
+	gulp.watch('dist/sensible.js', ['scripts']);
+
 	// gulp.watch('tests/*.*', ['test']);
 
 });
