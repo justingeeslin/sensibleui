@@ -38,5 +38,8 @@
   "dependencies": {
     "istanbul": "^0.4.5",
     "jasmine-node": "^1.14.5"
+    "sensible-accordion": "git+https://github.com/justingeeslin/sensible-accordion.git",
+    "sensible-component": "git+https://github.com/justingeeslin/sensible-component.git",
+    "sensible-expandcollapse": "git+https://github.com/justingeeslin/sensible-expandcollapse.git"
   }
 }
