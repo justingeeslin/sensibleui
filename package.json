@@ -4,7 +4,7 @@
   "description": "",
   "main": "sensible.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "./node_modules/karma/bin/karma start"
   },
   "repository": {
     "type": "git",
