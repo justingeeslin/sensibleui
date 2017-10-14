@@ -1,4 +1,4 @@
-require('../js/sensibleScrollSpy.js')
+var ScrollSpy = require('../js/sensibleScrollSpy.js')
 
 describe('ScrollSpy', function() {
 
@@ -17,7 +17,7 @@ describe('ScrollSpy', function() {
         target: $('#content'),
         outlineTarget: $('#outline')
       }
-      var theScrollSpy = new sensible.classes.ScrollSpy(options);
+      var theScrollSpy = new ScrollSpy(options);
     })
 
 

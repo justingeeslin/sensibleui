@@ -1,5 +1,7 @@
+var JumpToTop = require('../js/sensibleJumpToTop.js')
+
 describe('JumpToTop', function() {
-    var theJumpToTop = new sensible.classes.JumpToTop();
+    var theJumpToTop = new JumpToTop();
     it('Should exist', function() {
         expect(theJumpToTop.el[0].nodeName).toBe('DIV');
     });

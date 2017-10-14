@@ -1,7 +1,7 @@
 window.sensible = window.sensible !== undefined ? window.sensible : {};
 sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
-sensible.classes.JumpToTop = function (options) {
+JumpToTop = function (options) {
 	var self = this;
 
 	var windowHeight = $(window).height();
@@ -80,3 +80,5 @@ sensible.classes.JumpToTop = function (options) {
 
 	return this;
 }
+
+module.exports = JumpToTop

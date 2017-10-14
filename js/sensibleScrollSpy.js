@@ -1,7 +1,7 @@
 window.sensible = window.sensible !== undefined ? window.sensible : {};
 sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
-sensible.classes.ScrollSpy = function (opts) {
+ScrollSpy = function (opts) {
 	var self = this;
 
 	var outline = {
@@ -105,3 +105,5 @@ sensible.classes.ScrollSpy = function (opts) {
 
 	return this;
 }
+
+module.exports = ScrollSpy
