@@ -141,8 +141,6 @@ gulp.task('watch', function () {
 
 	gulp.watch('dist/sensible.js', ['scripts']);
 
-	// gulp.watch('tests/*.*', ['test']);
-
 });
 
 // Default Task
