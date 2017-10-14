@@ -1,3 +1,5 @@
+require('../js/sensibleScrollSpy.js')
+
 describe('ScrollSpy', function() {
 
     beforeAll(function() {

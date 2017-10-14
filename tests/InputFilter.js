@@ -1,3 +1,5 @@
+require('../js/sensibleInputFilter.js')
+
 describe('InputFilter', function() {
     container = $('<div id="input-filter"></div>')
 
@@ -75,7 +77,7 @@ describe('InputFilter', function() {
       //Enter 1
 			inputBox.val('1');
 			inputBox.trigger('input');
-      
+
       setTimeout(function() {
         expect($('.highlight').length > 0).toBe(true);
         cb();
@@ -111,7 +113,7 @@ describe('InputFilter', function() {
       inputBox.val('Koch');
 			inputBox.trigger('input');
 
-      expect(container.children('.blank-slate:visible').length == 1).toBe(true)
+      expect(theInputFilter.toFilter().children('.blank-slate:visible').length ).not.toBe(0)
     });
 
     it('should show a blank slate message with correct text', function() {
