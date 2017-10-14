@@ -1,3 +1,6 @@
+require('./sensibleHighlight.js')
+require('./sensibleInput.js')
+
 window.sensible = window.sensible !== undefined ? window.sensible : {};
 sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
@@ -9,6 +12,7 @@ sensible.classes.InputFilter = function (opts) {
 		itemSelector: " > ul > li",
     highlight: false,
 		blankSlateMessage: "No Results Found with \"<term>\"",
+		autoHideHeadings: true,
 		// Runs with a search and filter is about to begin; before any elements are hidden or selected.
 		start : function() {},
 		// Runs with a search and filter is complete
@@ -85,30 +89,34 @@ sensible.classes.InputFilter = function (opts) {
 
 		hideParentWhenAllChildrenAreHidden();
 
-		// //This list's heading
-		var selectorHeadings = 'h1,h2,h3,h4,h5,h6';
-		var headings = self.toFilter().children(selectorHeadings);
-		// console.log('Show all the headings..')
-		// console.log(headings);
-		headings.show();
-		headings.each(function() {
-      // If all of the heading's next filterable items are hidden... (not including the input box with the filter)
-			var visibleNextSiblings = $(this).nextUntil(selectorHeadings).find('*').filter(items).filter(':visible').not(self.el);
-      if (visibleNextSiblings.length <= 0) {
-        // console.log('Hiding Heading:')
-				// console.log($(this))
-        //Hide yourself
-        $(this).hide();
+		if (self.autoHideHeadings) {
+			// //This list's heading
+			var selectorHeadings = 'h1,h2,h3,h4,h5,h6';
+			var headings = self.toFilter().children(selectorHeadings);
+			// console.log('Show all the headings..')
+			// console.log(headings);
+			headings.show();
+			headings.each(function() {
+	      // If all of the heading's next filterable items are hidden... (not including the input box with the filter)
+				var visibleNextSiblings = $(this).nextUntil(selectorHeadings).find('*').filter(items).filter(':visible').not(self.el);
+	      if (visibleNextSiblings.length <= 0) {
+	        // console.log('Hiding Heading:')
+					// console.log($(this))
+	        //Hide yourself
+	        $(this).hide();
 
-      }
-			else {
-				// console.log('I have ' + visibleNextSiblings.length + ' visbile next siblings');
-				// console.log(visibleNextSiblings);
-			}
-    });
+	      }
+				else {
+					// console.log('I have ' + visibleNextSiblings.length + ' visbile next siblings');
+					// console.log(visibleNextSiblings);
+				}
+	    });
+		}
+
 
 		//Are all the items hidden? If so trigger the blank slate message
-		if (items.length === itemsToHide.length) {
+		console.log('Blank slate: Items: ', items.length)
+		if (items.length > 0 && items.length === itemsToHide.length) {
 			self.blankSlate.show();
 		}
 		else {
@@ -135,6 +143,7 @@ sensible.classes.InputFilter = function (opts) {
 
 	});
 
+	var filter = this;
 	this.blankSlate = {
 		isCreated: false,
 		el: $('<div class="blank-slate">' + self.blankSlateMessage + '</div>'),
@@ -152,8 +161,7 @@ sensible.classes.InputFilter = function (opts) {
 			this.el.hide();
 		},
 		create: function() {
-			console.log('Creating a blank slate for InputFilter as a child of ')
-			console.log(self.toFilter())
+			console.log('Creating a blank slate for InputFilter as a child of ', filter.toFilter(), self)
 			//Hide and then append
 			this.hide();
 			self.toFilter().append(this.el)
@@ -187,9 +195,8 @@ sensible.classes.InputFilter = function (opts) {
 		//... append to it.
 		self.el.appendTo(self.target);
 		//Create a blank slate message. Hidden.
-		console.log('Target supplied.')
-		console.log(this.target);
-		self.blankSlate.create();
+		// console.log('Target supplied.')
+		// console.log(this.target);
 	}
 
 	return this;
