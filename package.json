@@ -19,28 +19,29 @@
   "devDependencies": {
     "browserify": "^14.4.0",
     "browserify-istanbul": "^2.0.0",
-    "codeclimate-test-reporter": "^0.3.3",
+    "codeclimate-test-reporter": "^0.5.0",
     "gulp-sass": "^3.1.0",
     "gulp-util": "^3.0.8",
-    "jasmine": "^2.7.0",
-    "jasmine-core": "^2.7.0",
-    "karma": "^0.13.22",
+    "istanbul": "^0.4.5",
+    "jasmine": "^2.8.0",
+    "jasmine-core": "^2.8.0",
+    "jasmine-node": "^1.14.5",
+    "karma": "^1.7.1",
     "karma-browserify": "^5.1.1",
-    "karma-chrome-launcher": "^0.2.3",
+    "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
     "karma-htmlfile-reporter": "^0.3.5",
-    "karma-jasmine": "^0.3.8",
-    "karma-safari-launcher": "^0.1.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-safari-launcher": "^1.0.0",
+    "lodash.assign": "^4.2.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.9.0"
   },
   "dependencies": {
-    "istanbul": "^0.4.5",
-    "jasmine-node": "^1.14.5"
     "sensible-accordion": "git+https://github.com/justingeeslin/sensible-accordion.git",
     "sensible-component": "git+https://github.com/justingeeslin/sensible-component.git",
-    "sensible-expandcollapse": "git+https://github.com/justingeeslin/sensible-expandcollapse.git"
+    "sensible-expandcollapse": "git+https://github.com/justingeeslin/sensible-expandcollapse.git",
     "sensible-indicator": "git+https://github.com/justingeeslin/sensible-indicator.git"
   }
 }
