@@ -1,3 +1,5 @@
+var Highlight = require('../js/sensibleHighlight.js')
+
 describe('Highlight', function() {
 
     beforeAll(function() {
@@ -20,7 +22,7 @@ describe('Highlight', function() {
         target : container,
         textToHighlight : 'Koch',
       }
-      theHighlighter = new sensible.classes.Highlight(options);
+      theHighlighter = new Highlight(options);
 
       expect($('.highlight').length > 0).toBe(true);
     });
@@ -36,7 +38,7 @@ describe('Highlight', function() {
         target : container,
         textToHighlight : 'Bank',
       }
-      var bankHL = new sensible.classes.Highlight(options);
+      var bankHL = new Highlight(options);
 
       var highlightedCorrectWords = true;
 
@@ -58,7 +60,7 @@ describe('Highlight', function() {
         target : container,
         textToHighlight : 'Wall Koch',
       }
-      var bankHL = new sensible.classes.Highlight(options);
+      var bankHL = new Highlight(options);
 
       var toHighlight = options.textToHighlight.split(' ');
       var highlightedText = [];
@@ -105,7 +107,7 @@ describe('Highlight', function() {
         target : container,
         textToHighlight : 'Street',
       }
-      var streetHL = new sensible.classes.Highlight(options);
+      var streetHL = new Highlight(options);
 
       var highlightedCorrectWords = true;
 
@@ -128,7 +130,7 @@ describe('Highlight', function() {
         omitClass: 'never-highlight',
         textToHighlight : 'Koch',
       }
-      var bankHL = new sensible.classes.Highlight(options);
+      var bankHL = new Highlight(options);
 
       expect($('.never-highlight .highlight').length <= 0).toBe(true);
     });

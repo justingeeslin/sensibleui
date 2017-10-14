@@ -1,7 +1,5 @@
-window.sensible = window.sensible !== undefined ? window.sensible : {};
-sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
-sensible.classes.Highlight = function (opts, contentTarget) {
+Highlight = function (opts, contentTarget) {
 	var self = this;
 
 	var defaults = {
@@ -112,3 +110,5 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 
 	return this;
 }
+
+module.exports = Highlight

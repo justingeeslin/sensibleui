@@ -1,4 +1,4 @@
-require('./sensibleHighlight.js')
+var Highlight = require('./sensibleHighlight.js')
 var Input = require('./sensibleInput.js')
 
 window.sensible = window.sensible !== undefined ? window.sensible : {};
@@ -177,7 +177,7 @@ InputFilter = function (opts) {
 
     var highlightFx = function() {
       console.log('Time to highlight..');
-      theHighlighter = new sensible.classes.Highlight({
+      theHighlighter = new Highlight({
         target: self.toFilter(),
         textToHighlight: searchBox.val()
       });
