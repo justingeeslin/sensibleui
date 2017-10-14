@@ -1,4 +1,6 @@
-var sensible = sensible !== undefined ? sensible : {};
+require('./sensibleComponent.js')
+
+window.sensible = window.sensible !== undefined ? window.sensible : {};
 sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
 sensible.classes.Input = function (opts) {
