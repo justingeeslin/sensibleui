@@ -1,6 +1,6 @@
 // Karma configuration
 // Generated on Tue Feb 02 2016 00:54:15 GMT-0600 (CST)
-
+var istanbul = require('browserify-istanbul');
 module.exports = function(config) {
   config.set({
 
@@ -10,16 +10,24 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine', 'telemetry'],
+    frameworks: [
+      'jasmine',
+      'browserify'
+      // 'telemetry'
+    ],
 
 
     // list of files / patterns to load in the browser
     files: [
 			'vendor/jquery-2.2.0.js',
       'css/style.css',
-			'dist/sensible.js',
-      // 'tests/InputFilter.js',
-			'tests/*.js',
+      'tests/Input.js',
+      'tests/InputDelete.js',
+      'tests/InputFilter.js',
+      'tests/Highlight.js',
+      'tests/JumpToTop.js',
+      'tests/ScrollSpy.js',
+			// 'tests/*.js',
     ],
 
 
@@ -31,20 +39,20 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'dist/sensible.js' : 'coverage'
+      'tests/*.js': ['browserify'],
     },
 
+    browserify: {
+        debug: true,
+        transform: [
+          istanbul({})
+        ]
+    },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage', 'html', 'junit'],
-
-    junitReporter: {
-      outputDir : 'perf/',
-      outputFile: 'test-results/test-results.xml',
-      suite: ''
-    },
+    reporters: ['progress', 'coverage', 'html'],
 
     coverageReporter : {
       reporters: [
@@ -80,9 +88,9 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_ERROR,
+    // logLevel: config.LOG_INFO,
 
-    browserConsoleLogOptions: {level: "error", format: "%b %T: %m", terminal: false},
+    // browserConsoleLogOptions: {level: "error", format: "%b %T: %m", terminal: true},
 
 
     // enable / disable watching file and executing tests whenever any file changes
@@ -106,20 +114,7 @@ module.exports = function(config) {
         chrome_perf: {
             base: 'Chrome',
             flags: ['--disable-popup-blocking', '--enable-gpu-benchmarking', '--enable-threaded-compositing']
-        },
-        'IE11': {
-          base: 'WebDriver',
-          config: {
-            hostname: '192.168.2.25',
-            port: 4444
-          },
-          browserName: 'internet explorer',
-          platform: 'Windows 8',
-          version: '10',
-          // 'x-ua-compatible': 'IE=EmulateIE7',
-          name: 'Karma',
-          pseudoActivityInterval: 30000
-        },
+        }
 		},
 
     // Continuous Integration mode
