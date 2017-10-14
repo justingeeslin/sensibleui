@@ -10,12 +10,19 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 		nodeName : 'span',
 		omitClass: 'blank-slate',
 		textToHighlight : '',
+		debug: false
 	};
 
 	$.extend(this, defaults, opts);
 
-	console.log('Highlighting upon:')
-	console.log(this.target[0])
+	this.log = function(msg) {
+		if (self.debug) {
+			console.log(msg)
+		}
+	}
+
+	self.log('Highlighting upon:')
+	self.log(this.target[0])
 
   this.highlight = function() {
 
@@ -24,9 +31,9 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 			var nodeName = self.nodeName
 			var className = self.className
 
-			console.log('Should this element be highlighted? ', node, $(node).hasClass(self.omitClass))
+			self.log('Should this element be highlighted? ', node, $(node).hasClass(self.omitClass))
 			if ($(node).hasClass(self.omitClass)) {
-				console.log('Not highlighting:', node)
+				self.log('Not highlighting:', node)
 				return true; // continue
 			}
 
@@ -42,7 +49,7 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 
 	      var match = lowercaseData.match(text);
 	      if (match) {
-					console.log('Yes, found a match.')
+					self.log('Yes, found a match.')
 		      var highlight = document.createElement(nodeName);
 		      highlight.className = className;
 		      var wordNode = node.splitText(match.index);
@@ -61,7 +68,7 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 	        }
 	    }
 			else {
-				console.log('These aren\'t the nodes I\'m use to');
+				self.log('These aren\'t the nodes I\'m use to');
 			}
 	    return 0;
 		}
@@ -70,11 +77,11 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 			//There could be multiple terms in the text to highlight
 			var terms = self.textToHighlight.split(' ');
 
-			console.log('These are the terms:')
+			self.log('These are the terms:')
 
 			for (var i in terms) {
 				if (terms.hasOwnProperty(i)) {
-					console.log(terms[i]);
+					self.log(terms[i]);
 
 					highlightNodes(this, terms[i]);
 				}
@@ -94,9 +101,9 @@ sensible.classes.Highlight = function (opts, contentTarget) {
 
 	//Upon construction we should remove previous highlights and highlight again
 	this.go = function() {
-		console.log('Removing previous highlights..')
+		self.log('Removing previous highlights..')
 		this.remove();
-		console.log('Highlighting..')
+		self.log('Highlighting..')
 		this.highlight();
 	}
 	this.go();
