@@ -1,4 +1,4 @@
-require('../js/sensibleInputFilter.js')
+var InputFilter = require('../js/sensibleInputFilter.js')
 
 describe('InputFilter', function() {
     container = $('<div id="input-filter"></div>')
@@ -44,7 +44,7 @@ describe('InputFilter', function() {
         }
       };
 
-      theInputFilter = new sensible.classes.InputFilter(options);
+      theInputFilter = new InputFilter(options);
 
       container.append(theInputFilter.el)
 

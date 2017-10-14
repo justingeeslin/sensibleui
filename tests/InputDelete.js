@@ -1,3 +1,5 @@
+var InputDelete = require('../js/sensibleInputDelete.js')
+
 describe('InputDelete', function() {
     var container = $('<div id="input-delete"></div>')
 
@@ -7,7 +9,7 @@ describe('InputDelete', function() {
     container.append('<h4>Category 3</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
 
     $(document.body).append(container);
-    var theInputFilter = new sensible.classes.InputDelete({target: container});
+    var theInputFilter = new InputDelete({target: container});
 
     inputBox = $('.deletable > input');
     closeX = $('.deletable > div');

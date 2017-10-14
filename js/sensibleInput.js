@@ -1,9 +1,9 @@
-require('./sensibleComponent.js')
 
 window.sensible = window.sensible !== undefined ? window.sensible : {};
 sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
+var Component = require('sensible-component')
 
-sensible.classes.Input = function (opts) {
+Input = function (opts) {
 	var self = this;
 
 	var defaults = {
@@ -13,7 +13,7 @@ sensible.classes.Input = function (opts) {
 	}
 
 	$.extend(this, defaults, opts);
-	$.extend(this, new sensible.classes.Component(this));
+	$.extend(this, new Component(this));
 
 	this.el.attr('placeholder', this.placeholderText);
 
@@ -24,3 +24,5 @@ sensible.classes.Input = function (opts) {
 
 	return this;
 }
+
+module.exports = Input;

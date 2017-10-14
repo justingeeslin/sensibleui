@@ -1,14 +1,15 @@
 window.sensible = window.sensible !== undefined ? window.sensible : {};
 sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
+var Input = require('./sensibleInput.js')
 
-sensible.classes.InputDelete = function (opts) {
+InputDelete = function (opts) {
 	var self = this;
 
 	var defaults = {};
 
 	console.log('Creating an Input with Delete button.');
 	$.extend(this, defaults, opts)
-	$.extend(this, new sensible.classes.Input(this));
+	$.extend(this, new Input(this));
 
 	//Wrap in a Div if not already wrapped
 	var classToAdd = "deletable";
@@ -54,3 +55,5 @@ sensible.classes.InputDelete = function (opts) {
 
 	return this;
 }
+
+module.exports = InputDelete;

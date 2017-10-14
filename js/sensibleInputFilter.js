@@ -1,10 +1,10 @@
 require('./sensibleHighlight.js')
-require('./sensibleInput.js')
+var Input = require('./sensibleInput.js')
 
 window.sensible = window.sensible !== undefined ? window.sensible : {};
 sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
-sensible.classes.InputFilter = function (opts) {
+InputFilter = function (opts) {
 	var self = this;
 
 	var defaults = {
@@ -30,7 +30,7 @@ sensible.classes.InputFilter = function (opts) {
 
 	$.extend(this, defaults, opts);
 	//Create a Input Component with our options.
-	$.extend(this, new sensible.classes.Input(this));
+	$.extend(this, new Input(this));
 
 	var searchBox = getSearchBox()
 
@@ -201,3 +201,5 @@ sensible.classes.InputFilter = function (opts) {
 
 	return this;
 }
+
+module.exports = InputFilter;
