@@ -21,6 +21,12 @@ sensible.classes.ScrollSpy = function (opts) {
 
 	$.extend(this, defaults, opts);
 
+	// A collection of headers
+	var headers = [];
+	console.log('Finding all the headers matching this selector: ' + this.headerSelector);
+	//Find all the headers and subheaders in the target. Make sure they are visible.
+	headers = self.target.find(self.headerSelector).filter(':visible');
+
 	console.log('Creating ScrollSpy')
 
 	outline.create = function() {
@@ -47,42 +53,38 @@ sensible.classes.ScrollSpy = function (opts) {
 		//Collect the id of the heading
 		var id = "";
 
-		// A collection of headers
-		var headers = [];
-		console.log('Finding all the headers matching this selector: ' + this.headerSelector);
-		//Find all the headers and subheaders in the target. Make sure they are visible.
-		headers = self.target.find(self.headerSelector).filter(':visible');
-
 		//If the window is at the top select the first element. (Sometimes headings aren't positioned to trigger the first and last element because the page isn't tall enought to take the heading to middle of the screen.)
 		var windowScrollTop = $(window).scrollTop();
 		var windowScrollBottom = windowScrollTop + $(window).height();
 		if (windowScrollTop <= 0) {
-			console.log('Activating the first outline item for the first (visible) header');
 			id = headers.filter(':first').attr('id')
+			console.log('Activating the first outline item for the first (visible) header: ' + id);
 		}
 		else if (windowScrollBottom >= $(document).height()) {
 			id = headers.filter(':last').attr('id')
 		}
+		else {
+			// Detect the appropriate header to activate
+			var largestY = Number.NEGATIVE_INFINITY;
+			headers.each(function() {
+				headerRect = $(this)[0].getBoundingClientRect();
+				//Not every browser has these brokenout into x and y.
+				headerRect.x = headerRect.left;
+				headerRect.y = headerRect.top;
 
-		var largestY = Number.NEGATIVE_INFINITY;
-		headers.each(function() {
-			headerRect = $(this)[0].getBoundingClientRect();
-			//Not every browser has these brokenout into x and y.
-			headerRect.x = headerRect.left;
-			headerRect.y = headerRect.top;
+				if (headerRect.y > largestY && headerRect.y < $(window).height() / 2) {
+					largestY = headerRect.y;
+					//Get the id
+					id = $(this).attr('id') ? $(this).attr('id') : '';
+				}
 
-			if (headerRect.y > largestY && headerRect.y < $(window).height() / 2) {
-				largestY = headerRect.y;
-				//Get the id
-				id = $(this).attr('id') ? $(this).attr('id') : '';
-			}
-
-		})
-
+			})
+		}
+		
 		if (id !== currentHeadingId) {
 			//Select the outline's link for this heading and trigger the 'go' event.
+			console.log('Current Heading is now ' + id, '[href="#' + id + '"]:first');
 			$('[href="#' + id + '"]:first').trigger('go');
-			console.log('Current Heading is now ' + id);
 			currentHeadingId = id;
 		}
 	}
