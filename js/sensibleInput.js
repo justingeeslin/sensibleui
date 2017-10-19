@@ -14,11 +14,6 @@ Input = function (opts) {
 
 	this.el.attr('placeholder', this.placeholderText);
 
-	//Add to DOM
-	if (typeof this.target !== "undefined") {
-		this.el.appendTo(this.target);
-	}
-
 	return this;
 }
 
