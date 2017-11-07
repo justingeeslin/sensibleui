@@ -34,4 +34,5 @@ jobs:
 
       # run tests!
       - run: node_modules/karma/bin/karma start karma.conf.js --single-run
+      # generate coverage
       - run: cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage
