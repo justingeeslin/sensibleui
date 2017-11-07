@@ -19,6 +19,7 @@
   "devDependencies": {
     "browserify": "^14.4.0",
     "browserify-istanbul": "^2.0.0",
+    "codacy-coverage": "^2.0.3",
     "codeclimate-test-reporter": "^0.5.0",
     "gulp-sass": "^3.1.0",
     "gulp-util": "^3.0.8",
