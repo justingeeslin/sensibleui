@@ -18,4 +18,26 @@ describe('Input', function() {
     expect(anInput.el.attr('placeholder')).toBe(anInput.placeholderText);
   });
 
+  it('should call preload callback on render', function() {
+    var didPreload = false;
+    aComponent = new Input({
+      preload: function() {
+        didPreload = true;
+      }
+    });
+
+    expect(didPreload).toBe(true)
+  });
+
+  it('should call postload callback on render', function() {
+    var didPreload = false;
+    aComponent = new Input({
+      postload: function() {
+        didPreload = true;
+      }
+    });
+
+    expect(didPreload).toBe(true)
+  });
+
 });
