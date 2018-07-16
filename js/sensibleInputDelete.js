@@ -7,21 +7,21 @@ InputDelete = function (opts) {
 
 	console.log('Creating an Input with Delete button.');
 	$.extend(this, defaults, opts)
-	$.extend(this, new Input(this));
 
 	//Wrap in a Div if not already wrapped
 	var classToAdd = "deletable";
-	var deleteButton = $('<div>x</div>');
-	
-	// Wrap with a deletable class. Add a X button.
-	this.el = $('<div class="' + classToAdd + '"></div>').append(this.el);
+	var deleteButton = $('<div class="close">x</div>');
 
-	this.el.append(deleteButton);
+	// Wrap with a deletable class. Add a X button.
+	this.el.wrap('<div class="' + classToAdd + '"></div>')
+	// this.el = $().append(this.el);
+
+	this.el.after(deleteButton);
 
 	var inputBox = this.el.find('input');
 
 	//When the user types..
-	inputBox.on('input', function() {
+	this.el.on('input', function() {
 		console.log('Should I show the delete button?');
 
 		if ($(this).val().length > 0) {
@@ -37,9 +37,9 @@ InputDelete = function (opts) {
 	deleteButton.on('click', function(e) {
 		console.log('Clicked delete button')
 		//Clear the input box
-		inputBox.val('');
+		self.el.val('');
 		//Hide the x if neccessary.
-		inputBox.trigger('input');
+		self.el.trigger('input');
 	});
 
 	//If a target was supplied..
