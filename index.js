@@ -12,3 +12,5 @@ sensible.classes.InputFilter = require('./js/sensibleInputFilter.js')
 sensible.classes.InputDeleteFilter = require('./js/sensibleInputDeleteFilter.js')
 sensible.classes.SweetIndicator = require('sensible-indicator')
 sensible.classes.ScrollSpy = require('./js/sensibleScrollSpy.js')
+
+require('./js/MarkupInit.js')

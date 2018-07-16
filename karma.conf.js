@@ -29,6 +29,7 @@ module.exports = function(config) {
       'tests/JumpToTop.js',
       'tests/ScrollSpy.js',
       'tests/Component.js',
+      'tests/MarkupInit.js',
 			// 'tests/*.js',
     ],
 
