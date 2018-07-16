@@ -40,8 +40,8 @@
     "watchify": "^3.9.0"
   },
   "dependencies": {
+    "extend": "git+https://github.com/justingeeslin/extend.git",
     "sensible-accordion": "git+https://github.com/justingeeslin/sensible-accordion.git",
-    "sensible-component": "git+https://github.com/justingeeslin/sensible-component.git",
     "sensible-expandcollapse": "git+https://github.com/justingeeslin/sensible-expandcollapse.git",
     "sensible-indicator": "git+https://github.com/justingeeslin/sensible-indicator.git"
   }

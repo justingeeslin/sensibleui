@@ -1,4 +1,4 @@
-var Component = require('sensible-component')
+var Component = require('./sensibleComponent.js')
 
 Input = function (opts) {
 	var self = this;
