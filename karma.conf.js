@@ -21,12 +21,14 @@ module.exports = function(config) {
     files: [
 			'vendor/jquery-2.2.0.js',
       'css/style.css',
+
       'tests/Input.js',
       'tests/InputDelete.js',
       'tests/InputFilter.js',
       'tests/Highlight.js',
       'tests/JumpToTop.js',
       'tests/ScrollSpy.js',
+      'tests/Component.js',
 			// 'tests/*.js',
     ],
 
