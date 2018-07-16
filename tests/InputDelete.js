@@ -26,7 +26,7 @@ describe('InputDelete', function() {
     it('should display a close icon', function() {
       //Input text
       inputBox.val('Item 1');
-
+      inputBox.trigger('input');
       //Did the close x display?
       expect(closeX.css('display')).toBe('block');
     });

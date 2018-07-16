@@ -12,13 +12,10 @@ InputDelete = function (opts) {
 	//Wrap in a Div if not already wrapped
 	var classToAdd = "deletable";
 	var deleteButton = $('<div>x</div>');
-	if (this.el.filter('div').length > 0) {
-		this.el.addClass(classToAdd);
-	}
-	else {
-		// Wrap with a deletable class. Add a X button.
-		this.el = $('<div class="' + classToAdd + '"></div>').append(this.el);
-	}
+	
+	// Wrap with a deletable class. Add a X button.
+	this.el = $('<div class="' + classToAdd + '"></div>').append(this.el);
+
 	this.el.append(deleteButton);
 
 	var inputBox = this.el.find('input');
