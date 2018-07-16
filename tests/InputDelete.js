@@ -1,19 +1,21 @@
 var InputDelete = require('../js/sensibleInputDelete.js')
 
 describe('InputDelete', function() {
-    var container = $('<div id="input-delete"></div>')
 
-    //create a list to filter.
-    container.append('<h4>Category 1</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3 <ul><li>Nested Item 1</li><li>Nested Item 2</li></ul></li></ul>');
-    container.append('<h4>Category 2</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
-    container.append('<h4>Category 3</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
+    beforeAll(function() {
+      var container = $('<div id="input-delete"></div>')
 
-    $(document.body).append(container);
-    var theInputFilter = new InputDelete({target: container});
+      //create a list to filter.
+      container.append('<h4>Category 1</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3 <ul><li>Nested Item 1</li><li>Nested Item 2</li></ul></li></ul>');
+      container.append('<h4>Category 2</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
+      container.append('<h4>Category 3</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
 
-    inputBox = $('.deletable > input');
-    closeX = $('.deletable > div');
+      $(document.body).append(container);
+      var theInputFilter = new InputDelete({target: container});
 
+      inputBox = $('.deletable > input');
+      closeX = $('.deletable > div');
+    })
 
     afterAll(function() {
       // container.empty()

@@ -1,30 +1,33 @@
 var InputFilter = require('../js/sensibleInputFilter.js')
 
 describe('InputFilter', function() {
-    container = $('<div id="input-filter"></div>')
 
-    //create a list to filter.
-    container.append('<h4>Category 1</h4><ul><li>Item 1</li><li>Item 2</li><li>Alert Module Colors</li><li>Item 3 <ul><li>Nested Item a</li><li>Nested Item b</li></ul></li></ul>');
-    container.append('<h4>Category 2</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
-    container.append('<h4>Category 3</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul><h5>SubCat 3.1</h5><ul><li><h6>Nested Heading</h6>Item 4</li><li>Item 5</li><li>Item 3</li></ul>');
-    // container.append('<h4>Category DIV</h4><div><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul></div>');
+    beforeAll(function() {
+      container = $('<div id="input-filter"></div>')
 
-    $(document.body).append(container);
+      //create a list to filter.
+      container.append('<h4>Category 1</h4><ul><li>Item 1</li><li>Item 2</li><li>Alert Module Colors</li><li>Item 3 <ul><li>Nested Item a</li><li>Nested Item b</li></ul></li></ul>');
+      container.append('<h4>Category 2</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>');
+      container.append('<h4>Category 3</h4><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul><h5>SubCat 3.1</h5><ul><li><h6>Nested Heading</h6>Item 4</li><li>Item 5</li><li>Item 3</li></ul>');
+      // container.append('<h4>Category DIV</h4><div><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul></div>');
 
-    // Does the 'complete' event fire at the end of a search and filter
-    firedCompleteEvent = false;
-    // Does the 'complete' callback at the end of a search and filter
-    calledCompleteCallback = false;
-    // A filter event is important for informing other components like scrollspy.
-    firedFilterEvent = false;
+      $(document.body).append(container);
 
-    container.on('complete.inputfilter.sensible', function() {
-      firedCompleteEvent = true;
-    })
+      // Does the 'complete' event fire at the end of a search and filter
+      firedCompleteEvent = false;
+      // Does the 'complete' callback at the end of a search and filter
+      calledCompleteCallback = false;
+      // A filter event is important for informing other components like scrollspy.
+      firedFilterEvent = false;
+
+      container.on('complete.inputfilter.sensible', function() {
+        firedCompleteEvent = true;
+      })
 
 
-    container.on('filter', function() {
-      firedFilterEvent = true;
+      container.on('filter', function() {
+        firedFilterEvent = true;
+      })
     })
 
     afterAll(function() {
