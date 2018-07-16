@@ -1,4 +1,4 @@
-describe('MarkupInit', function() {
+xdescribe('MarkupInit', function() {
 
     beforeAll(function(done) {
       $(document.body).append($('<div class="expand-collapse"><div class="title">Untitled Title</div><div class="body">Untitled Body</div></div>'))
