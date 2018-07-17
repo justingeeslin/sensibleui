@@ -4,16 +4,26 @@ require('../index.js')
 fdescribe('MarkupInit', function() {
 
     beforeAll(function(done) {
-      $(document.body).append($('<div class="expand-collapse"><div class="title">Untitled Title</div><div class="body">Untitled Body</div></div>'))
+      // Add expand collapse element
+      var el = $('<div class="expand-collapse"><div class="title">Untitled Title</div><div class="body">Untitled Body</div></div>');
+      $(document.body).append(el)
+
+      var input = $('<input type="text" deletable="true"></input>')
+      $(document.body).append(input);
+
+      $(document).trigger('ready');
 
       setTimeout(function() {
-        $(document).trigger('ready');
+        // Wait a bit before performing tests on all the constructed elements.
         done()
       }, 100)
     })
 
     it('Should init Expand Collapse', function() {
-      expect($('.expand-collapse > a').length > 0).toBe(true);
+      expect($('div.expand-collapse > a').length > 0).toBe(true);
+
+    });
+
     it('Should init Input Delete', function(done) {
 
         $('input[deletable=true]').each(function() {
