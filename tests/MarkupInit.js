@@ -14,6 +14,15 @@ fdescribe('MarkupInit', function() {
 
     it('Should init Expand Collapse', function() {
       expect($('.expand-collapse > a').length > 0).toBe(true);
+    it('Should init Input Delete', function(done) {
+
+        $('input[deletable=true]').each(function() {
+          // Should be wrapped in div with a class `deletable`
+          expect($(this).parent().hasClass('deletable')).toBe(true);
+          expect($(this).parent().find('div.close').text()).toBe('x');
+          done();
+        });
+
     });
 
 });

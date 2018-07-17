@@ -14,6 +14,13 @@ var markupInit = function() {
       $(this).replaceWith(newElement)
     })
 
+    // Init Deletable input
+    $('input[deletable=true]').each(function() {
+      var anInputDel = new sensible.classes.InputDelete({
+        el: $(this)
+      })
+    });
+
 }
 
 $(document).ready(markupInit)
