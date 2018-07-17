@@ -1,6 +1,6 @@
 var InputDelete = require('../js/sensibleInputDelete.js')
 
-fdescribe('InputDelete', function() {
+describe('InputDelete', function() {
 
     beforeAll(function() {
       container = $('<div></div>')
