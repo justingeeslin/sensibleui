@@ -2,7 +2,7 @@ window.sensible = window.sensible !== undefined ? window.sensible : {};
 sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
 sensible.classes.Component = require('sensible-component');
-sensible.classes.ExpandCollapse = require('sensible-expandcollapse');
+sensible.classes.ExpandCollapse = require('./js/sensibleExpandCollapse.js')
 sensible.classes.Accordion = require('sensible-accordion');
 sensible.classes.JumpToTop = require('./js/sensibleJumpToTop.js')
 sensible.classes.Highlight = require('./js/sensibleHighlight.js')
