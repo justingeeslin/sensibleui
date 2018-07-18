@@ -1,4 +1,6 @@
-describe('ExpandCollapse', function() {
+const ExpandCollapse = require('../js/sensibleExpandCollapse.js')
+
+fdescribe('ExpandCollapse', function() {
 
   beforeAll(function() {
     myExpandCollapse = new ExpandCollapse();
