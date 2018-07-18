@@ -4,7 +4,7 @@ describe('Component', function() {
       $(document.body).empty()
     })
 
-    fit('should construct declaratively, that is, with just a tag, similar to the forthcoming web components/custom elements', function(done) {
+    it('should construct declaratively, that is, with just a tag, similar to the forthcoming web components/custom elements', function(done) {
       $(document.body).append('<div class="component"></div>');
 
       // Wait a bit for construction to happen..
