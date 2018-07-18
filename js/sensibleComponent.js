@@ -64,3 +64,5 @@ var Component = function (options) {
 }
 
 module.exports = Component;
+sensible.classes.Component = Component;
+sensible.registerComponent('div.component', sensible.classes.Component);

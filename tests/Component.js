@@ -1,23 +1,21 @@
-const Component = require('../js/sensibleComponent.js')
-
 describe('Component', function() {
 
-    afterAll(function() {
+    beforeAll(function() {
       $(document.body).empty()
     })
 
-    it('should construct declaratively, that is, with just a tag, similar to the forthcoming web components/custom elements', function(done) {
+    fit('should construct declaratively, that is, with just a tag, similar to the forthcoming web components/custom elements', function(done) {
       $(document.body).append('<div class="component"></div>');
 
       // Wait a bit for construction to happen..
       window.setTimeout(function() {
-        expect($('.component').length).toBeGreaterThan(0);
+        expect($('.component[sensible-component]').length).toBeGreaterThan(0);
         done()
       }, 100)
     })
 
     it('should get/set state', function() {
-      aComponent = new Component({
+      aComponent = new sensible.classes.Component({
         el: $('<p id="turtles">Teenage Mutant Ninja Turtles</p>')
       });
       aComponent.state = "Turtles";
@@ -26,7 +24,7 @@ describe('Component', function() {
 		});
 
     it('should set state via the go function', function() {
-      aComponent = new Component({
+      aComponent = new sensible.classes.Component({
         el: $('<p id="turtles">Teenage Mutant Ninja Turtles</p>')
       });
       aComponent.go("Splinter");
@@ -35,7 +33,7 @@ describe('Component', function() {
 		});
 
     it('should set state via options', function() {
-      aComponent = new Component({
+      aComponent = new sensible.classes.Component({
         state: 'Shredder',
         el: $('<p id="turtles">Teenage Mutant Ninja Turtles</p>')
       });
@@ -44,7 +42,7 @@ describe('Component', function() {
 		});
 
     it('should set state with a preprocess function', function() {
-      aComponent = new Component({
+      aComponent = new sensible.classes.Component({
         state: 'April O`neal',
         el: $('<p id="turtles">Teenage Mutant Ninja Turtles</p>'),
         statePreprocess: function(s) {
@@ -57,7 +55,7 @@ describe('Component', function() {
 
     it('should call stateChange function when set state via options', function(done) {
       var didCallStateChangeFx = false;
-      aComponent = new Component({
+      aComponent = new sensible.classes.Component({
         state: 'Shredder',
         el: $('<p id="turtles">Teenage Mutant Ninja Turtles</p>'),
         stateChange : function(oldState, newState) {
@@ -71,7 +69,7 @@ describe('Component', function() {
 		});
 
     it('should have a state property that is enumerable to be compatible with most extend functions in JavaScript', function() {
-      aComponent = new Component({
+      aComponent = new sensible.classes.Component({
         el: $('<p id="turtles">Teenage Mutant Ninja Turtles</p>')
       });
       var arrayProps = []
@@ -84,7 +82,7 @@ describe('Component', function() {
 
     it('should allow destroy to be overridden', function(done) {
       var customDestroyFired = false;
-      var aComponent = new Component({
+      var aComponent = new sensible.classes.Component({
         el: $('<p id="cars">Porche</p>'),
         destroy: function() {
           customDestroyFired = true;
