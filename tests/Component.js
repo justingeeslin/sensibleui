@@ -6,10 +6,15 @@ describe('Component', function() {
       $(document.body).empty()
     })
 
-    it('should construct', function() {
-      aComponent = new Component();
-      expect(aComponent instanceof Component).toBe(true)
-    });
+    it('should construct declaratively, that is, with just a tag, similar to the forthcoming web components/custom elements', function(done) {
+      $(document.body).append('<div class="component"></div>');
+
+      // Wait a bit for construction to happen..
+      window.setTimeout(function() {
+        expect($('.component').length).toBeGreaterThan(0);
+        done()
+      }, 100)
+    })
 
     it('should get/set state', function() {
       aComponent = new Component({
