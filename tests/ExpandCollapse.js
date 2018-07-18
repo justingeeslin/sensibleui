@@ -1,17 +1,20 @@
 describe('ExpandCollapse', function() {
 
-    var myExpandCollapse = new sensible.classes.ExpandCollapse();
-    var myExpandCollapse2 = new sensible.classes.ExpandCollapse({slug: 'untitled2'});
+  beforeAll(function() {
+    myExpandCollapse = new ExpandCollapse();
+    myExpandCollapse2 = new ExpandCollapse({slug: 'untitled2'});
 
     $(document.body).append(myExpandCollapse.el);
     $(document.body).append(myExpandCollapse2.el);
 
-		var theQuestion = myExpandCollapse.el.find('a');
+		theQuestion = myExpandCollapse.el.find('a');
     var theAnswer = myExpandCollapse.el.find('div');
 
-    var isOpen = function() {
+    isOpen = function() {
       return theAnswer.filter(':visible').length > 0
     }
+  });
+
 
     it('Should exist and be named Untitled', function() {
         expect(theQuestion.attr('href')).toBe('#untitled')
