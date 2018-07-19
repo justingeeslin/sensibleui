@@ -41,7 +41,6 @@
   },
   "dependencies": {
     "extend": "git+https://github.com/justingeeslin/extend.git",
-    "sensible-accordion": "git+https://github.com/justingeeslin/sensible-accordion.git",
     "sensible-indicator": "git+https://github.com/justingeeslin/sensible-indicator.git"
   }
 }
