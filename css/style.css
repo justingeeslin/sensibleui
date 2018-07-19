@@ -13,3 +13,12 @@ div.deletable {
     right: 1em;
     position: relative;
     cursor: pointer; }
+
+.sensible.indicator {
+  position: absolute; }
+  .sensible.indicator .bar {
+    left: 0;
+    top: 0;
+    background-color: black;
+    width: 4px;
+    position: absolute; }
