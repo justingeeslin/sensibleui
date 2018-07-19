@@ -1,3 +1,5 @@
+var Component = require('./sensibleComponent.js');
+
 var ExpandCollapse = function (opts) {
 	var self = this;
 
@@ -10,24 +12,31 @@ var ExpandCollapse = function (opts) {
 	};
 
 	$.extend(this, defaults, opts);
+	$.extend(this, new Component(this));
 
 	this.id = this.url.split('/').join('-');
 
-	this.el = $('<div></div>');
-	this.el.addClass(this.classes);
-	this.el.append('<a href="#' + this.url + '" id="' + this.id + '">' + this.title + '</a>');
-	var answer = $('<div style="display:none;">' + this.content + '</div>');
-	this.el.append(answer);
+	// Discover the attributes
+	var title = this.el.find('.title');
+	var titleText = title.html();
+	if (titleText.length > 0) {
+		this.title = titleText;
+	}
+
+	var body = this.el.find('.body')
+	var bodyText = body.html();
+	if (bodyText.length > 0) {
+		this.content = bodyText;
+	}
 
 	//Handles expanding and collapsing
 	this.toggle = function(e) {
 		//No need for this to bubble
 		e.preventDefault()
 
-		//Update the URL incase the windows is refreshed. Prevent default and use this because a normal click is a push and not a replace
-		history.replaceState(null, null, $(this).attr('href') )
-
 		console.log('Toggling... ' + self.slug);
+		//Update the URL incase the windows is refreshed. Prevent default and use this because a normal click is a push and not a replace
+		// history.replaceState(null, null, '#' + self.slug )
 
 		if (!self.isOpen()) {
 			self.open();
@@ -39,25 +48,22 @@ var ExpandCollapse = function (opts) {
 	}
 
 	this.isOpen = function() {
-		console.log('This is my element:')
-		console.log(self.el);
-
-		return self.el.find('div').is(':visible');
+		return body.is(':visible');
 	}
 
 	this.close = function() {
 		console.log('Closing: ' + self.slug);
 		self.el.removeClass('open');
-		answer.hide()
+		body.hide()
 	}
 
 	this.open = function() {
 		console.log('Opening: ' + self.slug);
 		self.el.addClass('open');
-		answer.show()
+		body.show()
 	}
 
-	$(this.el).on('click', ' > a', this.toggle);
+	title.on('click', this.toggle);
 
 	//Expose an events..
 	// ...to toggle the activation. Maybe called when a screen un-slides to close it.
@@ -69,19 +75,18 @@ var ExpandCollapse = function (opts) {
 
 	$(this.el).on('go', this.toggle);
 
+	// Debug
 	$(this.el).on('go', function(e) {
 		console.log('Go: ' + self.slug + ' by ');
 		console.log(e.target);
 	});
 
-	//Append to the Document or whatever
-	//If a target was supplied..
-	if (typeof this.target !== undefined) {
-		//... append to it.
-		self.el.appendTo(self.target);
-	}
+	// Should be closed upon construction.
+	this.close();
 
 	return this;
 }
 
 module.exports = ExpandCollapse;
+sensible.classes.ExpandCollapse = ExpandCollapse;
+sensible.registerComponent('div.expand-collapse', sensible.classes.ExpandCollapse);

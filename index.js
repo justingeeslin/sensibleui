@@ -5,7 +5,7 @@ require('./js/Observer.js')
 
 require('./js/sensibleComponent.js')
 require('./js/sensibleInputDelete.js')
-// sensible.classes.ExpandCollapse = require('./js/sensibleExpandCollapse.js')
+require('./js/sensibleExpandCollapse.js')
 // sensible.classes.Accordion = require('sensible-accordion');
 // sensible.classes.JumpToTop = require('./js/sensibleJumpToTop.js')
 // sensible.classes.Highlight = require('./js/sensibleHighlight.js')
