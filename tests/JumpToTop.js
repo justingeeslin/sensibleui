@@ -1,15 +1,21 @@
-var JumpToTop = require('../js/sensibleJumpToTop.js')
-
 describe('JumpToTop', function() {
-    var theJumpToTop = new JumpToTop();
-    it('Should exist', function() {
-        expect(theJumpToTop.el[0].nodeName).toBe('DIV');
+
+  beforeAll(function(done) {
+    $(document.body).empty();
+    $(document.body).append('<div class="jump-to-top"><span></span></div>');
+
+    // Wait a bit for construction to happen..
+    window.setTimeout(function() {
+      done()
+    }, 100);
+  })
+
+    it('Should construct declaratively', function() {
+      expect($('div.jump-to-top[sensible-component]').length).toBeGreaterThan(0);
     });
 
-
-
 		it('Should scroll the window to the top onClick', function() {
-      theJumpToTop.el.trigger('click');
+      $('div.jump-to-top[sensible-component]').trigger('click');
 			expect($(window).scrollTop()).toBe(0);
 		});
 });

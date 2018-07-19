@@ -1,3 +1,5 @@
+var Component = require('./sensibleComponent.js');
+
 JumpToTop = function (options) {
 	var self = this;
 
@@ -16,14 +18,12 @@ JumpToTop = function (options) {
 	});
 
 	var defaults = {
-		target: $(document.body)
 	}
 
 	$.extend(self, defaults, options);
+	$.extend(this, new Component(this));
 
 	console.log('Creating a Jump to Top');
-
-	this.el = $('<div class="jump-to-top"><span></span></div>');
 
 	var jump = function() {
 		console.log('Jumping');
@@ -73,9 +73,9 @@ JumpToTop = function (options) {
 
 	});
 
-	self.target.append(this.el);
-
 	return this;
 }
 
-module.exports = JumpToTop
+module.exports = JumpToTop;
+sensible.classes.JumpToTop = JumpToTop;
+sensible.registerComponent('div.jump-to-top', sensible.classes.JumpToTop);
