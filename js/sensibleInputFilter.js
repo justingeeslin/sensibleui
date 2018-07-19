@@ -1,5 +1,4 @@
 var Highlight = require('./sensibleHighlight.js')
-var Input = require('./sensibleInput.js')
 
 InputFilter = function (opts) {
 	var self = this;

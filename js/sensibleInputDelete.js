@@ -1,5 +1,3 @@
-var Input = require('./sensibleInput.js')
-
 InputDelete = function (opts) {
 	var self = this;
 
