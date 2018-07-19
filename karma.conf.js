@@ -22,7 +22,7 @@ module.exports = function(config) {
 			'vendor/jquery-2.2.0.js',
       'css/style.css',
       'index.js',
-			'tests/Component.js',
+			'tests/*.js',
     ],
 
 
