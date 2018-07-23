@@ -1,1 +1,1 @@
-web: vendor/bin/heroku-php-apache2 dist/
+web: ./node_modules/http-server/bin/http-server /docs
