@@ -65,4 +65,5 @@ var Component = function (options) {
 
 module.exports = Component;
 sensible.classes.Component = Component;
+require('./js/Observer.js')
 sensible.registerComponent('div.component', sensible.classes.Component);
