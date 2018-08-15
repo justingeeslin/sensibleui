@@ -7,7 +7,7 @@ InputFilter = function (opts) {
 		//The toFilter selection has this element as children. Selector. li, ul, a, etc.
 		itemSelector: " > ul > li",
     highlight: true,
-		blankSlateMessage: "No Results Found with \"<term>\"",
+		blankmessage: "No Results Found with \"<term>\"",
 		autoHideHeadings: true,
 		// Runs with a search and filter is about to begin; before any elements are hidden or selected.
 		start : function() {},
@@ -137,14 +137,14 @@ InputFilter = function (opts) {
 	var filter = this;
 	this.blankSlate = {
 		isCreated: false,
-		el: $('<div class="blank-slate">' + self.blankSlateMessage + '</div>'),
+		el: $('<div class="blank-slate">' + self.blankmessage + '</div>'),
 		show: function() {
 			console.log('Showing Blank slate')
 			if (!this.isCreated) {
 				console.log('Showing but it is not created..')
 				this.create();
 			}
-			var message = self.blankSlateMessage.replace('<term>', searchBox.val());
+			var message = self.blankmessage.replace('<term>', searchBox.val());
 			this.el.html(message);
 			this.el.show();
 		},

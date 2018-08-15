@@ -132,7 +132,7 @@ describe('InputFilter', function() {
     //   expect(firedFilterEvent).toBe(true);
     // });
 
-    xit('should show a blank slate message when no results are displayed', function(done) {
+    it('should show a blank slate message when no results are displayed', function(done) {
       var container = $('<div name="filter-container"></div>');
       var inputBox = $('<input filterable></input>');
       container.prepend(inputBox);
@@ -144,14 +144,27 @@ describe('InputFilter', function() {
         inputBox.val('Koch');
   			inputBox.trigger('input');
 
-        expect(theInputFilter.toFilter().children('.blank-slate:visible').length ).not.toBe(0)
+        expect(inputBox.parent().children('.blank-slate:visible').length ).not.toBe(0)
         done()
-      });
+      }, 100);
     });
 
-    xit('should show a blank slate message with correct text', function() {
-      var msg = theInputFilter.blankSlateMessage.replace('<term>', inputBox.val())
-      expect(container.children('.blank-slate').text()).toBe(msg);
+    it('should show a blank slate message with correct text', function(done) {
+      var container = $('<div name="filter-container"></div>');
+      var blankMessage = "No results found"
+      var inputBox = $('<input filterable blankmessage="' + blankMessage + '"></input>');
+      container.prepend(inputBox);
+      // Populates with filterable things and appends to body.
+      setupContainer(container);
+
+      // Wait a bit for construction to happen..
+      window.setTimeout(function() {
+        inputBox.val('Koch');
+  			inputBox.trigger('input');
+
+        expect(container.children('.blank-slate').text()).toBe(blankMessage);
+        done()
+      }, 100);
     })
 
     xit('should not highlight terms in the blank slate message', function(cb) {
