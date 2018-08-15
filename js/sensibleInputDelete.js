@@ -40,12 +40,6 @@ InputDelete = function (opts) {
 		self.el.trigger('input');
 	});
 
-	//If a target was supplied..
-	if (typeof this.target !== undefined) {
-		//... append to it.
-		self.el.appendTo(self.target);
-	}
-
 	return this;
 }
 
