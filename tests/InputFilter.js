@@ -35,7 +35,7 @@ describe('InputFilter', function() {
 
       // Wait a bit for construction to happen..
       window.setTimeout(function() {
-        expect($('input[filterable]').length).toBeGreaterThan(0);
+        expect($('input[filterable][sensible-component]').length).toBeGreaterThan(0);
         done()
       }, 100)
     })
