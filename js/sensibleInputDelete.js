@@ -1,3 +1,5 @@
+var Component = require('./sensibleComponent.js');
+
 InputDelete = function (opts) {
 	var self = this;
 
@@ -5,6 +7,7 @@ InputDelete = function (opts) {
 
 	console.log('Creating an Input with Delete button.');
 	$.extend(this, defaults, opts)
+	$.extend(this, new Component(this));
 
 	//Wrap in a Div if not already wrapped
 	var classToAdd = "deletable";
