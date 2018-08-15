@@ -116,10 +116,6 @@ describe('InputFilter', function() {
 
     });
 
-    // it('should set the placeholder text', function() {
-    //   expect(inputBox.attr('placeholder')).toBe(options.placeholderText);
-    // });
-    //
     // it('should fire event when filter is complete', function() {
     //   expect(firedCompleteEvent).toBe(true);
     // });
