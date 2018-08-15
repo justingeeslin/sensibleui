@@ -188,4 +188,4 @@ InputFilter = function (opts) {
 
 module.exports = InputFilter;
 sensible.classes.InputFilter = InputFilter;
-sensible.registerComponent('input[filterable=true]', sensible.classes.InputFilter);
+sensible.registerComponent('input[filterable]', sensible.classes.InputFilter);
