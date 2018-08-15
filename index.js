@@ -14,3 +14,5 @@ require('./js/sensibleExpandCollapse.js')
 require('./js/sensibleAccordion.js');
 
 require('./js/sensibleJumpToTop.js')
+
+require('./js/sensibleSidebar.js')

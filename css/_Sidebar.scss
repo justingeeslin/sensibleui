@@ -1,0 +1,28 @@
+// 1/5 width of the screen.
+$width: 1/5 * 100;
+
+div[sidebar][sensible-component] {
+
+  position: absolute;
+  top:0;
+  right:0em;
+  height: 100vh;
+  width: unquote($width + 'vw');
+  box-sizing: border-box;
+
+  // Animations
+  transition-property: right;
+  transition-duration: 500ms;
+  //easeOutQuint
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  //easeOutSine
+  //transition-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+
+  // Padding
+  padding: 1em;
+
+  &[closed] {
+    right: unquote(-$width+'vw');
+  }
+
+}
