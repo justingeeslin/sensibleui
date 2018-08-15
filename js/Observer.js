@@ -51,9 +51,16 @@ sensible.classes.Observer = function() {
       for( var i in selectorClassMap) {
         var item = selectorClassMap[i];
         $(item.sel + ':not([sensible-component])').each(function() {
-          var aComponent = new item.class({
+          var options = {
             el: $(this)
-          })
+          };
+          // Get attributes of the element, they will be the options of the constructor.
+          Array.prototype.slice.call(this.attributes).forEach(function(item) {
+          	console.log(item.name + ': '+ item.value);
+            options[item.name] = item.value;
+          });
+          console.log('Constructing with options: ', options)
+          var aComponent = new item.class(options)
         });
       }
 
