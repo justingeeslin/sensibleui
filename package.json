@@ -44,7 +44,6 @@
     "watchify": "^3.11.0"
   },
   "dependencies": {
-    "extend": "git+https://github.com/justingeeslin/extend.git",
     "http-server": "^0.11.1",
     "sensible-indicator": "git+https://github.com/justingeeslin/sensible-indicator.git"
   }

@@ -1,5 +1,3 @@
-var extend = require('extend');
-
 // A Sensible Component is a simple element with state.
 var Component = function (options) {
 	var self = this;
@@ -44,9 +42,7 @@ var Component = function (options) {
 		enumerable: true
 	});
 
-	// $.extend(this, defaults, options);
-	self = extend(this, defaults)
-	self = extend(this, options)
+	$.extend(this, defaults, options);
 
 	// The profiling attribute. There is a listener for a node insertion with this profile.
 	this.el.attr('sensible-component', true);
