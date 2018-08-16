@@ -104,7 +104,7 @@ sensible.classes.Observer = function() {
       // This is the debug for knowing our listener worked!
       // event.target is the new node!
       console.warn("A component has been inserted! ", event, event.target);
-      document.dispatchEvent(new Event("DOMContentLoaded"));
+      $(document).trigger("DOMContentLoaded");
     }
   }
 
