@@ -5,7 +5,7 @@ Reusable, declarative UI components. Amazing for cleaning up codebases of ugly s
 
 ### Expand + Collapse
 An expandable element. Great for FAQs.
-```js
+```html
 <div class="expand-collapse">
   <div class="title">What is my favorite sport?</div>
   <div class="body">HTML?</div>
@@ -14,7 +14,7 @@ An expandable element. Great for FAQs.
 
 ### Accordion
 Extends Expand + Collapse. An expandable element, but only one sibling can be opened at a time.
-```js
+```html
 <div class="accordion">
   <div class="title">Section One</div>
   <div class="body">This is the first section. Only one section should be open at a time.</div>
@@ -24,7 +24,7 @@ Extends Expand + Collapse. An expandable element, but only one sibling can be op
 ### Input Filter
 Use an input to filter a list of things.
 Filter its parent by default.
-```js
+```html
 <div>
 	<input type="text" filterable="true" placeholder="Type something to filter the list below.">
    <ul>
@@ -37,7 +37,7 @@ Filter its parent by default.
 
 ### Sidebar
 Sidebar, Off-canvas menu, etc.
-```js
+```html
 <div sidebar>
   <h4>Section 1</h4>
 </div>
