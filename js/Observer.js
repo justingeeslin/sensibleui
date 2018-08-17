@@ -1,3 +1,5 @@
+window.sensible = window.sensible !== undefined ? window.sensible : {};
+sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
 sensible.classes.Observer = function() {
   var self = this;
