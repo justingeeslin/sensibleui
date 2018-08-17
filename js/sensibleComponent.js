@@ -7,6 +7,7 @@ var Component = function (options) {
 	var state = '';
 
 	var defaults = {
+		el : $(document.createDocumentFragment()),
 		// To log or not to log..
 		debug: false,
 		stateChange : function(oldState, newState) {
