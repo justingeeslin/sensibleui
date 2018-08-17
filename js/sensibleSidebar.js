@@ -15,5 +15,3 @@ Sidebar = function (opts) {
 }
 
 module.exports = Sidebar;
-sensible.classes.Sidebar = Sidebar;
-sensible.registerComponent('div[sidebar]', sensible.classes.Sidebar);

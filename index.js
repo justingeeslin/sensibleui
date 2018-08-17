@@ -15,4 +15,5 @@ require('./js/sensibleAccordion.js');
 
 require('./js/sensibleJumpToTop.js')
 
-require('./js/sensibleSidebar.js')
+sensible.classes.Sidebar = require('./js/sensibleSidebar.js')
+sensible.registerComponent('div[sidebar]', sensible.classes.Sidebar);
