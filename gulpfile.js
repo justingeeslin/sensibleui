@@ -62,7 +62,7 @@ gulp.task('sass', function () {
 	return gulp.src('css/base.scss')
 		.pipe(sass())
 		.pipe(rename('style.css'))
-		.pipe(gulp.dest('css'));
+		.pipe(gulp.dest('dist/'));
 });
 
 gulp.task('sass-InputDelete', function () {
