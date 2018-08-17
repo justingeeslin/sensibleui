@@ -30,6 +30,17 @@ sensible.classes.Observer = function() {
     return insertableSelctors;
   }
 
+  var triggerEvent = function(el, name) {
+    if (typeof(Event) === 'function') {
+      var event = new Event(name);
+    } else {
+      var event = document.createEvent('Event');
+      event.initEvent(name, true, true);
+    }
+
+    el.dispatchEvent(event);
+  }
+
   this.add = function(selector, sensibleClass) {
     console.log('Adding a rule for ', selector, sensibleClass);
     selectorClassMap.push({
@@ -61,6 +72,7 @@ sensible.classes.Observer = function() {
           });
           console.log('Constructing with options: ', options)
           var aComponent = new item.class(options)
+          triggerEvent($(this)[0], 'complete');
         });
       }
 
@@ -104,7 +116,8 @@ sensible.classes.Observer = function() {
       // This is the debug for knowing our listener worked!
       // event.target is the new node!
       console.warn("A component has been inserted! ", event, event.target);
-      $(document).trigger("DOMContentLoaded");
+      triggerEvent(document, "DOMContentLoaded");
+
     }
   }
 
