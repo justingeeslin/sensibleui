@@ -4,7 +4,9 @@ sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
 require('./js/Observer.js')
 
-require('./js/sensibleComponent.js')
+sensible.classes.Component = require('./js/sensibleComponent.js')
+sensible.registerComponent('div.component', sensible.classes.Component);
+
 require('./js/sensibleInputDelete.js')
 require('./js/sensibleInputFilter.js')
 // sensible.classes.InputDeleteFilter = require('./js/sensibleInputDeleteFilter.js')
@@ -16,7 +18,12 @@ require('./js/sensibleAccordion.js');
 
 require('./js/sensibleJumpToTop.js')
 
-},{"./js/Observer.js":2,"./js/sensibleAccordion.js":3,"./js/sensibleComponent.js":4,"./js/sensibleExpandCollapse.js":5,"./js/sensibleInputDelete.js":7,"./js/sensibleInputFilter.js":8,"./js/sensibleJumpToTop.js":9}],2:[function(require,module,exports){
+sensible.classes.Sidebar = require('./js/sensibleSidebar.js')
+sensible.registerComponent('div[sidebar]', sensible.classes.Sidebar);
+
+},{"./js/Observer.js":2,"./js/sensibleAccordion.js":3,"./js/sensibleComponent.js":4,"./js/sensibleExpandCollapse.js":5,"./js/sensibleInputDelete.js":7,"./js/sensibleInputFilter.js":8,"./js/sensibleJumpToTop.js":9,"./js/sensibleSidebar.js":10}],2:[function(require,module,exports){
+window.sensible = window.sensible !== undefined ? window.sensible : {};
+sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
 sensible.classes.Observer = function() {
   var self = this;
@@ -49,6 +56,17 @@ sensible.classes.Observer = function() {
     return insertableSelctors;
   }
 
+  var triggerEvent = function(el, name) {
+    if (typeof(Event) === 'function') {
+      var event = new Event(name);
+    } else {
+      var event = document.createEvent('Event');
+      event.initEvent(name, true, true);
+    }
+
+    el.dispatchEvent(event);
+  }
+
   this.add = function(selector, sensibleClass) {
     console.log('Adding a rule for ', selector, sensibleClass);
     selectorClassMap.push({
@@ -70,9 +88,17 @@ sensible.classes.Observer = function() {
       for( var i in selectorClassMap) {
         var item = selectorClassMap[i];
         $(item.sel + ':not([sensible-component])').each(function() {
-          var aComponent = new item.class({
+          var options = {
             el: $(this)
-          })
+          };
+          // Get attributes of the element, they will be the options of the constructor.
+          Array.prototype.slice.call(this.attributes).forEach(function(item) {
+          	console.log(item.name + ': '+ item.value);
+            options[item.name] = item.value;
+          });
+          console.log('Constructing with options: ', options)
+          var aComponent = new item.class(options)
+          triggerEvent($(this)[0], 'complete');
         });
       }
 
@@ -116,7 +142,8 @@ sensible.classes.Observer = function() {
       // This is the debug for knowing our listener worked!
       // event.target is the new node!
       console.warn("A component has been inserted! ", event, event.target);
-      document.dispatchEvent(new Event("DOMContentLoaded"));
+      triggerEvent(document, "DOMContentLoaded");
+
     }
   }
 
@@ -202,8 +229,6 @@ sensible.classes.Accordion = Accordion;
 sensible.registerComponent('div.accordion', sensible.classes.Accordion);
 
 },{"./sensibleExpandCollapse.js":5}],4:[function(require,module,exports){
-var extend = require('extend');
-
 // A Sensible Component is a simple element with state.
 var Component = function (options) {
 	var self = this;
@@ -213,6 +238,7 @@ var Component = function (options) {
 	var state = '';
 
 	var defaults = {
+		el : $(document.createDocumentFragment()),
 		// To log or not to log..
 		debug: false,
 		stateChange : function(oldState, newState) {
@@ -248,9 +274,7 @@ var Component = function (options) {
 		enumerable: true
 	});
 
-	// $.extend(this, defaults, options);
-	self = extend(this, defaults)
-	self = extend(this, options)
+	$.extend(this, defaults, options);
 
 	// The profiling attribute. There is a listener for a node insertion with this profile.
 	this.el.attr('sensible-component', true);
@@ -268,10 +292,8 @@ var Component = function (options) {
 }
 
 module.exports = Component;
-sensible.classes.Component = Component;
-sensible.registerComponent('div.component', sensible.classes.Component);
 
-},{"extend":10}],5:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var Component = require('./sensibleComponent.js');
 
 var ExpandCollapse = function (opts) {
@@ -482,6 +504,8 @@ Highlight = function (opts, contentTarget) {
 module.exports = Highlight
 
 },{}],7:[function(require,module,exports){
+var Component = require('./sensibleComponent.js');
+
 InputDelete = function (opts) {
 	var self = this;
 
@@ -489,6 +513,7 @@ InputDelete = function (opts) {
 
 	console.log('Creating an Input with Delete button.');
 	$.extend(this, defaults, opts)
+	$.extend(this, new Component(this));
 
 	//Wrap in a Div if not already wrapped
 	var classToAdd = "deletable";
@@ -524,12 +549,6 @@ InputDelete = function (opts) {
 		self.el.trigger('input');
 	});
 
-	//If a target was supplied..
-	if (typeof this.target !== undefined) {
-		//... append to it.
-		self.el.appendTo(self.target);
-	}
-
 	return this;
 }
 
@@ -537,7 +556,7 @@ module.exports = InputDelete;
 sensible.classes.InputDelete = InputDelete;
 sensible.registerComponent('input[deletable=true]', sensible.classes.InputDelete);
 
-},{}],8:[function(require,module,exports){
+},{"./sensibleComponent.js":4}],8:[function(require,module,exports){
 var Component = require('./sensibleComponent.js');
 
 InputFilter = function (opts) {
@@ -547,7 +566,7 @@ InputFilter = function (opts) {
 		//The toFilter selection has this element as children. Selector. li, ul, a, etc.
 		itemSelector: " > ul > li",
     highlight: true,
-		blankSlateMessage: "No Results Found with \"<term>\"",
+		blankmessage: "No Results Found with \"<term>\"",
 		autoHideHeadings: true,
 		// Runs with a search and filter is about to begin; before any elements are hidden or selected.
 		start : function() {},
@@ -677,14 +696,14 @@ InputFilter = function (opts) {
 	var filter = this;
 	this.blankSlate = {
 		isCreated: false,
-		el: $('<div class="blank-slate">' + self.blankSlateMessage + '</div>'),
+		el: $('<div class="blank-slate">' + self.blankmessage + '</div>'),
 		show: function() {
 			console.log('Showing Blank slate')
 			if (!this.isCreated) {
 				console.log('Showing but it is not created..')
 				this.create();
 			}
-			var message = self.blankSlateMessage.replace('<term>', searchBox.val());
+			var message = self.blankmessage.replace('<term>', searchBox.val());
 			this.el.html(message);
 			this.el.show();
 		},
@@ -728,7 +747,7 @@ InputFilter = function (opts) {
 
 module.exports = InputFilter;
 sensible.classes.InputFilter = InputFilter;
-sensible.registerComponent('input[filterable=true]', sensible.classes.InputFilter);
+sensible.registerComponent('input[filterable]', sensible.classes.InputFilter);
 
 },{"./sensibleComponent.js":4,"./sensibleHighlight.js":6}],9:[function(require,module,exports){
 var Component = require('./sensibleComponent.js');
@@ -814,27 +833,22 @@ sensible.classes.JumpToTop = JumpToTop;
 sensible.registerComponent('div.jump-to-top', sensible.classes.JumpToTop);
 
 },{"./sensibleComponent.js":4}],10:[function(require,module,exports){
-function extend(a, b) {
-  a._super = b
-  for(var key in b) {
-    if(b.hasOwnProperty(key)) {
-      a[key] = b[key];
-    }
-    // Does the property have a custom getter or setter?
-    if (typeof b.__lookupGetter__(key) == "function") {
-      // console.log('found a getter for ' + key);
-      a.__defineGetter__(key, b.__lookupGetter__(key))
-    }
-    if (typeof b.__lookupSetter__(key) == "function") {
-      // console.log('found a setter for ' + key);
-      a.__defineSetter__(key, b.__lookupSetter__(key))
-    }
+var Component = require('./sensibleComponent.js');
 
-  }
+Sidebar = function (opts) {
+	var self = this;
 
-  return a;
+	var defaults = {};
+
+	$.extend(this, defaults, opts);
+	$.extend(this, new Component(this));
+
+	// Add ARIA roles of menu https://w3c.github.io/aria-practices/#menu
+	this.el.attr('role', 'menu');
+
+	return this;
 }
 
-module.exports = extend;
+module.exports = Sidebar;
 
-},{}]},{},[1]);
+},{"./sensibleComponent.js":4}]},{},[1]);

@@ -1,0 +1,37 @@
+/* Colors and other General things */
+div.deletable {
+  width: intrinsic;
+  /* Safari/WebKit uses a non-standard name */
+  width: -moz-max-content;
+  /* Firefox/Gecko */
+  width: -webkit-max-content;
+  /* Chrome */ }
+  div.deletable > div {
+    /* Hide the div at first */
+    visibility: hidden;
+    float: right;
+    right: 1em;
+    position: relative;
+    cursor: pointer; }
+
+.sensible.indicator {
+  position: absolute; }
+  .sensible.indicator .bar {
+    left: 0;
+    top: 0;
+    background-color: black;
+    width: 4px;
+    position: absolute; }
+
+div[sidebar][sensible-component] {
+  position: absolute;
+  top: 0;
+  right: 0em;
+  height: 100vh;
+  width: 20vw;
+  box-sizing: border-box;
+  transition-property: right;
+  transition-duration: 800ms;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1); }
+  div[sidebar][sensible-component][closed] {
+    right: -20vw; }
