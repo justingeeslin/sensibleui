@@ -1,8 +1,6 @@
 describe('Accordion', function() {
 
   beforeAll(function(done) {
-    $(document.body).empty()
-
     // var my2 = new sensible.classes.Accordion({slug: 'accordion2', url: 'accordion2'});
     // my2.el.appendTo($(document.body));
 
@@ -21,10 +19,9 @@ describe('Accordion', function() {
     // $('<style>html,body { height:500vh; }</style>').appendTo(document.head);
 
     // Wait a bit for construction to happen..
-    window.setTimeout(function() {
-
+    setTimeout(function() {
       done()
-    }, 100)
+    }, 1000)
   })
 
 

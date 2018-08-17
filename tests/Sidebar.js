@@ -27,7 +27,7 @@ describe('Sidebar', function() {
     $(document.body).append('<div sidebar><h1>Section One</h1></div>');
 
     // Wait a bit for construction to happen..
-    window.setTimeout(function() {
+    setTimeout(function() {
       expect($('div[sidebar][sensible-component]').length).toBeGreaterThan(0);
       done()
     }, 100)
@@ -40,7 +40,7 @@ describe('Sidebar', function() {
     sidebar.attr('closed', '');
 
     // Wait a bit for construction to happen..
-    window.setTimeout(function() {
+    setTimeout(function() {
       expect(sidebar.css('right')).not.toBe(0);
       done()
     }, 100)

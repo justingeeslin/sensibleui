@@ -5,4 +5,6 @@ describe('Sensible Observer', function() {
 
     })
 
+    it('should constrct an object ')
+
 });

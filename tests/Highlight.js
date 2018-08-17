@@ -2,7 +2,7 @@ var Highlight = require('../js/sensibleHighlight.js')
 
 describe('Highlight', function() {
 
-    beforeAll(function() {
+    beforeAll(function(done) {
       console.log('Testing Highlight.')
       container = $('<div id="highlight"></div>');
       $(document.body).append(container);
@@ -13,6 +13,10 @@ describe('Highlight', function() {
 
       //Add some style to the highlight class so we can tell
       $('<style>.highlight { background-color:yellow; }</style>').appendTo(document.head);
+
+      setTimeout(function() {
+        done();
+      }, 1000);
 
     });
 

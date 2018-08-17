@@ -1,18 +1,23 @@
 describe('Component', function() {
 
-    beforeAll(function() {
-      $(document.body).empty()
+    beforeAll(function(done) {
+      setTimeout(function() {
+        done();
+      }, 1000);
     })
 
     it('should construct declaratively, that is, with just a tag, similar to the forthcoming web components/custom elements', function(done) {
-      $(document.body).append('<div class="component"></div>');
+      var aComponent = $('<div class="component"></div>');
 
       // Wait a bit for construction to happen..
-      window.setTimeout(function() {
+      aComponent.on('complete', function() {
         expect($('.component[sensible-component]').length).toBeGreaterThan(0);
         done()
-      }, 100)
-    })
+      })
+
+      $(document.body).append(aComponent);
+
+    }, 1000)
 
     it('should get/set state', function() {
       aComponent = new sensible.classes.Component({

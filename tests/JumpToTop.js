@@ -5,7 +5,7 @@ describe('JumpToTop', function() {
     $(document.body).append('<div class="jump-to-top"><span></span></div>');
 
     // Wait a bit for construction to happen..
-    window.setTimeout(function() {
+    setTimeout(function() {
       done()
     }, 100);
   })
