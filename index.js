@@ -3,7 +3,9 @@ sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
 require('./js/Observer.js')
 
-require('./js/sensibleComponent.js')
+sensible.classes.Component = require('./js/sensibleComponent.js')
+sensible.registerComponent('div.component', sensible.classes.Component);
+
 require('./js/sensibleInputDelete.js')
 require('./js/sensibleInputFilter.js')
 // sensible.classes.InputDeleteFilter = require('./js/sensibleInputDeleteFilter.js')
