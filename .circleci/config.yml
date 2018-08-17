@@ -33,4 +33,14 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: node_modules/karma/bin/karma start karma.conf.js --single-run
+      - run:
+          name: Running Tests
+          command: node_modules/karma/bin/karma start karma.conf.js --single-run
+      # generate coverage
+      - run:
+          name: Sending Coverage
+          command: cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage
+      # View the HTML report for Unit Tests
+      - store_artifacts:
+          path: ./tests/index.html
+          destination: test-report.html

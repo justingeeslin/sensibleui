@@ -1,5 +1,4 @@
-var Highlight = require('./sensibleHighlight.js')
-var Input = require('./sensibleInput.js')
+var Component = require('./sensibleComponent.js');
 
 InputFilter = function (opts) {
 	var self = this;
@@ -7,8 +6,8 @@ InputFilter = function (opts) {
 	var defaults = {
 		//The toFilter selection has this element as children. Selector. li, ul, a, etc.
 		itemSelector: " > ul > li",
-    highlight: false,
-		blankSlateMessage: "No Results Found with \"<term>\"",
+    highlight: true,
+		blankmessage: "No Results Found with \"<term>\"",
 		autoHideHeadings: true,
 		// Runs with a search and filter is about to begin; before any elements are hidden or selected.
 		start : function() {},
@@ -16,20 +15,15 @@ InputFilter = function (opts) {
     complete : function() {},
 	};
 
-  //Find the input, Search box.
-	function getSearchBox() {
-		//Select the Input if it is a child and if it is the root element
-		return self.el.find('input').add(self.el.filter('input'));
-	}
 
   //A DOM selection (jQuery) of elements to filter
 	defaults.toFilter = function() { return this.el.parent() }
 
 	$.extend(this, defaults, opts);
-	//Create a Input Component with our options.
-	$.extend(this, new Input(this));
+	$.extend(this, new Component(this));
 
-	var searchBox = getSearchBox()
+  // Sometimes the el will be wrapped in a Div because we need to wrap elements like a clearing X in InputDelete.
+	var searchBox = this.el.find('input').add(this.el.filter('input'));
 
 	this.el.addClass('filterable');
 
@@ -143,14 +137,14 @@ InputFilter = function (opts) {
 	var filter = this;
 	this.blankSlate = {
 		isCreated: false,
-		el: $('<div class="blank-slate">' + self.blankSlateMessage + '</div>'),
+		el: $('<div class="blank-slate">' + self.blankmessage + '</div>'),
 		show: function() {
 			console.log('Showing Blank slate')
 			if (!this.isCreated) {
 				console.log('Showing but it is not created..')
 				this.create();
 			}
-			var message = self.blankSlateMessage.replace('<term>', searchBox.val());
+			var message = self.blankmessage.replace('<term>', searchBox.val());
 			this.el.html(message);
 			this.el.show();
 		},
@@ -168,6 +162,7 @@ InputFilter = function (opts) {
 
 
   if (this.highlight) {
+    var Highlight = require('./sensibleHighlight.js')
     var typingTO;
     var timeAfterLastKeyPress = 333;
     var theHighlighter;
@@ -180,6 +175,7 @@ InputFilter = function (opts) {
       });
     }
     searchBox.on('input', function() {
+      console.log('Typing..')
       clearTimeout(typingTO);
       typingTO = setTimeout(function() {
         highlightFx()
@@ -187,16 +183,9 @@ InputFilter = function (opts) {
     });
   }
 
-	//If a target was supplied..
-	if (typeof this.target !== 'undefined') {
-		//... append to it.
-		self.el.appendTo(self.target);
-		//Create a blank slate message. Hidden.
-		// console.log('Target supplied.')
-		// console.log(this.target);
-	}
-
 	return this;
 }
 
 module.exports = InputFilter;
+sensible.classes.InputFilter = InputFilter;
+sensible.registerComponent('input[filterable]', sensible.classes.InputFilter);

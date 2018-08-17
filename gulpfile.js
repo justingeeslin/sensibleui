@@ -2,16 +2,11 @@
 var gulp = require('gulp');
 
 // Include Our Plugins
-var jshint = require('gulp-jshint');
 var sass = require('gulp-sass');
-var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var fs = require('fs');
-var remoteSrc = require('gulp-remote-src');
 var stripDebug = require('gulp-strip-debug');
-var debug = require('gulp-debug');
-var del = require('del');
 
 var karmaServer = require('karma').Server;
 
@@ -67,7 +62,7 @@ gulp.task('sass', function () {
 	return gulp.src('css/base.scss')
 		.pipe(sass())
 		.pipe(rename('style.css'))
-		.pipe(gulp.dest('css'));
+		.pipe(gulp.dest('dist/'));
 });
 
 gulp.task('sass-InputDelete', function () {

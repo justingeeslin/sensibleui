@@ -1,4 +1,4 @@
-var Input = require('./sensibleInput.js')
+var Component = require('./sensibleComponent.js');
 
 InputDelete = function (opts) {
 	var self = this;
@@ -7,24 +7,22 @@ InputDelete = function (opts) {
 
 	console.log('Creating an Input with Delete button.');
 	$.extend(this, defaults, opts)
-	$.extend(this, new Input(this));
+	$.extend(this, new Component(this));
 
 	//Wrap in a Div if not already wrapped
 	var classToAdd = "deletable";
-	var deleteButton = $('<div>x</div>');
-	if (this.el.filter('div').length > 0) {
-		this.el.addClass(classToAdd);
-	}
-	else {
-		// Wrap with a deletable class. Add a X button.
-		this.el = $('<div class="' + classToAdd + '"></div>').append(this.el);
-	}
-	this.el.append(deleteButton);
+	var deleteButton = $('<div class="close">x</div>');
+
+	// Wrap with a deletable class. Add a X button.
+	this.el.wrap('<div class="' + classToAdd + '"></div>')
+	// this.el = $().append(this.el);
+
+	this.el.after(deleteButton);
 
 	var inputBox = this.el.find('input');
 
 	//When the user types..
-	inputBox.on('input', function() {
+	this.el.on('input', function() {
 		console.log('Should I show the delete button?');
 
 		if ($(this).val().length > 0) {
@@ -40,18 +38,14 @@ InputDelete = function (opts) {
 	deleteButton.on('click', function(e) {
 		console.log('Clicked delete button')
 		//Clear the input box
-		inputBox.val('');
+		self.el.val('');
 		//Hide the x if neccessary.
-		inputBox.trigger('input');
+		self.el.trigger('input');
 	});
-
-	//If a target was supplied..
-	if (typeof this.target !== undefined) {
-		//... append to it.
-		self.el.appendTo(self.target);
-	}
 
 	return this;
 }
 
 module.exports = InputDelete;
+sensible.classes.InputDelete = InputDelete;
+sensible.registerComponent('input[deletable=true]', sensible.classes.InputDelete);
