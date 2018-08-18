@@ -1,4 +1,4 @@
-fdescribe('Sortable', function() {
+describe('Sortable', function() {
 
     beforeAll(function(done) {
       setTimeout(function() {
