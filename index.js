@@ -19,3 +19,6 @@ require('./js/sensibleJumpToTop.js')
 
 sensible.classes.Sidebar = require('./js/sensibleSidebar.js')
 sensible.registerComponent('div[sidebar]', sensible.classes.Sidebar);
+
+sensible.classes.Sortable = require('./js/sensibleSortable.js')
+sensible.registerComponent('div[sortable]', sensible.classes.Sortable);

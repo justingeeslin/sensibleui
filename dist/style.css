@@ -35,3 +35,6 @@ div[sidebar][sensible-component] {
   transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1); }
   div[sidebar][sensible-component][closed] {
     right: -20vw; }
+
+[sortable] > * {
+  cursor: grab; }

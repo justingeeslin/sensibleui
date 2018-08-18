@@ -20,7 +20,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
 			'vendor/jquery-2.2.0.js',
-      'css/style.css',
+      'dist/style.css',
       'index.js',
 			'tests/*.js',
     ],
@@ -40,9 +40,9 @@ module.exports = function(config) {
 
     browserify: {
         debug: true,
-        transform: [
-          istanbul({})
-        ]
+        // transform: [
+        //   istanbul({})
+        // ]
     },
 
     // test results reporter to use
