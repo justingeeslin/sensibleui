@@ -2,6 +2,7 @@
 [![CircleCI](https://circleci.com/gh/justingeeslin/sensibleui.svg?style=svg)](https://circleci.com/gh/justingeeslin/sensibleui)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3b265b60ad44a7fa32ffedb57ac2961)](https://www.codacy.com/project/justingeeslin/sensibleui/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=justingeeslin/sensibleui&amp;utm_campaign=Badge_Grade_Dashboard)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/a3b265b60ad44a7fa32ffedb57ac2961)](https://www.codacy.com/app/justingeeslin/sensibleui?utm_source=github.com&utm_medium=referral&utm_content=justingeeslin/sensibleui&utm_campaign=Badge_Coverage)
+
 Reusable, declarative UI components. Amazing for cleaning up codebases of ugly single page applications.
 
 [Kitchen Sink, a pen.](https://codepen.io/geesman/pen/VBmPZN?editors=1000)
