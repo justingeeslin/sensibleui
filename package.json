@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "http-server": "^0.11.1",
+    "node-sass": "^4.9.3",
     "sensible-indicator": "git+https://github.com/justingeeslin/sensible-indicator.git",
     "sortablejs": "^1.7.0"
   }
