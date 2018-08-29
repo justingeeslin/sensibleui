@@ -53,6 +53,49 @@ var Component = function (options) {
 		this.state = options.state
 	}
 
+	// Watch an attribute for change
+	this.onAttributeChange = function(attr, cb) {
+		// Options for the observer (which mutations to observe)
+		var config = { attributes: true, childList: true, subtree: true };
+
+		var actionOnChange = function(attr, newValue) {
+			console.log('The ' + attr + ' attribute was modified.');
+			cb(newValue);
+		}
+
+		if (typeof MutationObserver !== "undefined") {
+			// Callback function to execute when mutations are observed
+			var callback = function(mutationsList) {
+				console.log('Attribute Modified!')
+			    for(var i in mutationsList) {
+						var mutation = mutationsList[i];
+			        if (mutation.type == 'attributes') {
+								if (mutation.attributeName == attr) {
+									var newValue = self.el.attr(attr);
+									actionOnChange(attr, newValue);
+								}
+			        }
+			    }
+			};
+			// Create an observer instance linked to the callback function
+			var observer = new MutationObserver(callback);
+			// Start observing the target node for configured mutations
+			observer.observe(self.el[0], config);
+		}
+		else {
+			var callback = function(event) {
+				console.log('Attribute Modified IE10 style');
+				if ('attrChange' in event) {
+					if (event.attrName == attr) {
+						actionOnChange(event.attrName, event.newValue);
+					}
+				}
+			}
+			self.el[0].addEventListener('DOMAttrModified', callback, false);
+		}
+
+	}
+
 	this.go = function(newState) {
 		this.state = newState;
 	}
