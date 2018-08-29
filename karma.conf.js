@@ -97,6 +97,8 @@ module.exports = function(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: [
       'chrome_perf',
+      'IE10',
+      'IE11',
       // 'Safari',
       // 'Firefox',
       // 'IE11'
@@ -110,7 +112,33 @@ module.exports = function(config) {
         chrome_perf: {
             base: 'Chrome',
             flags: ['--disable-popup-blocking', '--enable-gpu-benchmarking', '--enable-threaded-compositing']
-        }
+        },
+        'IE10': {
+          base: 'WebDriver',
+          config: {
+            hostname: '192.168.2.25',
+            port: 4444
+          },
+          browserName: 'internet explorer',
+          platform: 'Windows 8',
+          version: '10',
+          'x-ua-compatible': 'IE=EmulateIE10',
+          name: 'Karma',
+          pseudoActivityInterval: 30000
+        },
+        'IE11': {
+          base: 'WebDriver',
+          config: {
+            hostname: '192.168.2.25',
+            port: 4444
+          },
+          browserName: 'internet explorer',
+          platform: 'Windows 8',
+          version: '10',
+          // 'x-ua-compatible': 'IE=EmulateIE10',
+          name: 'Karma',
+          pseudoActivityInterval: 30000
+        },
 		},
 
     // Continuous Integration mode
