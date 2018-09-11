@@ -2,12 +2,11 @@ describe('ExpandCollapse', function() {
 
   beforeAll(function(done) {
     // Add expand collapse element
-    el = $('<div class="expand-collapse"><div class="title">Untitled Title</div><div class="body">Untitled Body</div></div>');
+    el = $('<details><summary>Untitled Title</summary><p>Untitled Body</p></details>');
     $(document.body).append(el)
 
-
-		theTitle = el.find('.title');
-    theBody = el.find('.body');
+		theTitle = el.find('summary');
+    theBody = theTitle.siblings();
 
     isOpen = function() {
       return theBody.filter(':visible').length > 0
@@ -21,14 +20,17 @@ describe('ExpandCollapse', function() {
 
 
     it('Should construct declaratively', function() {
-      expect($('div.expand-collapse[sensible-component]').length > 0).toBe(true);
+      expect($('details[sensible-component]').length > 0).toBe(true);
     });
 
 		it('should show content on click and hide on the second click.', function() {
+      var isOpenIntially = isOpen()
+      // Click once
       theTitle.trigger('click');
-			expect(isOpen()).toBe(true);
+      expect(isOpen()).toBe(!isOpenIntially);
+      // click twice
       theTitle.trigger('click');
-			expect(isOpen()).toBe(false);
+			expect(isOpen()).toBe(isOpenIntially);
 		});
 
     it('should close when triggering the close event', function() {

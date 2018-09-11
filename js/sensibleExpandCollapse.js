@@ -17,13 +17,13 @@ var ExpandCollapse = function (opts) {
 	this.id = this.url.split('/').join('-');
 
 	// Discover the attributes
-	var title = this.el.find('.title');
+	var title = this.el.find('summary');
 	var titleText = title.html();
 	if (titleText.length > 0) {
 		this.title = titleText;
 	}
 
-	var body = this.el.find('.body')
+	var body = title.siblings()
 	var bodyText = body.html();
 	if (bodyText.length > 0) {
 		this.content = bodyText;
@@ -51,16 +51,27 @@ var ExpandCollapse = function (opts) {
 		return body.is(':visible');
 	}
 
+	// use the details default behavior if it is supported.
+	var supportsDetails = function() {
+		return 'open' in document.createElement('details');
+	}
+
 	this.close = function() {
 		console.log('Closing: ' + self.slug);
-		self.el.removeClass('open');
-		body.hide()
+		self.el[0].removeAttribute('open')
+		if (!supportsDetails()) {
+			// Hide using jQuery's Hide
+			body.hide()
+		}
+
 	}
 
 	this.open = function() {
 		console.log('Opening: ' + self.slug);
-		self.el.addClass('open');
-		body.show()
+		self.el.attr('open', 'true');
+		if (!supportsDetails()) {
+			body.show()
+		}
 	}
 
 	title.on('click', this.toggle);
@@ -89,4 +100,4 @@ var ExpandCollapse = function (opts) {
 
 module.exports = ExpandCollapse;
 sensible.classes.ExpandCollapse = ExpandCollapse;
-sensible.registerComponent('div.expand-collapse', sensible.classes.ExpandCollapse);
+sensible.registerComponent('details', sensible.classes.ExpandCollapse);
