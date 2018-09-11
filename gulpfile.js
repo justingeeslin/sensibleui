@@ -129,6 +129,47 @@ gulp.task('test-debug', function(done) {
 	}, done).start();
 });
 
+gulp.task('test-a11y', function(done) {
+  var a11yAddr = "0.0.0.0:2119";
+  var path = "examples/"
+  console.log('Starting web server for accessibility testing...');
+	run_cmd('php -S ' + a11yAddr + '');
+
+  const lighthouse = require('lighthouse');
+  const chromeLauncher = require('chrome-launcher');
+
+  function launchChromeAndRunLighthouse(url, opts, config = null) {
+    return chromeLauncher.launch({chromeFlags: opts.chromeFlags}).then(chrome => {
+      opts.port = chrome.port;
+      return lighthouse(url, opts, config).then(results => {
+        // use results.lhr for the JS-consumeable output
+        // https://github.com/GoogleChrome/lighthouse/blob/master/typings/lhr.d.ts
+        // use results.report for the HTML/JSON/CSV output as a string
+        console.log('Here are the results\' report.', results.report)
+
+        fs.writeFile(path + 'a11y-report.html', results.report, function() {
+          console.log('Report updated!')
+        })
+
+        // use results.artifacts for the trace/screenshots/other specific case you need (rarer)
+        return chrome.kill().then(() => results.lhr)
+      });
+    });
+  }
+
+  const opts = {
+    chromeFlags: ['--show-paint-rects'],
+    onlyCategories: ['accessibility'],
+    output: 'html'
+  };
+
+  // Usage:
+  launchChromeAndRunLighthouse('http://' + a11yAddr + '/' + path, opts).then(results => {
+    // console.log('Here are the results.', results)
+    done();
+  });
+})
+
 // Watch Files For Changes
 gulp.task('watch', function () {
 	gulp.watch('js/*.js', ['js']);

@@ -1,0 +1,49 @@
+<html lang="en">
+	<head>
+		<title>Sensible UI Examples</title>
+	</head>
+	<link href="/dist/style.css" type="text/css" rel="stylesheet">
+	<body>
+		<h1>Expand/Collapse</h1>
+		<details>
+		  <summary>What is my favorite color?</summary>
+		  <p>If Geesman.com from 2005 is indication I would say your favorite color is: #787878</p>
+		</details>
+		<details>
+		  <summary>What is my favorite sport?</summary>
+		  <p>HTML?</p>
+		</details>
+
+		<h1>Accordion</h1>
+		<div class="accordion">
+		  <div class="title">Section One</div>
+		  <div class="body">This is the first section. Only one section should be open at a time.</div>
+		</div>
+
+		<div class="accordion">
+		  <div class="title">Section Two</div>
+		  <div class="body">This is the second section.</div>
+		</div>
+
+		<h1>Input Filter</h1>
+		<div>
+			<label for="quickfind">Quick Find:</label>
+		  <input type="text" filterable="true" name="quickfind" placeholder="Type something to filter the list below.">
+
+		   <ul>
+		     <li>List 1</li>
+		     <li>List J</li>
+		     <li>List G</li>
+		  </ul>
+		</div>
+
+		<h1>Sidebar</h1>
+		<button id="sidebarButton">Toggle Sidebar</button>
+		<div sidebar closed>
+		  <h4>Section 1</h4>
+		</div>
+
+	</body>
+	<script src="/vendor/jquery-2.2.0.js" type="text/javascript"></script>
+	<script src="/dist/sensible.js" type="text/javascript"></script>
+</html>
