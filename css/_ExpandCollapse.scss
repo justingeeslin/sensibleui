@@ -1,0 +1,15 @@
+/* Typically, this is not needed. Only in browsers, IE where details is not supported. */
+details.manual {
+	
+	&[open] {
+		
+		> *:not(summary) {
+			display:inherit
+		}
+		
+	}
+	
+	> *:not(summary) {
+		display:none
+	}
+}

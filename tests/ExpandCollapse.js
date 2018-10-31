@@ -1,4 +1,4 @@
-describe('ExpandCollapse', function() {
+fdescribe('ExpandCollapse', function() {
 
   beforeAll(function(done) {
     // Add expand collapse element
@@ -9,7 +9,7 @@ describe('ExpandCollapse', function() {
     theBody = theTitle.siblings();
 
     isOpen = function() {
-      return theBody.filter(':visible').length > 0
+      return theBody.is(':visible')
     }
 
     setTimeout(function() {
@@ -17,42 +17,62 @@ describe('ExpandCollapse', function() {
       done()
     }, 100)
   });
+					
+		beforeEach(function() {
+			// Begin each test with an open Collapsible
+			 console.log('Adding open attribute..')
+			 el[0].setAttribute('open', '')
+		 })
 
 
     it('Should construct declaratively', function() {
       expect($('details[sensible-component]').length > 0).toBe(true);
     });
 
-		it('should show content on click and hide on the second click.', function() {
+		// Attempting to test toggling on click. Might there be other gestures you need to test other than click?
+		xit('should show content on click and hide on the second click.', function(done) {
       var isOpenIntially = isOpen()
       // Click once
       theTitle.trigger('click');
-      expect(isOpen()).toBe(!isOpenIntially);
-      // click twice
-      theTitle.trigger('click');
-			expect(isOpen()).toBe(isOpenIntially);
+      window.setTimeout(function() {
+        expect(isOpen()).toBe(!isOpenIntially, ' Clicked once and didn\'t change.');
+        if (isOpen()) {
+          expect(el.attr('open')).not.toBe(undefined);
+        }
+
+        // // click twice
+        // theTitle.trigger('click');
+        // window.setTimeout(function() {
+        //   expect(isOpen()).toBe(isOpenIntially);
+        //   if (isOpen()) {
+        //     expect(el.attr('open')).not.toBe(undefined);
+        //   }
+          done()
+        // }, 10)
+      }, 10)
+
 		});
 
-    it('should close when triggering the close event', function() {
-      el.trigger('close');
-			expect(isOpen()).toBe(false);
+    it('should show content on open attribute', function() {
+      expect(isOpen()).toBe(true);
 		});
 
-    it('should open when triggering the open event', function() {
-      el.trigger('open');
-			expect(isOpen()).toBe(true);
+    // Fails in IE10 because removing attributes doesn't trigger the ATTR modified event as it should https://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-eventgroupings-mutationevents
+    it('should hide content without open attribute', function() {
+      console.log('Removing open attribute..')
+      el[0].removeAttribute('open');
+			expect(isOpen()).toBe(false, 'Removed attribute but it was still open');
+
+
 		});
 
-    it('should show/hide when triggering the toggle event', function() {
-      var beforeState = isOpen();
-      el.trigger('toggle');
-      var afterState = isOpen();
-      expect(beforeState).toBe(!afterState);
-    });
+		// Does this case matter?
+    xit('should hide content with open attribute set to false', function() {
+      console.log('Setting open attribute to false..')
+      el[0].setAttribute('open', false)
+			expect(isOpen()).toBe(false, 'Setting open attribute to false but it was still open');
 
-    it('should open when triggering the go event', function() {
-      el.trigger('go');
-			expect(isOpen()).toBe(true);
+
 		});
 
 });
