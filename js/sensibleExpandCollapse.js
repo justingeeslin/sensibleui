@@ -73,5 +73,3 @@ var ExpandCollapse = function (opts) {
 }
 
 module.exports = ExpandCollapse;
-sensible.classes.ExpandCollapse = ExpandCollapse;
-sensible.registerComponent('details:not([accordion])', sensible.classes.ExpandCollapse);

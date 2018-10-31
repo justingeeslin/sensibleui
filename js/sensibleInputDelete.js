@@ -47,5 +47,3 @@ InputDelete = function (opts) {
 }
 
 module.exports = InputDelete;
-sensible.classes.InputDelete = InputDelete;
-sensible.registerComponent('input[deletable=true]', sensible.classes.InputDelete);

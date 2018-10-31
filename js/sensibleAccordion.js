@@ -68,5 +68,3 @@ Accordion = function (opts) {
 }
 
 module.exports = Accordion;
-sensible.classes.Accordion = Accordion;
-sensible.registerComponent('details[accordion]', sensible.classes.Accordion);

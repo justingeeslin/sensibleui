@@ -6,14 +6,21 @@ require('./js/Observer.js')
 sensible.classes.Component = require('./js/sensibleComponent.js')
 sensible.registerComponent('div.component', sensible.classes.Component);
 
-require('./js/sensibleInputDelete.js')
-require('./js/sensibleInputFilter.js')
+sensible.classes.InputDelete = require('./js/sensibleInputDelete.js');
+sensible.registerComponent('input[deletable=true]', sensible.classes.InputDelete);
+
+sensible.classes.InputFilter = require('./js/sensibleInputFilter.js');
+sensible.registerComponent('input[filterable]', sensible.classes.InputFilter);
+
 // sensible.classes.InputDeleteFilter = require('./js/sensibleInputDeleteFilter.js')
 // sensible.classes.SweetIndicator = require('sensible-indicator')
 // sensible.classes.ScrollSpy = require('./js/sensibleScrollSpy.js')
 
-require('./js/sensibleExpandCollapse.js')
-require('./js/sensibleAccordion.js');
+sensible.classes.ExpandCollapse = require('./js/sensibleExpandCollapse.js')
+sensible.registerComponent('details:not([accordion])', sensible.classes.ExpandCollapse);
+
+sensible.classes.Accordion = require('./js/sensibleAccordion.js');
+sensible.registerComponent('details[accordion]', sensible.classes.Accordion);
 
 require('./js/sensibleJumpToTop.js')
 
