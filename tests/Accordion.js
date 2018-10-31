@@ -7,11 +7,11 @@ describe('Accordion', function() {
     // var theQuestion2 = my2.el.find('a');
     // theAnswer2 = my2.el.find('div');
 
-    el = $('<div class="accordion"><div class="title">Untitled Title</div><div class="body">Untitled Body</div></div>');
+    var el = '<details accordion><summary>Untitled Title</summary><p>Untitled Body</p></details>';
+    var el2 = '<details accordion slug="untitled-two"><summary>Untitled Title</summary><p>Untitled Body</p></details>';
     $(document.body).append(el);
     // Append a second for testing that only one stays open.
-    $(document.body).append('<div class="accordion"><div class="title">Untitled Title</div><div class="body">Untitled Body</div></div>');
-    $(document.body).append('<div class="accordion"><div class="title">Untitled Title</div><div class="body">Untitled Body</div></div>');
+    $(document.body).append(el2);
 
     //Make the question bodies large so that we can test scroll things
     // $('<style>.accordion > div { height:100vh; }</style>').appendTo(document.head);
@@ -26,20 +26,21 @@ describe('Accordion', function() {
 
 
     it('should construct declaratively', function() {
-      expect($('.accordion[sensible-component]').length).toBeGreaterThan(0);
+      expect($('details[accordion][sensible-component]').length).toBeGreaterThan(0);
 
     });
 
     it('should have only one open at a time', function() {
       var i = 0;
-      $('.accordion').each(function() {
+      $('details[accordion]').each(function() {
         // Click the even ones
         if (i % 2 == 0) {
-          console.log('Clicking ', $(this).find('.title').text());
-          $(this).find('.title').click();
+          var summaryEl = $(this).find('summary');
+          console.log('Clicking ', summaryEl.text());
+          summaryEl.click();
         }
         // With each iteration make sure there is only one open.
-        expect($('.accordion.open').length).toEqual(1);
+        expect($('[accordion][open]').length).toEqual(1);
 
         i++;
       })

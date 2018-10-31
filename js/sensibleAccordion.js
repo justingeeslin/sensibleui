@@ -14,7 +14,7 @@ Accordion = function (opts) {
 	$.extend(this, new ExpandCollapse(this));
 
 	var closeOthers = function() {
-		console.log('should close others is:' + self.shouldCloseOthers);
+		console.log('should close others is: ' + self.shouldCloseOthers);
 		if (!self.shouldCloseOthers) {
 			console.log('shouldCloseOthers is disabled. I won\'t close others that might be open');
 			return;
@@ -28,8 +28,13 @@ Accordion = function (opts) {
 			openedRect.y = openedRect.top;
 		}
 
-		//Trigger a close on everyone who is open but not me
-		$('.accordion.open').not(self.el).each(function() {
+		//Close
+		$('details[accordion]').not(self.el).each(function() {
+			// If I have a name defined, only close those who share my name
+			if (typeof self.name !== "undefined" && $(this).attr('name') !== self.name) {
+				// doesn't share my name; don't close it.
+				return true;
+			}
 
 			if (self.scrollCompensate) {
 				var closingRect = $(this)[0].getBoundingClientRect();
@@ -43,14 +48,12 @@ Accordion = function (opts) {
 				}
 			}
 
-			$(this).trigger('close');
+			console.log('Closing', $(this)[0]);
+			$(this)[0].removeAttribute('open');
 		});
 	}
 
-	$(this.el).on('open', closeOthers);
-	$(this.el).on('go', closeOthers);
-
-	$(this.el).on('click', '.title', closeOthers);
+	$(this.el).find('summary').on('click', closeOthers);
 
 	//Create an event by which an accordion can be disabled and enabled
 	$(this.el).on('enableAutoClose', function() {
@@ -66,4 +69,4 @@ Accordion = function (opts) {
 
 module.exports = Accordion;
 sensible.classes.Accordion = Accordion;
-sensible.registerComponent('div.accordion', sensible.classes.Accordion);
+sensible.registerComponent('details[accordion]', sensible.classes.Accordion);
