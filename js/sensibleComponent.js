@@ -65,7 +65,7 @@ var Component = function (options) {
 		};
 
 		var actionOnChange = function(attr, newValue) {
-			console.log('The ' + attr + ' attribute was modified.');
+			console.log('The ' + attr + ' attribute was modified to ', newValue);
 			cb(newValue);
 		}
 
@@ -97,6 +97,7 @@ var Component = function (options) {
 					}
 				}
 			}
+			console.log('Listening for attribute modified')
 			self.el[0].addEventListener('DOMAttrModified', callback, false);
 		}
 
