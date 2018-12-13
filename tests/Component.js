@@ -35,6 +35,23 @@ describe('Component', function() {
       aComponent.el.attr('name', 'sa')
 
     }, 1000)
+					
+		it('should watch for class change', function(done) {
+				
+				var aComponent = new sensible.classes.Component({
+					el: $('<p id="turtles" class="turtle">Teenage Mutant Ninja Turtles</p>')
+				});
+				$(document.body).append(aComponent);
+				
+				aComponent.onClassChange(function(newValue) {
+					 console.log('Class changed')
+					 console.log('The new value is', newValue);
+					 expect(newValue).toBe('turtle mutant');
+					 done()
+				 })
+				aComponent.el.addClass('mutant')
+				
+			}, 1000)
 
     it('should get/set state', function() {
       aComponent = new sensible.classes.Component({

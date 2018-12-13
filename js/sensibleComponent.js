@@ -96,6 +96,12 @@ var Component = function (options) {
 
 	}
 
+	// Wrapper for handling class changes.
+	this.onClassChange = function(cb) {
+		this.onAttributeChange('class', cb)
+		
+	}
+	
 	this.go = function(newState) {
 		this.state = newState;
 	}
