@@ -56,7 +56,13 @@ var Component = function (options) {
 	// Watch an attribute for change
 	this.onAttributeChange = function(attr, cb) {
 		// Options for the observer (which mutations to observe)
-		var config = { attributes: true, childList: true, subtree: true };
+		var config = {
+			attributes: true,
+			attributeFilter: [attr],
+			// Only this particular node and this particular attribute
+			childList: false,
+			subtree: false
+		};
 
 		var actionOnChange = function(attr, newValue) {
 			console.log('The ' + attr + ' attribute was modified.');
