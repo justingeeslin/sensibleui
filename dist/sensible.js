@@ -7,14 +7,21 @@ require('./js/Observer.js')
 sensible.classes.Component = require('./js/sensibleComponent.js')
 sensible.registerComponent('div.component', sensible.classes.Component);
 
-require('./js/sensibleInputDelete.js')
-require('./js/sensibleInputFilter.js')
+sensible.classes.InputDelete = require('./js/sensibleInputDelete.js');
+sensible.registerComponent('input[deletable=true]', sensible.classes.InputDelete);
+
+sensible.classes.InputFilter = require('./js/sensibleInputFilter.js');
+sensible.registerComponent('input[filterable]', sensible.classes.InputFilter);
+
 // sensible.classes.InputDeleteFilter = require('./js/sensibleInputDeleteFilter.js')
 // sensible.classes.SweetIndicator = require('sensible-indicator')
 // sensible.classes.ScrollSpy = require('./js/sensibleScrollSpy.js')
 
-require('./js/sensibleExpandCollapse.js')
-require('./js/sensibleAccordion.js');
+sensible.classes.ExpandCollapse = require('./js/sensibleExpandCollapse.js')
+sensible.registerComponent('details:not([accordion])', sensible.classes.ExpandCollapse);
+
+sensible.classes.Accordion = require('./js/sensibleAccordion.js');
+sensible.registerComponent('details[accordion]', sensible.classes.Accordion);
 
 require('./js/sensibleJumpToTop.js')
 
@@ -177,7 +184,7 @@ Accordion = function (opts) {
 	$.extend(this, new ExpandCollapse(this));
 
 	var closeOthers = function() {
-		console.log('should close others is:' + self.shouldCloseOthers);
+		console.log('should close others is: ' + self.shouldCloseOthers);
 		if (!self.shouldCloseOthers) {
 			console.log('shouldCloseOthers is disabled. I won\'t close others that might be open');
 			return;
@@ -191,8 +198,13 @@ Accordion = function (opts) {
 			openedRect.y = openedRect.top;
 		}
 
-		//Trigger a close on everyone who is open but not me
-		$('.accordion.open').not(self.el).each(function() {
+		//Close
+		$('details[accordion]').not(self.el).each(function() {
+			// If I have a name defined, only close those who share my name
+			if (typeof self.name !== "undefined" && $(this).attr('name') !== self.name) {
+				// doesn't share my name; don't close it.
+				return true;
+			}
 
 			if (self.scrollCompensate) {
 				var closingRect = $(this)[0].getBoundingClientRect();
@@ -206,14 +218,12 @@ Accordion = function (opts) {
 				}
 			}
 
-			$(this).trigger('close');
+			console.log('Closing', $(this)[0]);
+			$(this)[0].removeAttribute('open');
 		});
 	}
 
-	$(this.el).on('open', closeOthers);
-	$(this.el).on('go', closeOthers);
-
-	$(this.el).on('click', '.title', closeOthers);
+	$(this.el).find('summary').on('click', closeOthers);
 
 	//Create an event by which an accordion can be disabled and enabled
 	$(this.el).on('enableAutoClose', function() {
@@ -228,8 +238,6 @@ Accordion = function (opts) {
 }
 
 module.exports = Accordion;
-sensible.classes.Accordion = Accordion;
-sensible.registerComponent('div.accordion', sensible.classes.Accordion);
 
 },{"./sensibleExpandCollapse.js":5}],4:[function(require,module,exports){
 // A Sensible Component is a simple element with state.
@@ -287,6 +295,62 @@ var Component = function (options) {
 		this.state = options.state
 	}
 
+	// Watch an attribute for change
+	this.onAttributeChange = function(attr, cb) {
+		// Options for the observer (which mutations to observe)
+		var config = {
+			attributes: true,
+			attributeFilter: [attr],
+			// Only this particular node and this particular attribute
+			childList: false,
+			subtree: false
+		};
+
+		var actionOnChange = function(attr, newValue) {
+			console.log('The ' + attr + ' attribute was modified to ', newValue);
+			cb(newValue);
+		}
+
+		if (typeof MutationObserver !== "undefined") {
+			// Callback function to execute when mutations are observed
+			var callback = function(mutationsList) {
+				console.log('Attribute Modified!')
+			    for(var i in mutationsList) {
+						var mutation = mutationsList[i];
+			        if (mutation.type == 'attributes') {
+								if (mutation.attributeName == attr) {
+									var newValue = self.el.attr(attr);
+									actionOnChange(attr, newValue);
+								}
+			        }
+			    }
+			};
+			// Create an observer instance linked to the callback function
+			var observer = new MutationObserver(callback);
+			// Start observing the target node for configured mutations
+			observer.observe(self.el[0], config);
+		}
+		else {
+			var callback = function(event) {
+				console.log('Attribute Modified IE10 style');
+				if ('attrChange' in event) {
+					if (event.attrName == attr) {
+						actionOnChange(event.attrName, event.newValue);
+					}
+				}
+			}
+			console.log('Listening for attribute modified')
+			self.el[0].addEventListener('DOMAttrModified', callback, false);
+		}
+
+	}
+
+	// Wrapper for handling class changes.
+	this.onClassChange = function(cb) {
+		this.onAttributeChange('class', cb)
+		
+	}
+	
 	this.go = function(newState) {
 		this.state = newState;
 	}
@@ -302,93 +366,76 @@ var Component = require('./sensibleComponent.js');
 var ExpandCollapse = function (opts) {
 	var self = this;
 
-	var defaults = {
-		title : "Untitled",
-		content : "Untitled Body.",
-		slug : "untitled",
-		url : 'untitled',
-		classes : 'expand-collapse'
-	};
+	var defaults = {};
 
 	$.extend(this, defaults, opts);
 	$.extend(this, new Component(this));
 
-	this.id = this.url.split('/').join('-');
-
 	// Discover the attributes
-	var title = this.el.find('.title');
-	var titleText = title.html();
-	if (titleText.length > 0) {
-		this.title = titleText;
-	}
-
-	var body = this.el.find('.body')
-	var bodyText = body.html();
-	if (bodyText.length > 0) {
-		this.content = bodyText;
-	}
-
-	//Handles expanding and collapsing
-	this.toggle = function(e) {
-		//No need for this to bubble
-		e.preventDefault()
-
-		console.log('Toggling... ' + self.slug);
-		//Update the URL incase the windows is refreshed. Prevent default and use this because a normal click is a push and not a replace
-		// history.replaceState(null, null, '#' + self.slug )
-
-		if (!self.isOpen()) {
-			self.open();
-		}
-		else {
-			self.close();
+	var title = this.el.find('summary');
+	if (typeof title !== "undefined") {
+		var titleText = title.html();
+		if (titleText.length > 0) {
+			this.title = titleText;
 		}
 
+		var body = title.siblings()
+		var bodyText = body.html();
+		if (bodyText.length > 0) {
+			this.content = bodyText;
+		}
 	}
+	else {
+		console.log('Could not find summary element.')
+	}
+
 
 	this.isOpen = function() {
 		return body.is(':visible');
 	}
 
-	this.close = function() {
-		console.log('Closing: ' + self.slug);
-		self.el.removeClass('open');
-		body.hide()
+	// use the details default behavior if it is supported.
+	var supportsDetails = function() {
+		return 'open' in document.createElement('details');
 	}
 
-	this.open = function() {
-		console.log('Opening: ' + self.slug);
-		self.el.addClass('open');
-		body.show()
+	// Only if details element is not supported are these handlers necessary.
+	if (!supportsDetails()) {
+		
+		// Employ CSS rules for hiding and showing.
+		this.el.addClass('manual');
+		
+		//Handles expanding and collapsing
+		var toggle = function(e) {
+			if (typeof e !== "undefined" && typeof e.preventDefault !== "undefined") {
+				//No need for this to bubble
+				e.preventDefault()
+			}
+
+			console.log('Toggling manually... ');
+			//Update the URL incase the windows is refreshed. Prevent default and use this because a normal click is a push and not a replace
+			// history.replaceState(null, null, '#' + self.slug )
+
+			if (!self.isOpen()) {
+				console.log('Setting open attr manually..')
+				self.el[0].setAttribute('open', '');
+			}
+			else {
+				console.log('Removing open attr manually..')
+				self.el[0].removeAttribute('open');
+			}
+
+		}
+
+		// On title click, toggle the open attribute manually.
+		title.on('click', toggle);
+
 	}
-
-	title.on('click', this.toggle);
-
-	//Expose an events..
-	// ...to toggle the activation. Maybe called when a screen un-slides to close it.
-	$(this.el).on('toggle', this.toggle);
-	// ...to close
-	$(this.el).on('close', this.close);
-	// ...to open
-	$(this.el).on('open', this.open);
-
-	$(this.el).on('go', this.toggle);
-
-	// Debug
-	$(this.el).on('go', function(e) {
-		console.log('Go: ' + self.slug + ' by ');
-		console.log(e.target);
-	});
-
-	// Should be closed upon construction.
-	this.close();
 
 	return this;
 }
 
 module.exports = ExpandCollapse;
-sensible.classes.ExpandCollapse = ExpandCollapse;
-sensible.registerComponent('div.expand-collapse', sensible.classes.ExpandCollapse);
 
 },{"./sensibleComponent.js":4}],6:[function(require,module,exports){
 
@@ -507,7 +554,7 @@ Highlight = function (opts, contentTarget) {
 module.exports = Highlight
 
 },{}],7:[function(require,module,exports){
-var Component = require('./sensibleComponent.js');
+var Component = require('/Users/work/sensibleui/js/sensibleComponent.js');
 
 InputDelete = function (opts) {
 	var self = this;
@@ -518,17 +565,8 @@ InputDelete = function (opts) {
 	$.extend(this, defaults, opts)
 	$.extend(this, new Component(this));
 
-	//Wrap in a Div if not already wrapped
-	var classToAdd = "deletable";
 	var deleteButton = $('<div class="close">x</div>');
-
-	// Wrap with a deletable class. Add a X button.
-	this.el.wrap('<div class="' + classToAdd + '"></div>')
-	// this.el = $().append(this.el);
-
-	this.el.after(deleteButton);
-
-	var inputBox = this.el.find('input');
+	this.el.append(deleteButton);
 
 	//When the user types..
 	this.el.on('input', function() {
@@ -556,10 +594,8 @@ InputDelete = function (opts) {
 }
 
 module.exports = InputDelete;
-sensible.classes.InputDelete = InputDelete;
-sensible.registerComponent('input[deletable=true]', sensible.classes.InputDelete);
 
-},{"./sensibleComponent.js":4}],8:[function(require,module,exports){
+},{"/Users/work/sensibleui/js/sensibleComponent.js":4}],8:[function(require,module,exports){
 var Component = require('./sensibleComponent.js');
 
 InputFilter = function (opts) {
@@ -749,8 +785,6 @@ InputFilter = function (opts) {
 }
 
 module.exports = InputFilter;
-sensible.classes.InputFilter = InputFilter;
-sensible.registerComponent('input[filterable]', sensible.classes.InputFilter);
 
 },{"./sensibleComponent.js":4,"./sensibleHighlight.js":6}],9:[function(require,module,exports){
 var Component = require('./sensibleComponent.js');
