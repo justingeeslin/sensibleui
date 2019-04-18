@@ -48,7 +48,11 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage', 'html'],
+    reporters: [
+      'progress'
+      // 'coverage',
+      // 'html'
+    ],
 
     coverageReporter : {
       reporters: [
@@ -96,10 +100,10 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: [
-      'chrome_perf',
-      'IE10',
-      'IE11',
-      // 'Safari',
+      // 'chrome_perf',
+      // 'IE10',
+      // 'IE11',
+      'Safari',
       // 'Firefox',
       // 'IE11'
     ],

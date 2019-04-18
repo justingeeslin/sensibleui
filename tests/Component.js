@@ -6,7 +6,7 @@ describe('Component', function() {
       }, 1000);
     })
 
-    it('should construct declaratively, that is, with just a tag, similar to the forthcoming web components/custom elements', function(done) {
+    it('should construct declaratively', function(done) {
       var aComponent = $('<div class="component"></div>');
 
       // Wait a bit for construction to happen..
@@ -35,14 +35,14 @@ describe('Component', function() {
       aComponent.el.attr('name', 'sa')
 
     }, 1000)
-					
+
 		it('should watch for class change', function(done) {
-				
+
 				var aComponent = new sensible.classes.Component({
 					el: $('<p id="turtles" class="turtle">Teenage Mutant Ninja Turtles</p>')
 				});
 				$(document.body).append(aComponent);
-				
+
 				aComponent.onClassChange(function(newValue) {
 					 console.log('Class changed')
 					 console.log('The new value is', newValue);
@@ -50,7 +50,7 @@ describe('Component', function() {
 					 done()
 				 })
 				aComponent.el.addClass('mutant')
-				
+
 			}, 1000)
 
     it('should get/set state', function() {

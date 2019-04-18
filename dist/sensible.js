@@ -7,9 +7,6 @@ require('./js/Observer.js')
 sensible.classes.Component = require('./js/sensibleComponent.js')
 sensible.registerComponent('div.component', sensible.classes.Component);
 
-sensible.classes.InputDelete = require('./js/sensibleInputDelete.js');
-sensible.registerComponent('input[deletable=true]', sensible.classes.InputDelete);
-
 sensible.classes.InputFilter = require('./js/sensibleInputFilter.js');
 sensible.registerComponent('input[filterable]', sensible.classes.InputFilter);
 
@@ -31,12 +28,21 @@ sensible.registerComponent('div[sidebar]', sensible.classes.Sidebar);
 sensible.classes.Sortable = require('./js/sensibleSortable.js')
 sensible.registerComponent('div[sortable]', sensible.classes.Sortable);
 
-},{"./js/Observer.js":2,"./js/sensibleAccordion.js":3,"./js/sensibleComponent.js":4,"./js/sensibleExpandCollapse.js":5,"./js/sensibleInputDelete.js":7,"./js/sensibleInputFilter.js":8,"./js/sensibleJumpToTop.js":9,"./js/sensibleSidebar.js":10,"./js/sensibleSortable.js":11}],2:[function(require,module,exports){
+},{"./js/Observer.js":2,"./js/sensibleAccordion.js":3,"./js/sensibleComponent.js":4,"./js/sensibleExpandCollapse.js":5,"./js/sensibleInputFilter.js":7,"./js/sensibleJumpToTop.js":8,"./js/sensibleSidebar.js":9,"./js/sensibleSortable.js":10}],2:[function(require,module,exports){
 window.sensible = window.sensible !== undefined ? window.sensible : {};
 sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
-sensible.classes.Observer = function() {
+sensible.classes.Observer = function(options) {
   var self = this;
+
+  var defaults = {
+    // Shoud you construct upon the nodes that are not inserted but are already in DOM at document load.
+    enableInitalNodesConstruction: true,
+    // Use MutationObserver to construct classes for future inserted nodes
+    enableMutationObserver: true
+  }
+
+  $.extend(this, defaults, options);
 
   // A mapping from selector to Sensible Class.
   var selectorClassMap = [
@@ -66,106 +72,99 @@ sensible.classes.Observer = function() {
     return insertableSelctors;
   }
 
-  var triggerEvent = function(el, name) {
-    if (typeof(Event) === 'function') {
-      var event = new Event(name);
-    } else {
-      var event = document.createEvent('Event');
-      event.initEvent(name, true, true);
-    }
-
-    el.dispatchEvent(event);
-  }
-
   this.add = function(selector, sensibleClass) {
-    console.log('Adding a rule for ', selector, sensibleClass);
+    console.log('Adding a rule for ', selector);
     selectorClassMap.push({
       sel: selector,
       class: sensibleClass
     });
-
-    // Add the CSS rule
-    addCSSRule(document.styleSheets[0], selector, "animation-duration: 0.001s; animation-name: nodeInserted;");
   }
 
-  var markupInit = function( options ) {
+  if (this.enableMutationObserver) {
+    //Attach a Mutation Observer to the document body
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        // console.log("Observed", mutation.addedNodes);
 
-      var target = typeof options !== "undefined" ? options.target : $(document.body);
+        // For each added node, new to the DOM
+        mutation.addedNodes.forEach(function(node) {
 
-      console.log('markup init')
+          // If this node is not an element..
+          if (node.nodeType != 1) {
+            // continue trying to find a match
+            return true;
+          }
 
-      // Init Sensible Components. (only those that are not already init-ed, that is, with the `sensible-component` attribute)
-      for( var i in selectorClassMap) {
-        var item = selectorClassMap[i];
-        $(item.sel + ':not([sensible-component])').each(function() {
-          var options = {
-            el: $(this)
-          };
-          // Get attributes of the element, they will be the options of the constructor.
-          Array.prototype.slice.call(this.attributes).forEach(function(item) {
-          	console.log(item.name + ': '+ item.value);
-            options[item.name] = item.value;
-          });
-          console.log('Constructing with options: ', options)
-          var aComponent = new item.class(options)
-          triggerEvent($(this)[0], 'complete');
-        });
+          // Try to match the newly added node to a selector
+          console.log('Trying to match node:', node)
+
+          for(var j in selectorClassMap) {
+            var item = selectorClassMap[j];
+            if (node.matches(item.sel) && !node.hasAttribute('sensible-component')) {
+              console.log('About to construct upon ', node);
+              var options = {
+                el: $(node)
+              };
+              var aComponent = new item.class(options);
+              aComponent.el.trigger('complete');
+            }
+            else {
+              // console.log('Mismatch ', node, item.sel);
+            }
+
+          }
+        })
+
+      });
+    });
+
+    var observerConfig = {
+      attributes: true,
+      childList: true,
+      // subtree: true,
+      characterData: true
+    };
+
+    // Start the observing of the insertion of new nodes
+    observer.observe(document.body, observerConfig);
+  }
+
+  if (this.enableInitalNodesConstruction) {
+    // Try to select and construct existing nodes in the page at load time
+    this.constructInitialNodes = function() {
+      for(var j in selectorClassMap) {
+        var item = selectorClassMap[j];
+        var selection = document.querySelectorAll(item.sel);
+        if (selection.length > 0) {
+          
+          selection.forEach(function(node) {
+            console.log('About to construct upon ', node);
+            var options = {
+              el: $(node)
+            };
+            var aComponent = new item.class(options);
+          })
+
+        }
       }
-
-  }
-
-  // Listen for an event that runs when the page is loaded and can also be triggered. (jQuery's ready cannot be triggered.)
-  document.addEventListener("DOMContentLoaded", markupInit);
-
-  // Add animation styles to the body
-  var sheet = (function() {
-  	// Create the <style> tag
-  	var style = document.createElement("style");
-
-  	// Add a media (and/or media query) here if you'd like!
-  	// style.setAttribute("media", "screen")
-  	// style.setAttribute("media", "only screen and (max-width : 1024px)")
-
-  	// WebKit hack :(
-  	style.appendChild(document.createTextNode(""));
-
-  	// Add the <style> element to the page
-  	document.head.appendChild(style);
-
-  	return style.sheet;
-  })();
-
-  function addCSSRule(sheet, selector, rules, index) {
-  	if("insertRule" in sheet) {
-  		sheet.insertRule(selector + "{" + rules + "}", index);
-  	}
-  	else if("addRule" in sheet) {
-  		sheet.addRule(selector, rules, index);
-  	}
-  }
-
-  addCSSRule(document.styleSheets[0], "@keyframes nodeInserted", "from { opacity: 0.99; } to { opacity: 1; } ");
-
-  // Listen for Body insertions using CSS and Animations in liue of their being no Mutation Observers.
-  var insertListener = function(event){
-    if (event.animationName == "nodeInserted") {
-      // This is the debug for knowing our listener worked!
-      // event.target is the new node!
-      console.warn("A component has been inserted! ", event, event.target);
-      triggerEvent(document, "DOMContentLoaded");
-
     }
+    this.constructInitialNodes();
+
+    $(window).on('load', this.constructInitialNodes);
   }
 
-  document.addEventListener("animationstart", insertListener, false); // standard + firefox
-  document.addEventListener("MSAnimationStart", insertListener, false); // IE
-  document.addEventListener("webkitAnimationStart", insertListener, false); // Chrome + Safari
+  this.destroy = function() {
+
+    // Disconnect the observer
+    observer.disconnect();
+  }
 
   return this;
 }
 
-var anObserver = new sensible.classes.Observer();
-sensible.registerComponent = anObserver.add;
+sensible.observer = new sensible.classes.Observer();
+// Alias the add function to the `registerComponent` function
+sensible.registerComponent = sensible.observer.add;
 
 },{}],3:[function(require,module,exports){
 var ExpandCollapse = require('./sensibleExpandCollapse.js');
@@ -554,48 +553,6 @@ Highlight = function (opts, contentTarget) {
 module.exports = Highlight
 
 },{}],7:[function(require,module,exports){
-var Component = require('/Users/work/sensibleui/js/sensibleComponent.js');
-
-InputDelete = function (opts) {
-	var self = this;
-
-	var defaults = {};
-
-	console.log('Creating an Input with Delete button.');
-	$.extend(this, defaults, opts)
-	$.extend(this, new Component(this));
-
-	var deleteButton = $('<div class="close">x</div>');
-	this.el.append(deleteButton);
-
-	//When the user types..
-	this.el.on('input', function() {
-		console.log('Should I show the delete button?');
-
-		if ($(this).val().length > 0) {
-			console.log('Showing delete button');
-			deleteButton.css('visibility', 'visible')
-		}
-		else {
-			console.log('hiding delete button');
-			deleteButton.css('visibility', 'hidden')
-		}
-	});
-
-	deleteButton.on('click', function(e) {
-		console.log('Clicked delete button')
-		//Clear the input box
-		self.el.val('');
-		//Hide the x if neccessary.
-		self.el.trigger('input');
-	});
-
-	return this;
-}
-
-module.exports = InputDelete;
-
-},{"/Users/work/sensibleui/js/sensibleComponent.js":4}],8:[function(require,module,exports){
 var Component = require('./sensibleComponent.js');
 
 InputFilter = function (opts) {
@@ -786,7 +743,7 @@ InputFilter = function (opts) {
 
 module.exports = InputFilter;
 
-},{"./sensibleComponent.js":4,"./sensibleHighlight.js":6}],9:[function(require,module,exports){
+},{"./sensibleComponent.js":4,"./sensibleHighlight.js":6}],8:[function(require,module,exports){
 var Component = require('./sensibleComponent.js');
 
 JumpToTop = function (options) {
@@ -869,7 +826,7 @@ module.exports = JumpToTop;
 sensible.classes.JumpToTop = JumpToTop;
 sensible.registerComponent('div.jump-to-top', sensible.classes.JumpToTop);
 
-},{"./sensibleComponent.js":4}],10:[function(require,module,exports){
+},{"./sensibleComponent.js":4}],9:[function(require,module,exports){
 var Component = require('./sensibleComponent.js');
 
 Sidebar = function (opts) {
@@ -888,7 +845,7 @@ Sidebar = function (opts) {
 
 module.exports = Sidebar;
 
-},{"./sensibleComponent.js":4}],11:[function(require,module,exports){
+},{"./sensibleComponent.js":4}],10:[function(require,module,exports){
 var Component = require('./sensibleComponent.js');
 var S = require('sortablejs');
 Sortable = function (opts) {
@@ -906,7 +863,7 @@ Sortable = function (opts) {
 
 module.exports = Sortable;
 
-},{"./sensibleComponent.js":4,"sortablejs":12}],12:[function(require,module,exports){
+},{"./sensibleComponent.js":4,"sortablejs":11}],11:[function(require,module,exports){
 /**!
  * Sortable
  * @author	RubaXa   <trash@rubaxa.org>

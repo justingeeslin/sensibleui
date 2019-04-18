@@ -1,4 +1,4 @@
-fdescribe('ExpandCollapse', function() {
+describe('ExpandCollapse', function() {
 
   beforeAll(function(done) {
     // Add expand collapse element
@@ -17,7 +17,7 @@ fdescribe('ExpandCollapse', function() {
       done()
     }, 100)
   });
-					
+
 		beforeEach(function() {
 			// Begin each test with an open Collapsible
 			 console.log('Adding open attribute..')
