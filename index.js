@@ -6,9 +6,6 @@ require('./js/Observer.js')
 sensible.classes.Component = require('./js/sensibleComponent.js')
 sensible.registerComponent('div.component', sensible.classes.Component);
 
-sensible.classes.InputDelete = require('./js/sensibleInputDelete.js');
-sensible.registerComponent('input[deletable=true]', sensible.classes.InputDelete);
-
 sensible.classes.InputFilter = require('./js/sensibleInputFilter.js');
 sensible.registerComponent('input[filterable]', sensible.classes.InputFilter);
 
