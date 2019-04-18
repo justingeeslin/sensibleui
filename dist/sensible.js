@@ -115,7 +115,23 @@ sensible.classes.Observer = function() {
   	characterData: true
   };
 
+  // Start the observing of the insertion of new nodes
   observer.observe(document.body, observerConfig);
+
+  // Try to select and construct existing nodes in the page
+  for(var j in selectorClassMap) {
+    var item = selectorClassMap[j];
+    var selection = document.querySelectorAll(item.sel);
+    if (selection.length > 0) {
+      selection.forEach(function(node) {
+        var options = {
+          el: $(node)
+        };
+        var aComponent = new item.class(options);
+      })
+      
+    }
+  }
 
   this.destroy = function() {
 
