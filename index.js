@@ -13,6 +13,9 @@ sensible.registerComponent('input[filterable]', sensible.classes.InputFilter);
 // sensible.classes.SweetIndicator = require('sensible-indicator')
 // sensible.classes.ScrollSpy = require('./js/sensibleScrollSpy.js')
 
+sensible.classes.ExpandCollapse = require('./js/sensibleExpandCollapse.js')
+sensible.registerComponent('details:not([accordion])', sensible.classes.ExpandCollapse);
+
 sensible.classes.Accordion = require('./js/sensibleAccordion.js');
 sensible.registerComponent('details[accordion]', sensible.classes.Accordion);
 
