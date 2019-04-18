@@ -1,4 +1,4 @@
-fdescribe('ExpandCollapse', function() {
+describe('ExpandCollapse', function() {
 
   beforeAll(function(done) {
     // Add expand collapse element
