@@ -32,8 +32,17 @@ sensible.registerComponent('div[sortable]', sensible.classes.Sortable);
 window.sensible = window.sensible !== undefined ? window.sensible : {};
 sensible.classes = sensible.classes !== undefined ? sensible.classes : {};
 
-sensible.classes.Observer = function() {
+sensible.classes.Observer = function(options) {
   var self = this;
+
+  var defaults = {
+    // Shoud you construct upon the nodes that are not inserted but are already in DOM at document load.
+    enableInitalNodesConstruction: true,
+    // Use MutationObserver to construct classes for future inserted nodes
+    enableMutationObserver: true
+  }
+
+  $.extend(this, defaults, options);
 
   // A mapping from selector to Sensible Class.
   var selectorClassMap = [
@@ -71,66 +80,77 @@ sensible.classes.Observer = function() {
     });
   }
 
-  //Attach a Mutation Observer to the document body
-  var observer = new MutationObserver(function(mutations) {
-  	mutations.forEach(function(mutation) {
-  		// console.log("Observed", mutation.addedNodes);
+  if (this.enableMutationObserver) {
+    //Attach a Mutation Observer to the document body
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        // console.log("Observed", mutation.addedNodes);
 
-      // For each added node, new to the DOM
-      mutation.addedNodes.forEach(function(node) {
+        // For each added node, new to the DOM
+        mutation.addedNodes.forEach(function(node) {
 
-        // If this node is not an element..
-        if (node.nodeType != 1) {
-          // continue trying to find a match
-          return true;
-        }
+          // If this node is not an element..
+          if (node.nodeType != 1) {
+            // continue trying to find a match
+            return true;
+          }
 
-        // Try to match the newly added node to a selector
-        console.log('Trying to match node:', node)
+          // Try to match the newly added node to a selector
+          console.log('Trying to match node:', node)
 
-        for(var j in selectorClassMap) {
-          var item = selectorClassMap[j];
-          if (node.matches(item.sel) && !node.hasAttribute('sensible-component')) {
+          for(var j in selectorClassMap) {
+            var item = selectorClassMap[j];
+            if (node.matches(item.sel) && !node.hasAttribute('sensible-component')) {
+              console.log('About to construct upon ', node);
+              var options = {
+                el: $(node)
+              };
+              var aComponent = new item.class(options);
+              aComponent.el.trigger('complete');
+            }
+            else {
+              // console.log('Mismatch ', node, item.sel);
+            }
+
+          }
+        })
+
+      });
+    });
+
+    var observerConfig = {
+      attributes: true,
+      childList: true,
+      // subtree: true,
+      characterData: true
+    };
+
+    // Start the observing of the insertion of new nodes
+    observer.observe(document.body, observerConfig);
+  }
+
+  if (this.enableInitalNodesConstruction) {
+    // Try to select and construct existing nodes in the page at load time
+    this.constructInitialNodes = function() {
+      for(var j in selectorClassMap) {
+        var item = selectorClassMap[j];
+        var selection = document.querySelectorAll(item.sel);
+        if (selection.length > 0) {
+          
+          selection.forEach(function(node) {
             console.log('About to construct upon ', node);
             var options = {
               el: $(node)
             };
             var aComponent = new item.class(options);
-            aComponent.el.trigger('complete');
-          }
-          else {
-            // console.log('Mismatch ', node, item.sel);
-          }
+          })
 
         }
-      })
-
-  	});
-  });
-
-  var observerConfig = {
-  	attributes: true,
-  	childList: true,
-    // subtree: true,
-  	characterData: true
-  };
-
-  // Start the observing of the insertion of new nodes
-  observer.observe(document.body, observerConfig);
-
-  // Try to select and construct existing nodes in the page
-  for(var j in selectorClassMap) {
-    var item = selectorClassMap[j];
-    var selection = document.querySelectorAll(item.sel);
-    if (selection.length > 0) {
-      selection.forEach(function(node) {
-        var options = {
-          el: $(node)
-        };
-        var aComponent = new item.class(options);
-      })
-      
+      }
     }
+    this.constructInitialNodes();
+
+    $(window).on('load', this.constructInitialNodes);
   }
 
   this.destroy = function() {
@@ -142,8 +162,9 @@ sensible.classes.Observer = function() {
   return this;
 }
 
-var anObserver = new sensible.classes.Observer();
-sensible.registerComponent = anObserver.add;
+sensible.observer = new sensible.classes.Observer();
+// Alias the add function to the `registerComponent` function
+sensible.registerComponent = sensible.observer.add;
 
 },{}],3:[function(require,module,exports){
 var ExpandCollapse = require('./sensibleExpandCollapse.js');
