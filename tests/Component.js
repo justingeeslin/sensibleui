@@ -6,7 +6,7 @@ describe('Component', function() {
       }, 1000);
     })
 
-    it('should construct declaratively, that is, with just a tag, similar to the forthcoming web components/custom elements', function(done) {
+    it('should construct declaratively', function(done) {
       var aComponent = $('<div class="component"></div>');
 
       // Wait a bit for construction to happen..
