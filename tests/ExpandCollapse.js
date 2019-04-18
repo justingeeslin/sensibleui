@@ -17,7 +17,7 @@ describe('ExpandCollapse', function() {
       done()
     }, 100)
   });
-					
+
 		beforeEach(function() {
 			// Begin each test with an open Collapsible
 			 console.log('Adding open attribute..')
