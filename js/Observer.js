@@ -32,100 +32,65 @@ sensible.classes.Observer = function() {
     return insertableSelctors;
   }
 
-  var triggerEvent = function(el, name) {
-    if (typeof(Event) === 'function') {
-      var event = new Event(name);
-    } else {
-      var event = document.createEvent('Event');
-      event.initEvent(name, true, true);
-    }
-
-    el.dispatchEvent(event);
-  }
-
   this.add = function(selector, sensibleClass) {
-    console.log('Adding a rule for ', selector, sensibleClass);
+    console.log('Adding a rule for ', selector);
     selectorClassMap.push({
       sel: selector,
       class: sensibleClass
     });
-
-    // Add the CSS rule
-    addCSSRule(document.styleSheets[0], selector, "animation-duration: 0.001s; animation-name: nodeInserted;");
   }
 
-  var markupInit = function( options ) {
+  //Attach a Mutation Observer to the document body
+  var observer = new MutationObserver(function(mutations) {
+  	mutations.forEach(function(mutation) {
+  		// console.log("Observed", mutation.addedNodes);
 
-      var target = typeof options !== "undefined" ? options.target : $(document.body);
+      // For each added node, new to the DOM
+      mutation.addedNodes.forEach(function(node) {
 
-      console.log('markup init')
+        // If this node is not an element..
+        if (node.nodeType != 1) {
+          // continue trying to find a match
+          return true;
+        }
 
-      // Init Sensible Components. (only those that are not already init-ed, that is, with the `sensible-component` attribute)
-      for( var i in selectorClassMap) {
-        var item = selectorClassMap[i];
-        $(item.sel + ':not([sensible-component])').each(function() {
-          var options = {
-            el: $(this)
-          };
-          // Get attributes of the element, they will be the options of the constructor.
-          Array.prototype.slice.call(this.attributes).forEach(function(item) {
-          	console.log(item.name + ': '+ item.value);
-            options[item.name] = item.value;
-          });
-          console.log('Constructing with options: ', options)
-          var aComponent = new item.class(options)
-          triggerEvent($(this)[0], 'complete');
-        });
-      }
+        // Try to match the newly added node to a selector
+        console.log('Trying to match node:', node)
 
+        for(var j in selectorClassMap) {
+          var item = selectorClassMap[j];
+          if (node.matches(item.sel) && !node.hasAttribute('sensible-component')) {
+            console.log('About to construct upon ', node);
+            var options = {
+              el: $(node)
+            };
+            var aComponent = new item.class(options);
+            aComponent.el.trigger('complete');
+          }
+          else {
+            // console.log('Mismatch ', node, item.sel);
+          }
+
+        }
+      })
+
+  	});
+  });
+
+  var observerConfig = {
+  	attributes: true,
+  	childList: true,
+    // subtree: true,
+  	characterData: true
+  };
+
+  observer.observe(document.body, observerConfig);
+
+  this.destroy = function() {
+
+    // Disconnect the observer
+    observer.disconnect();
   }
-
-  // Listen for an event that runs when the page is loaded and can also be triggered. (jQuery's ready cannot be triggered.)
-  document.addEventListener("DOMContentLoaded", markupInit);
-
-  // Add animation styles to the body
-  var sheet = (function() {
-  	// Create the <style> tag
-  	var style = document.createElement("style");
-
-  	// Add a media (and/or media query) here if you'd like!
-  	// style.setAttribute("media", "screen")
-  	// style.setAttribute("media", "only screen and (max-width : 1024px)")
-
-  	// WebKit hack :(
-  	style.appendChild(document.createTextNode(""));
-
-  	// Add the <style> element to the page
-  	document.head.appendChild(style);
-
-  	return style.sheet;
-  })();
-
-  function addCSSRule(sheet, selector, rules, index) {
-  	if("insertRule" in sheet) {
-  		sheet.insertRule(selector + "{" + rules + "}", index);
-  	}
-  	else if("addRule" in sheet) {
-  		sheet.addRule(selector, rules, index);
-  	}
-  }
-
-  addCSSRule(document.styleSheets[0], "@keyframes nodeInserted", "from { opacity: 0.99; } to { opacity: 1; } ");
-
-  // Listen for Body insertions using CSS and Animations in liue of their being no Mutation Observers.
-  var insertListener = function(event){
-    if (event.animationName == "nodeInserted") {
-      // This is the debug for knowing our listener worked!
-      // event.target is the new node!
-      console.warn("A component has been inserted! ", event, event.target);
-      triggerEvent(document, "DOMContentLoaded");
-
-    }
-  }
-
-  document.addEventListener("animationstart", insertListener, false); // standard + firefox
-  document.addEventListener("MSAnimationStart", insertListener, false); // IE
-  document.addEventListener("webkitAnimationStart", insertListener, false); // Chrome + Safari
 
   return this;
 }
